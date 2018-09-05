@@ -1,0 +1,98 @@
+<div id="form">
+  <div id="content">
+    <div class="menubar fixed">
+      <div class="sidebar-toggler visible-xs">
+        <i class="ion-navicon"></i>
+      </div>
+
+      <div class="page-title">
+        View existing resource type details
+      </div>
+      <a class="new-user btn btn-default pull-right" (click)="goBack()">
+        <span>Back</span>
+      </a>
+    </div>
+
+    <div class="content-wrapper">
+      <div *ngIf="resourceType">
+        <form role="form" action="#" method="post" class="form-horizontal" id="new-customer" novalidate="novalidate">
+          <div class="form-group" *ngIf="resourceType.name">
+            <label class="col-sm-2 col-md-2 control-label">Name</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resourceType.name}}</span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resourceType.schema">
+            <label class="col-sm-2 col-md-2 control-label">Schema</label>
+            <div class="col-sm-10 col-md-8 detail">
+                            <span>
+                                {{resourceType.schema}}
+                            </span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resourceType.schemaUrl">
+            <label class="col-sm-2 col-md-2 control-label">Schema URL</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resourceType.schemaUrl}}</span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resourceType.payloadType">
+            <label class="col-sm-2 col-md-2 control-label">Payload Type</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resourceType.payloadType}}</span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resourceType.creationDate">
+            <label class="col-sm-2 col-md-2 control-label">Creation Date</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resourceType.creationDate | date:'medium' }}</span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resourceType.modificationDate">
+            <label class="col-sm-2 col-md-2 control-label">Modification Date</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resourceType.modificationDate | date:'medium' }}</span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resourceType.indexMapperClass">
+            <label class="col-sm-2 col-md-2 control-label">Index Mapper Class</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resourceType.indexMapperClass}}</span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resourceType.indexFields.length > 0">
+            <label class="col-sm-2 col-md-2 control-label">Index Fields</label>
+            <div class="col-sm-10 col-md-8 detail indexFields">
+              <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Path</th>
+                  <th>Type</th>
+                  <th>Multivalued</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let indexField of resourceType.indexFields">
+                  <td>{{indexField.name}}</td>
+                  <td>{{indexField.path}}</td>
+                  <td>{{indexField.type}}</td>
+                  <td>{{indexField.multivalued}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button class="btn btn-default" (click)="goBack()">Back</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

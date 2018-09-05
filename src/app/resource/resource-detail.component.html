@@ -1,0 +1,85 @@
+<div id="form">
+  <div id="content">
+    <div class="menubar fixed">
+      <div class="sidebar-toggler visible-xs">
+        <i class="ion-navicon"></i>
+      </div>
+
+      <div class="page-title">
+        View existing resource details
+        <!--<small class="hidden-xs">
+            <strong>This form has validation</strong>
+        </small>-->
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div *ngIf="resource">
+        <form role="form" action="#" method="post" class="form-horizontal" id="new-customer" novalidate="novalidate">
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Id</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.id}}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Resource Type</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.resourceType.name}}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Version</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.version}}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Payload</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.payload}}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Payload URL</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.payloadUrl}}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Payload Format</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.payloadFormat}}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Creation Date</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.creationDate | date:'medium' }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 col-md-2 control-label">Modification Date</label>
+            <div class="col-sm-10 col-md-8 detail">
+              <span>{{resource.modificationDate | date:'medium' }}</span>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="resource.indexedFields">
+            <label class="col-sm-2 col-md-2 control-label">Indexed Fields</label>
+            <div class="col-sm-10 col-md-8 detail" *ngFor="let indexedField of resource.indexedFields;
+                  let index=index" [class.col-sm-offset-2]="index != 0">
+              <span>{{indexedField.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+              <!--<span>{{indexedField.value}}</span>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;-->
+              <span>{{indexedField.type}}</span>
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button class="btn btn-default" (click)="goBack()">Back</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+{
+  "http://83.212.98.76:8085/*": {
+    "target": "http://83.212.98.76:8085",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

@@ -1,0 +1,102 @@
+<!--<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">-->
+<!--<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>-->
+<!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
+<!--<ul class="navbar-nav px-3">-->
+<!--<li class="nav-item text-nowrap">-->
+<!--<a class="nav-link" href="#">Sign out</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</nav>-->
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+
+      <div class="sidebar-sticky">
+
+        <div class="menu-section">
+          <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            General</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/dashboard" routerLinkActive="active">
+                <i class="fa fa-globe"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/configuration" routerLinkActive="active">
+                <i class="fa fa-cog"></i>
+                <span>Configuration</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            Contents</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/resourceTypes" routerLinkActive="active">
+                <i class="fa fa-folder"></i>
+                <span>Resource Types</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/resources" routerLinkActive="active">
+                <i class="fa fa-file"></i>
+                <span>Resources</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            API Documentation</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/api/overview" routerLinkActive="active">
+                <i class="fa fa-file-text"></i>
+                <span>Overview</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/api/resourceTypes" routerLinkActive="active">
+                <i class="fa fa-folder-o"></i>
+                <span>Resource Types</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/api/resources" routerLinkActive="active">
+                <i class="fa fa-file-o"></i>
+                <span>Resources</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/api/search" routerLinkActive="active">
+                <i class="fa fa-search"></i>
+                <span>Search</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " routerLink="/api/versions" routerLinkActive="active">
+                <i class="fa fa-files-o"></i>
+                <span>Versions</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-10 ml-sm-auto col-lg-10 px-4">
+      <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+        <router-outlet></router-outlet>
+
+      </div>
+    </main>
+
+  </div>
+</div>
