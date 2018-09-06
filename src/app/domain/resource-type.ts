@@ -13,5 +13,4 @@ export interface ResourceType {
     modificationDate: Date;
     indexMapperClass: String;
     indexFields: IndexFields[];
-    // state: boolean;  // can it be done with out this?
 }

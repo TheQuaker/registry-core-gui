@@ -1,57 +1,71 @@
-<p>Form group</p>
+<div id="form" style="width: 1000px;"><!--TODO: FIX WIDTH-->
 
-<div class="col-md-12">
-  <form [formGroup]="resourceForm" (submit)="postResource()" class="form-horizontal" novalidate="novalidate">
+  <div id="content">
+    <div class="menubar fixed">
+      <div class="sidebar-toggler visible-xs">
+        <i class="ion-navicon"></i>
+      </div>
 
-    <div class="col-md-6">
-      <div class="form-group">
-        <label class="control-label">Resource Type</label>
-        <div class="" *ngIf="resourceTypes">
-          <div formGroupName="resourceType">
-            <select class="form-control" formControlName="name" (change)="onTypeSelect($event)" required>
-              <option value="null" disabled selected hidden>Select resource type</option>
-              <option *ngFor="let resourceType of resourceTypes" value={{resourceType.name}}>{{resourceType.name}}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="">Version</label>
-        <!--<div class="">-->
-        <input type="text" class="form-control" formControlName="version">
-        <!--</div>-->
-      </div>
-      <div class="form-group">
-        <label class="control-label">Payload</label>
-        <div class="">
-          <textarea rows="4" class="form-control" formControlName="payload"></textarea>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label">Payload URL</label>
-        <div class="">
-          <input type="text" class="form-control" formControlName="payloadUrl">
-        </div>
-      </div>
-      <!--This will be auto filled with select type-->
-      <fieldset disabled>
-        <div class="form-group">
-          <label class="">Payload Format</label>
-          <div class="">
-            <input type="text" class="form-control" formControlName="payloadFormat">
-          </div>
-        </div>
-      </fieldset>
-      <div class="form-group form-actions">
-        <div class="col-md-offset-2 col-md-6">
-          <button class="btn btn-default" (click)="goBack()">Back</button>
-          <button class="btn btn-success" type="submit">Save resource</button>
-        </div>
+      <div class="page-title">
+        <p>Form group</p>
+        <!--<small class="hidden-xs">
+            <strong>This form has validation</strong>
+        </small>-->
       </div>
     </div>
-  </form>
-  <p>
-    Form Value: {{ resourceForm.value | json }}
-  </p>
+
+    <div class="content-wrapper">
+      <form [formGroup]="resourceForm" (submit)="postResource()" class="form-horizontal" novalidate="novalidate">
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Resource Type</label>
+            <div *ngIf="resourceTypes">
+              <select class="form-control" formControlName="resourceTypeName" (change)="onTypeSelect($event)" required>
+                <option value="null" selected disabled hidden>Select resource type</option>
+                <option *ngFor="let resourceType of resourceTypes" value={{resourceType.name}}>{{resourceType.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="">Version</label>
+            <!--<div class="">-->
+            <input type="text" class="form-control" formControlName="version">
+            <!--</div>-->
+          </div>
+          <div class="form-group">
+            <label class="control-label">Payload</label>
+            <div class="">
+              <textarea rows="4" class="form-control" formControlName="payload"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Payload URL</label>
+            <div class="">
+              <input type="text" class="form-control" formControlName="payloadUrl">
+            </div>
+          </div>
+          <!--This will be auto filled with select type-->
+          <fieldset disabled>
+            <div class="form-group">
+              <label class="">Payload Format</label>
+              <div class="">
+                <input type="text" class="form-control" formControlName="payloadFormat">
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-group form-actions">
+            <div class="col-md-offset-2 col-md-6">
+              <button class="btn btn-default" (click)="goBack()">Back</button>
+              <button class="btn btn-success" type="submit">Save resource</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!--<p>-->
+      <!--Form Value: {{ resourceForm.value | json }}-->
+      <!--</p>-->
+    </div>
+  </div>
 </div>

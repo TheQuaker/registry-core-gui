@@ -35,10 +35,6 @@ export class ResourceDetailComponent implements OnInit {
     );
   }
 
-  // goBack(): void {
-  //   console.log(this.location);
-  //   this.location.back();
-  // }
   goBack() {
     window.history.back();
   }

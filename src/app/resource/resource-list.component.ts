@@ -64,7 +64,8 @@ export class ResourceListComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.getResourceTypes();
@@ -95,9 +96,10 @@ export class ResourceListComponent implements OnInit {
           this.getResources(resourceType, query, `${startItem}`);
         }
       },
-      //   error => this.errorMessage = <any>error,
-      //   () => console.log(this.resourcePage)
+      error => this.errorMessage = <any>error,
+      () => this.isAllChecked()
     );
+
   }
 
   /** GET **/
@@ -142,7 +144,7 @@ export class ResourceListComponent implements OnInit {
     console.log(this.filterForm.value);
     let query: string;
     let resourceType: string;
-    if (this.filterForm.controls['resourceType'].value ) {
+    if (this.filterForm.controls['resourceType'].value) {
       resourceType = this.filterForm.controls['resourceType'].value;
     } else {
       resourceType = '*';
@@ -169,7 +171,7 @@ export class ResourceListComponent implements OnInit {
   checkAll(state: boolean) {
     this.checkBoxes.forEach(i => i.nativeElement['checked'] = state);
     this.activateDropDown();
-    }
+  }
 
 
   isAllChecked() {
@@ -192,7 +194,8 @@ export class ResourceListComponent implements OnInit {
     this.router.navigate(['/resources'], {queryParams: {page: event.page}, queryParamsHandling: 'merge'});
     this.activateDropDown();
     // window.scrollTo(0, this.table.nativeElement.scrollHeight);  // possibly not needed later on...
-    this.isAllChecked();
+    // this.isAllChecked();
+    this.masterCheckbox.nativeElement['checked'] = false;
   }
 
   /** Modal **/

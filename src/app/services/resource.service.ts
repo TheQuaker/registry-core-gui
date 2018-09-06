@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
@@ -16,6 +16,12 @@ import {environment} from '../../environments/environment';
 export class ResourceService {
   private resourceUrl = environment.API_END_POINT + '/RegistryService/resources/';
   private searchUrl = environment.API_END_POINT + '/RegistryService/search/cql/';
+
+  private httpOption = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) {
   }
@@ -49,7 +55,12 @@ export class ResourceService {
   getResourcesBySearch (resourceType: string, searchTerm: string, from: string) {
     const quantity = '10';
     const sortByType = 'ASC';
-    const query = `searchableArea=${searchTerm}`;
+    let query: string;
+    if (searchTerm === '*') {
+      query = '*';
+    } else {
+      query = `searchableArea=*${searchTerm}*`;
+    }
     const params: any = {from: from, quantity: quantity, sortByType: sortByType};
     // return this.http.get<ResourcePage>(this.searchUrl + `${resourceType}/${query}/?from=0&quantity=10&sortByType=ASC`)
     return this.http.get<ResourcePage>(this.searchUrl + `${resourceType}/${query}/`, {params})
@@ -60,10 +71,18 @@ export class ResourceService {
 
   /** POST **/
   addResource(resource: Resource) {
-    return this.http.post<Resource>(this.resourceUrl, resource)
+    return this.http.post<Resource>(this.resourceUrl, resource, this.httpOption)
       .pipe(
       catchError(this.handleError)
     );
+  }
+
+  /** PUT **/
+  updateResource(resource: Resource) {
+    return this.http.put<Resource>(this.resourceUrl, resource, this.httpOption)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   /** DELETE **/

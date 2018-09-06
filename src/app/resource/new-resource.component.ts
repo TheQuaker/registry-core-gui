@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 // import { Validators } from '@angular/forms';
 // import { FormArray } from '@angular/forms';
@@ -10,7 +10,7 @@ import {ResourceService} from '../services/resource.service';
 
 
 @Component({
-  selector: 'app-resource-form',
+  selector: 'app-new-resource',
   templateUrl: './new-resource.component.html'
 })
 
@@ -23,26 +23,7 @@ export class NewResourceComponent implements OnInit {
     payload: FormControl[''],
     payloadFormat: FormControl[''],
     payloadUrl: FormControl[''],
-    resourceType: this.fb.group({
-      aliasGroup: FormControl[''],
-      creationDate: FormControl[''],
-      indexFields: this.fb.group({
-          defaultValue: FormControl[''],
-          label: FormControl[''],
-          multivalued: FormControl[''],
-          name: FormControl[''],
-          path: FormControl[''],
-          primaryKey: FormControl[''],
-          resourceType: FormControl[''],
-          type: FormControl['']
-      }),
-      indexMapperClass: FormControl[''],
-      modificationDate: FormControl[''],
-      name: FormControl[''],
-      payloadType: FormControl[''],
-      schema: FormControl[''],
-      schemaUrl: FormControl['']
-    }),
+    resourceTypeName: FormControl,
     // searchableArea: FormControl[''],
     version: FormControl['']
   });

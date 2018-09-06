@@ -21,26 +21,7 @@ export class UpdateResourceComponent implements OnInit {
     payload: FormControl[''],
     payloadFormat: FormControl[''],
     payloadUrl: FormControl[''],
-    resourceType: this.fb.group({
-      aliasGroup: FormControl[''],
-      creationDate: FormControl[''],
-      indexFields: this.fb.group({
-        defaultValue: FormControl[''],
-        label: FormControl[''],
-        multivalued: FormControl[''],
-        name: FormControl[''],
-        path: FormControl[''],
-        primaryKey: FormControl[''],
-        resourceType: FormControl[''],
-        type: FormControl['']
-      }),
-      indexMapperClass: FormControl[''],
-      modificationDate: FormControl[''],
-      name: FormControl[''],
-      payloadType: FormControl[''],
-      schema: FormControl[''],
-      schemaUrl: FormControl['']
-    }),
+    resourceTypeName: FormControl[''],
     // searchableArea: FormControl[''],
     version: FormControl['']
   });
@@ -84,6 +65,10 @@ export class UpdateResourceComponent implements OnInit {
     this.resourceForm.patchValue({
       payloadFormat: this.resourceTypes.filter(i => i.name === event.target.value)[0].payloadType,
     });
+  }
+
+  onSubmit() {
+    this.resourceService.updateResource(this.resourceForm.value).subscribe();
   }
 
   goBack() {

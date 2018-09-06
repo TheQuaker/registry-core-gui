@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl} from '@angular/forms';
 
 
 @Component({
@@ -8,8 +9,27 @@ import {Component, OnInit} from '@angular/core';
 
 export class NewResourceTypeComponent implements OnInit {
 
-  constructor() {}
+  resourceTypeForm = this.fb.group({
+    name: FormControl[''],
+    schema: FormControl[''],
+    schemaUrl: FormControl[''],
+    payloadType: FormControl[''],
+    creationDate: FormControl[''],
+    modificationDate: FormControl[''],
+    indexMapperClass: FormControl[''],
+    indexFields: this.fb.array([
+      this.fb.control('')
+    ]),
+  });
+
+  constructor(
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {}
+
+  goBack() {
+    window.history.back();
+  }
 
 }

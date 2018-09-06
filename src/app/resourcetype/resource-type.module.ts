@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -18,6 +18,7 @@ import {ResourceTypeService} from '../services/resource-type.service';
     ResourceTypeRouting,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot()

@@ -1,9 +1,9 @@
 <div id="users">
   <div id="content">
-    <div class="menubar fixed">
-      <div class="sidebar-toggler visible-xs">
-        <i class="ion-navicon"></i>
-      </div>
+    <!--<div class="menubar fixed">-->
+      <!--<div class="sidebar-toggler visible-xs">-->
+        <!--<i class="ion-navicon"></i>-->
+      <!--</div>-->
 
       <div class="page-title">Resources</div>
 
@@ -35,7 +35,7 @@
 
           <div class="col-md-3 ">
 
-            <a routerLink="addNewResource">
+            <a routerLink="addNewResource/">
               <button class="btn btn-success">New resource</button>
             </a>
 
@@ -80,15 +80,15 @@
                 <input #masterCheckbox type="checkbox" name="select-all" (change)="checkAll(masterCheckbox.checked)">
               </div>
               <div class="col-sm-3 header hidden-xs">
-                <label><span>Id</span></label>
+                <label ><span >Id</span></label>
               </div>
-              <div class="col-sm-2 header hidden-xs">
-                <label><span>Resource Type</span></label>
+              <div class="col-sm-1 header hidden-xs">
+                <label><span>Type</span></label>
               </div>
               <div class="col-sm-2 header hidden-xs">
                 <label><span>Creation Date</span></label>
               </div>
-              <div class="col-sm-2 header hidden-xs">
+              <div class="col-sm-3 header hidden-xs">
                 <label><span>Indexed Fields</span></label>
               </div>
               <div class="col-sm-2 header hidden-xs">
@@ -103,13 +103,13 @@
               <div class="col-sm-3">
                 <div>{{resource.id}}</div>
               </div>
-              <div class="col-sm-2">
-                <div *ngIf="resource.resourceType">{{resource.resourceType.name}}</div>
+              <div class="col-sm-1">
+                <div>{{resource.resourceTypeName}}</div>
               </div>
               <div class="col-sm-2">
                 <div>{{resource.creationDate | date:'medium' }}</div>
               </div>
-              <div class="col-sm-2">
+              <div class="col-sm-3">
                 <div>
                 <span *ngFor="let indexedField of resource.indexedFields; let isLast=last">
                 <b>{{indexedField.name}}:</b> {{indexedField.values}}{{isLast ? '' : ', '}}
@@ -117,13 +117,13 @@
                 </div>
               </div>
               <!--<div class="col-sm-1" *ngIf="resource.resourceType">-->
-              <div class="col-sm-2" *ngIf="resource.resourceType">
+              <div class="col-sm-2">
                 <div class="row">
-                  <a routerLink="detail/{{resource.resourceType.name}}/{{resource.id}}">
+                  <a routerLink="detail/{{resource.resourceTypeName}}/{{resource.id}}">
                     <button class="btn btn-info">Details</button>
                   </a>
 
-                  <a routerLink="updateResource/{{resource.resourceType.name}}/{{resource.id}}">
+                  <a routerLink="updateResource/{{resource.resourceTypeName}}/{{resource.id}}">
                     <button class="btn btn-warning">up</button>
                   </a>
                   <!--<button class="btn btn-danger" (click)="deleteResource(resource.id)">Delete</button>-->
@@ -156,6 +156,6 @@
           </div>
         </div>
       </div>
-    </div>
+    <!--</div>-->
   </div>
 </div>

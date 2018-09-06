@@ -7,7 +7,7 @@ import { ResourceType } from './resource-type';
 
 export interface Resource {
     id: string;
-    resourceType: ResourceType;
+    resourceTypeName: string;
     version: string;
     payload: string;
     payloadUrl: string;
