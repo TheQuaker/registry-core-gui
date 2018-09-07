@@ -16,7 +16,6 @@ import {ResourcePage} from '../domain/resource-page';
 import {ResourceService} from '../services/resource.service';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {ResourceTypePage} from '../domain/resource-type-page';
-import {Resource} from '../domain/resource';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl} from '@angular/forms';
 
@@ -52,7 +51,7 @@ export class ResourceListComponent implements OnInit {
   rotate = true;
   showBoundaryLinks = true;
   maxSize = 5;
-  currentPage = 1;
+  public currentPage: number;
 
   // modal
   modalRef: BsModalRef;
@@ -68,42 +67,56 @@ export class ResourceListComponent implements OnInit {
   }
 
   ngOnInit() {
+    // let page; TODO: set correct current page on refresh
     this.getResourceTypes();
     this.route.queryParams.subscribe(
       params => {
         // console.log(params);
         let query: string;
         let resourceType: string;
+
         if (params['resourceType'] && params['resourceType'] !== 'all') {
           resourceType = params['resourceType'];
+          if (resourceType !== '*') {
+            this.filterForm.get('resourceType').setValue(resourceType);
+          }
         } else {
           resourceType = '*';
         }
-        if (this.filterForm.controls['queryString'].value) {
-          query = this.filterForm.controls['queryString'].value;
+        // if (this.filterForm.controls['queryString'].value) {
+        if (params['searchTerm']) {
+          query = params['searchTerm'];
+          if (query !== '*') {
+            this.filterForm.get('queryString').setValue(query);
+          }
         } else {
           query = '*';
         }
         if (!params['page']) {
+          // this.currentPage = +params['page'];
           this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
           // this.getResources(resourceType, query, '0');
         } else {
+          setTimeout(() => {this.currentPage = +params['page']; }, 300);
           this.currentPage = +params['page'];
+          // page = +params['page'];
           const startItem = (+params['page'] - 1) * this.itemsPerPage;
           // const endItem = +params['page'] * this.itemsPerPage;
           // this.resourcePage = this.resourcePage || {results : [], total : 0, from: 0, to: 0};
-          // this.resourcePage.results.length = 0;
           this.getResources(resourceType, query, `${startItem}`);
         }
       },
       error => this.errorMessage = <any>error,
-      () => this.isAllChecked()
+      // () => this.isAllChecked()
+      // () => console.log('the simple page ' + this.currentPage)
+      // () => this.currentPage = +page
     );
-
   }
 
   /** GET **/
   getResources(resourceType: string, query: string, from: string): void {
+    this.resourcePage = this.resourcePage || {results : [], total : 0, from: 0, to: 0};
+    this.resourcePage.results = [];
     this.resourceService.getResourcesBySearch(resourceType, query, from).subscribe(
       // this.resourceService.getResources(from, to).subscribe(
       resourcePage => {
@@ -122,16 +135,22 @@ export class ResourceListComponent implements OnInit {
     );
   }
 
-  onTypeSelect(event) { // TODO: on change should search field be taken onto consideration??
+  onTypeSelect(event) {
     // console.log(event.target.value);
+    let searchTerm: string;
+    if (this.filterForm.get('queryString').value === '') {
+      searchTerm = '*';
+    } else {
+      searchTerm = this.filterForm.get('queryString').value;
+    }
     if (event.target.value === 'all') {
-      this.resourceService.getResourcesBySearch('*', '*', '0').subscribe(
+      this.resourceService.getResourcesBySearch('*', searchTerm, '0').subscribe(
         resourcePage => this.resourcePage = resourcePage,
         error => this.errorMessage = <any>error,
         // () => this.viewPage = this.resourcePage.results.slice(0, 10)
       );
     } else {
-      this.resourceService.getResourcesBySearch(event.target.value, '*', '0').subscribe(
+      this.resourceService.getResourcesBySearch(event.target.value, searchTerm, '0').subscribe(
         resourcePage => this.resourcePage = resourcePage,
         error => this.errorMessage = <any>error,
         // () => this.viewPage = this.resourcePage.results.slice(0, 10)
@@ -163,7 +182,28 @@ export class ResourceListComponent implements OnInit {
 
   /** DELETE **/
   deleteResource(id: string): void {
-    this.resourceService.deleteResource(id).subscribe();
+    const params = this.route.queryParams;
+    console.log(params);
+    let query: string;
+    let resourceType: string;
+    let startItem: number;
+    if (params['resourceType'] && params['resourceType'] !== 'all') {
+      resourceType = params['resourceType'];
+    } else {
+      resourceType = '*';
+    }
+    if (this.filterForm.controls['queryString'].value) {
+      query = this.filterForm.controls['queryString'].value;
+    } else {
+      query = '*';
+    }
+    startItem = (+params['page'] - 1) * this.itemsPerPage;
+
+    this.resourceService.deleteResource(id).subscribe(
+      res => console.log(res),
+      error => this.errorMessage = <any>error,
+      () => this.getResources(resourceType, query, `${startItem}`)
+    );
   }
 
 
@@ -191,6 +231,7 @@ export class ResourceListComponent implements OnInit {
   pageChanged(event: PageChangedEvent): void {
     // const startItem = (event.page - 1) * event.itemsPerPage;
     // const endItem = event.page * event.itemsPerPage;
+    // this.currentPage = event.page;
     this.router.navigate(['/resources'], {queryParams: {page: event.page}, queryParamsHandling: 'merge'});
     this.activateDropDown();
     // window.scrollTo(0, this.table.nativeElement.scrollHeight);  // possibly not needed later on...

@@ -1,95 +1,95 @@
-<p>resource type form</p>
-<div id="form">
-<div id="content">
-  <div class="menubar fixed">
-    <div class="sidebar-toggler visible-xs">
-      <i class="ion-navicon"></i>
+<div id="form" class="offset-md-4 col-md-4">
+  <div id="content">
+    <div class="menubar fixed">
+      <div class="sidebar-toggler visible-xs">
+        <i class="ion-navicon"></i>
+      </div>
+
+      <div class="page-title">
+        New resource type
+        <small class="hidden-xs">
+          <strong>This form has validation</strong>
+        </small>
+      </div>
     </div>
 
-    <div class="page-title">
-      New resource type
-      <small class="hidden-xs">
-        <strong>This form has validation</strong>
-      </small>
-    </div>
-  </div>
+    <div class="content-wrapper" *ngIf="resourceTypeForm">
+      <form [formGroup]="resourceTypeForm" class="form-horizontal" novalidate="novalidate">
 
-  <div class="content-wrapper">
-    <form [formGroup]="resourceTypeForm" class="form-horizontal" novalidate="novalidate">
-
-      <div class="form-group">
-        <label class="col-sm-2 col-md-2 control-label">Name</label>
-        <div class="col-sm-10 col-md-8">
-          <input type="text" class="form-control" formControlName="name">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2 col-md-2 control-label">Schema</label>
-        <div class="col-sm-10 col-md-8">
-          <textarea class="form-control" formControlName="schema"></textarea>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2 col-md-2 control-label">Schema URL</label>
-        <div class="col-sm-10 col-md-8">
-          <input class="form-control" formControlName="schemaURL" type="text">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2 col-md-2 control-label">Payload Type</label>
-        <div class="col-sm-10 col-md-8">
-          <label class="radio-inline">
-            <input type="radio" formControlName="payloadType" id="payloadTypeXML" value="xml" checked="checked"> XML
-          </label>
-          <label class="radio-inline">
-            <input type="radio" formControlName="payloadType" id="payloadTypeJSON" value="json"> JSON
-          </label>
-        </div>
-      </div>
-      <div class="indexMapperClass">
         <div class="form-group">
-          <label class="col-sm-2 col-md-2 control-label">Index Mapper Class</label>
-          <div class="col-sm-10 col-md-8">
-            <label class="radio">
-              <input type="radio" formControlName="indexMapperClass" id="defaultMapperClass" value="xml" checked="checked">
-              Default - eu.openminted.registry.core.index.DefaultIndexMapper
-            </label>
+          <label class="control-label">Name</label>
+          <div class="">
+            <input type="text" class="form-control" formControlName="name">
           </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-1 col-sm-offset-2">
-            <label class="radio">
-              <input type="radio" formControlName="indexMapperClass" id="otherMapperClass" value="json"> Other
+          <label class="control-label">Schema</label>
+          <div class="">
+            <textarea class="form-control" formControlName="schema"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Schema URL</label>
+          <div class="">
+            <input class="form-control" formControlName="schemaUrl" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Payload Type</label>
+          <div class="">
+            <label class="radio-inline">
+              <input type="radio" formControlName="payloadType" id="payloadTypeXML" value="xml" checked="checked"> XML
+            </label>
+            <label class="">
+              <input type="radio" formControlName="payloadType" id="payloadTypeJSON" value="json"> JSON
             </label>
           </div>
-          <!--<div class="col-sm-7">-->
-            <!--<input class="form-control col-sm-10" name="customer[name]" type="text">-->
-          <!--</div>-->
         </div>
-      </div>
-      <!--<div class="form-group">-->
-      <!--<label class="col-sm-2 col-md-2 control-label">Index Mapper Class</label>-->
-      <!--<div class="col-sm-10 col-md-8">-->
-      <!--<label class="radio">-->
-      <!--<input type="radio" name="indexMapperClassOptions" id="defaultMapperClass" value="xml" checked="checked">-->
-      <!--Default - eu.openminted.registry.core.index.DefaultIndexMapper-->
-      <!--</label>-->
-      <!--<label class="radio col-sm-2">-->
-      <!--<input type="radio" name="indexMapperClassOptions" id="otherMapperClass" value="json"> Other-->
-      <!--</label>-->
-      <!--<input class="form-control col-sm-10" name="customer[name]" type="text">-->
-      <!--</div>-->
-      <!--</div>-->
-      <div class="form-group form-actions">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button class="btn btn-default" (click)="goBack()">Back</button>
-          <button class="btn btn-primary" type="submit">Submit</button>
+        <div class="indexMapperClass">
+          <div class="form-group">
+            <label class="control-label">Index Mapper Class</label>
+            <div class="">
+              <label class="radio">
+                <input type="radio" name="indexMapperClass" id="defaultMapperClass" value="eu.openminted.registry.core.index.DefaultIndexMapper"
+                       checked="checked" (change)="updateIndexMapperClass('default')">
+                Default - eu.openminted.registry.core.index.DefaultIndexMapper
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="">
+              <label class="radio">
+                <input type="radio" name="indexMapperClass" id="otherMapperClass" (change)="updateIndexMapperClass('other')"> Other
+              </label>
+            </div>
+            <div class="">
+              <input #input type="text" class="form-control" formControlName="indexMapperClass">
+            </div>
+          </div>
         </div>
-      </div>
-    </form>
-    <p>
-      Form Value: {{resourceTypeForm.value | json}}
-    </p>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-2 col-md-2 control-label">Index Mapper Class</label>-->
+        <!--<div class="col-sm-10 col-md-8">-->
+        <!--<label class="radio">-->
+        <!--<input type="radio" name="indexMapperClassOptions" id="defaultMapperClass" value="xml" checked="checked">-->
+        <!--Default - eu.openminted.registry.core.index.DefaultIndexMapper-->
+        <!--</label>-->
+        <!--<label class="radio col-sm-2">-->
+        <!--<input type="radio" name="indexMapperClassOptions" id="otherMapperClass" value="json"> Other-->
+        <!--</label>-->
+        <!--<input class="form-control col-sm-10" name="customer[name]" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group form-actions">
+          <div class="">
+            <button class="btn btn-default" (click)="goBack()">Back</button>
+            <button class="btn btn-primary" type="submit" [disabled]="!resourceTypeForm.valid">Submit</button>
+          </div>
+        </div>
+      </form>
+      <p>
+        Form Value: {{resourceTypeForm.value | json}}
+      </p>
+    </div>
   </div>
-</div>
 </div>
