@@ -18,6 +18,7 @@ export class ResourceTypeService {
    // private resourceTypeUrl = 'http://aleka.athenarc.gr:8080/arc-expenses-service/resourceType/';
    private resourceTypeUrl = environment.API_END_POINT + '/RegistryService/resourceType/';
 
+  /** GET **/
   getResourceTypes() {
     return this.http.get<ResourceTypePage>(this.resourceTypeUrl)
       .pipe(
@@ -27,6 +28,14 @@ export class ResourceTypeService {
 
   getResourceType(name: string) {
     return this.http.get<ResourceType>(this.resourceTypeUrl + name)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  /** POST **/
+  addResourceType(resourceType: ResourceType) {
+    return this.http.post(this.resourceTypeUrl, resourceType)
       .pipe(
         catchError(this.handleError)
       );

@@ -14,7 +14,7 @@
     </div>
 
     <div class="content-wrapper" *ngIf="resourceTypeForm">
-      <form [formGroup]="resourceTypeForm" class="form-horizontal" novalidate="novalidate">
+      <form [formGroup]="resourceTypeForm" class="form-horizontal" (submit)="postResourceType()" novalidate="novalidate">
 
         <div class="form-group">
           <label class="control-label">Name</label>
@@ -40,7 +40,7 @@
             <label class="radio-inline">
               <input type="radio" formControlName="payloadType" id="payloadTypeXML" value="xml" checked="checked"> XML
             </label>
-            <label class="">
+            <label class="radio-inline">
               <input type="radio" formControlName="payloadType" id="payloadTypeJSON" value="json"> JSON
             </label>
           </div>
@@ -59,11 +59,11 @@
           <div class="form-group">
             <div class="">
               <label class="radio">
-                <input type="radio" name="indexMapperClass" id="otherMapperClass" (change)="updateIndexMapperClass('other')"> Other
+                <input type="radio" name="indexMapperClass" id="otherMapperClass" (change)="updateIndexMapperClass('other')"> Other -
               </label>
             </div>
             <div class="">
-              <input #input type="text" class="form-control" formControlName="indexMapperClass">
+              <input type="text" class="form-control" formControlName="indexMapperClass">
             </div>
           </div>
         </div>

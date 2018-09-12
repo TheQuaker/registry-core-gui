@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ResourceTypeService} from '../services/resource-type.service';
 
 
 @Component({
@@ -13,14 +14,15 @@ export class NewResourceTypeComponent implements OnInit {
   resourceTypeForm: FormGroup;
 
   constructor(
+    private resourceTypeService: ResourceTypeService,
     private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.resourceTypeForm = this.fb.group({
       name: ['', Validators.required],
-      schema: ['', Validators.required],
-      schemaUrl: ['', Validators.required],
+      schema: [''],
+      schemaUrl: [''],
       payloadType: ['', Validators.required],
       creationDate: [''],
       modificationDate: [''],
@@ -33,8 +35,13 @@ export class NewResourceTypeComponent implements OnInit {
     this.resourceTypeForm.get('payloadType').setValue('xml');
   }
 
-  goBack() {
-    window.history.back();
+  postResourceType(): void {
+    this.resourceTypeForm.get('indexMapperClass').enable();
+    if (this.resourceTypeForm.get('indexMapperClass').value === '') {
+      this.resourceTypeForm.get('indexMapperClass').setValue('eu.openminted.registry.core.index.DefaultIndexMapper');
+    }
+    console.log(this.resourceTypeForm.value);
+    this.resourceTypeService.addResourceType(this.resourceTypeForm.value).subscribe();
   }
 
   updateIndexMapperClass(select: string) {
@@ -45,6 +52,10 @@ export class NewResourceTypeComponent implements OnInit {
       this.resourceTypeForm.get('indexMapperClass').enable();
     }
 
+  }
+
+  goBack() {
+    window.history.back();
   }
 
 }

@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
@@ -8,7 +9,7 @@ import {
   ViewChildren
 } from '@angular/core';
 
-import {PageChangedEvent} from 'ngx-bootstrap/pagination';
+// import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {BsModalRef} from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
@@ -47,11 +48,11 @@ export class ResourceListComponent implements OnInit {
   public resourceTypePage: ResourceTypePage;
 
   // pagination
-  public itemsPerPage = 10;
+  itemsPerPage = 10;
+  currentPage = 1;
   rotate = true;
   showBoundaryLinks = true;
   maxSize = 5;
-  public currentPage: number;
 
   // modal
   modalRef: BsModalRef;
@@ -59,6 +60,7 @@ export class ResourceListComponent implements OnInit {
   constructor(
     private resourceService: ResourceService,
     private resourceTypeService: ResourceTypeService,
+    private changeDetectorRef: ChangeDetectorRef,
     private modalService: BsModalService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -67,7 +69,6 @@ export class ResourceListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // let page; TODO: set correct current page on refresh
     this.getResourceTypes();
     this.route.queryParams.subscribe(
       params => {
@@ -83,7 +84,6 @@ export class ResourceListComponent implements OnInit {
         } else {
           resourceType = '*';
         }
-        // if (this.filterForm.controls['queryString'].value) {
         if (params['searchTerm']) {
           query = params['searchTerm'];
           if (query !== '*') {
@@ -93,24 +93,24 @@ export class ResourceListComponent implements OnInit {
           query = '*';
         }
         if (!params['page']) {
-          // this.currentPage = +params['page'];
           this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
           // this.getResources(resourceType, query, '0');
         } else {
-          setTimeout(() => {this.currentPage = +params['page']; }, 300);
+          // setTimeout(() => {this.currentPage = +params['page']; }, 300);
           this.currentPage = +params['page'];
-          // page = +params['page'];
+          // console.log(this.currentPage);
           const startItem = (+params['page'] - 1) * this.itemsPerPage;
-          // const endItem = +params['page'] * this.itemsPerPage;
-          // this.resourcePage = this.resourcePage || {results : [], total : 0, from: 0, to: 0};
           this.getResources(resourceType, query, `${startItem}`);
         }
       },
-      error => this.errorMessage = <any>error,
-      // () => this.isAllChecked()
-      // () => console.log('the simple page ' + this.currentPage)
-      // () => this.currentPage = +page
+      // error => this.errorMessage = <any>error,
+      // () => {
+      //   setTimeout(() => {this.currentPage = +this.route.snapshot.paramMap.get('page'); }, 500);
+      //   console.log(this.currentPage);
+      // }
     );
+    // setTimeout(() => {this.currentPage = +this.route.queryParams.value.page; }, 200);
+    // console.log(this.route.queryParams.value.page);
   }
 
   /** GET **/
@@ -123,7 +123,6 @@ export class ResourceListComponent implements OnInit {
         this.resourcePage = resourcePage;
       },
       error => this.errorMessage = <any>error,
-      // () => this.viewPage = this.resourcePage.results.slice(0, 10)
       // () => console.log(this.resourcePage)
     );
   }
@@ -156,7 +155,8 @@ export class ResourceListComponent implements OnInit {
         // () => this.viewPage = this.resourcePage.results.slice(0, 10)
       );
     }
-    this.router.navigate(['/resources'], {queryParams: {resourceType: event.target.value}, queryParamsHandling: ''});
+    this.router.navigate(['/resources'],
+      {queryParams: {resourceType: event.target.value, searchTerm: searchTerm}, queryParamsHandling: ''});
   }
 
   onSearch() {
@@ -227,18 +227,6 @@ export class ResourceListComponent implements OnInit {
     this.activateDropDown();
   }
 
-  /** Pagination **/
-  pageChanged(event: PageChangedEvent): void {
-    // const startItem = (event.page - 1) * event.itemsPerPage;
-    // const endItem = event.page * event.itemsPerPage;
-    // this.currentPage = event.page;
-    this.router.navigate(['/resources'], {queryParams: {page: event.page}, queryParamsHandling: 'merge'});
-    this.activateDropDown();
-    // window.scrollTo(0, this.table.nativeElement.scrollHeight);  // possibly not needed later on...
-    // this.isAllChecked();
-    this.masterCheckbox.nativeElement['checked'] = false;
-  }
-
   /** Modal **/
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
@@ -260,8 +248,8 @@ export class ResourceListComponent implements OnInit {
 
   /** **/
   bulkAction() {
-    // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => this.deleteResource(x.nativeElement['id']));
-    this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
+    this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => this.deleteResource(x.nativeElement['id']));
+    // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
   }
 
   activateDropDown() {

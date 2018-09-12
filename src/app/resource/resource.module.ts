@@ -1,8 +1,6 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
-import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
@@ -13,6 +11,7 @@ import {NewResourceComponent} from './new-resource.component';
 import {UpdateResourceComponent} from './update-resource.component';
 import {ResourceRouting} from './resource-routing';
 import {ResourceService} from '../services/resource.service';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -20,7 +19,7 @@ import {ResourceService} from '../services/resource.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    PaginationModule.forRoot(),
+    SharedModule,
     ModalModule.forRoot(),
     BsDropdownModule.forRoot()
   ],
@@ -29,7 +28,7 @@ import {ResourceService} from '../services/resource.service';
     ResourceListComponent,
     ResourceDetailComponent,
     NewResourceComponent,
-    UpdateResourceComponent
+    UpdateResourceComponent,
   ],
   providers: [
     ResourceService

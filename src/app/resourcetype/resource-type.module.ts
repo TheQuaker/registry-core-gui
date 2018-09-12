@@ -12,6 +12,7 @@ import {NewResourceTypeComponent} from './new-resource-type.component';
 import {ResourceTypeDetailComponent} from './resource-type-detail.component';
 import {ResourceTypeRouting} from './resource-type-routing';
 import {ResourceTypeService} from '../services/resource-type.service';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {ResourceTypeService} from '../services/resource-type.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot()

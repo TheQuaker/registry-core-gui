@@ -1,161 +1,146 @@
 <div id="users">
   <div id="content">
     <!--<div class="menubar fixed">-->
-      <!--<div class="sidebar-toggler visible-xs">-->
-        <!--<i class="ion-navicon"></i>-->
-      <!--</div>-->
+    <!--<div class="sidebar-toggler visible-xs">-->
+    <!--<i class="ion-navicon"></i>-->
+    <!--</div>-->
 
-      <div class="page-title">Resources</div>
+    <div class="page-title">Resources</div>
 
-      <div class="content-wrapper">
-        <p>Here you will be able to browse resources, add new ones and edit/delete existing ones.</p>
+    <div class="content-wrapper">
+      <p>Here you will be able to browse resources, add new ones and edit/delete existing ones.</p>
 
-        <div class="row">
+      <div class="row">
 
-          <div class="error col-md-12" *ngIf="errorMessage">{{errorMessage}}</div>
+        <div class="error col-md-12" *ngIf="errorMessage">{{errorMessage}}</div>
 
-          <form class="col-md-9" [formGroup]="filterForm" (submit)="onSearch()" >
-            <div class="form-row">
-              <div class="form-group col-md-5" *ngIf="resourceTypePage">
-                <select class="form-control" id="typeSelect" formControlName="resourceType" (change)="onTypeSelect($event)">
-                  <option value="null" disabled selected hidden>Select resource type</option>
-                  <option value="all">All types</option>
-                  <option *ngFor="let type of resourceTypePage.results" [value]=type.name>{{type.name}}</option>
-                </select>
-              </div>
-
-              <div class="form-group col-md-5">
-                <input type="text" class="offset-md-2 col-md-10 form-control" formControlName="queryString" placeholder="Search...">
-              </div>
-              <div class="col-md=2">
-                <button type="submit" class="btn btn-primary" >Submit</button>
-              </div>
-            </div>
-          </form>
-
-          <div class="col-md-3 ">
-
-            <a routerLink="addNewResource/">
-              <button class="btn btn-success">New resource</button>
-            </a>
-
-            <div class="btn-group " dropdown [isDisabled]=isDisabled>
-              <!--<div class="btn-group" dropdown [isDisabled]=activateDropDown()>-->
-              <button id="button-basic" dropdownToggle type="button" class="btn btn-primary  dropdown-toggle"
-                      aria-controls="dropdown-basic">Bulk actions<span class="caret"></span>
-              </button>
-              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
-                  aria-labelledby="button-basic">
-                <li role="menuitem">
-                  <button class="btn btn-danger" (click)="openModal(template)">DO IT</button>
-                </li>
-              </ul>
+        <form class="col-md-9" [formGroup]="filterForm" (submit)="onSearch()">
+          <div class="form-row">
+            <div class="form-group col-md-5" *ngIf="resourceTypePage">
+              <select class="form-control" id="typeSelect" formControlName="resourceType"
+                      (change)="onTypeSelect($event)">
+                <option value="null" disabled selected hidden>Select resource type</option>
+                <option value="all">All types</option>
+                <option *ngFor="let type of resourceTypePage.results" [value]=type.name>{{type.name}}</option>
+              </select>
             </div>
 
-            <ng-template #template>
-              <div class="modal-body text-center">
-                <p>Are you sure you want to DELETE all the selected resources?</p>
-                <button type="button" class="btn btn-default" (click)="confirmBulk()">Yes</button>
-                <button type="button" class="btn btn-primary" (click)="decline()">No</button>
-              </div>
-            </ng-template>
+            <div class="form-group col-md-5">
+              <input type="text" class="offset-md-2 col-md-10 form-control" formControlName="queryString"
+                     placeholder="Search...">
+            </div>
+            <div class="col-md=2">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </form>
 
+        <div class="col-md-3 ">
+
+          <a routerLink="addNewResource/">
+            <button class="btn btn-success">New resource</button>
+          </a>
+
+          <div class="btn-group " dropdown [isDisabled]=isDisabled>
+            <!--<div class="btn-group" dropdown [isDisabled]=activateDropDown()>-->
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary  dropdown-toggle"
+                    aria-controls="dropdown-basic">Bulk actions<span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+                aria-labelledby="button-basic">
+              <li role="menuitem">
+                <button class="btn btn-danger" (click)="openModal(template)">DO IT</button>
+              </li>
+            </ul>
           </div>
 
-          <div #table class="col-md-12 row users-list justify-content-md-center" *ngIf="resourcePage">
-
-            <div class="py-4">
-              <pagination [totalItems]="resourcePage.total"
-                          [boundaryLinks]="showBoundaryLinks"
-                          [rotate]="rotate"
-                          [maxSize]="maxSize"
-                          [itemsPerPage]="itemsPerPage"
-                          [(ngModel)]="currentPage"
-                          (pageChanged)="pageChanged($event)">
-              </pagination>
+          <ng-template #template>
+            <div class="modal-body text-center">
+              <p>Are you sure you want to DELETE all the selected resources?</p>
+              <button type="button" class="btn btn-default" (click)="confirmBulk()">Yes</button>
+              <button type="button" class="btn btn-primary" (click)="decline()">No</button>
             </div>
+          </ng-template>
 
-            <div class="col-md-12 row headers">
-              <div class="col-sm-1 header select-users">
-                <input #masterCheckbox type="checkbox" name="select-all" (change)="checkAll(masterCheckbox.checked)">
-              </div>
-              <div class="col-sm-3 header hidden-xs">
-                <label ><span >Id</span></label>
-              </div>
-              <div class="col-sm-1 header hidden-xs">
-                <label><span>Type</span></label>
-              </div>
-              <div class="col-sm-2 header hidden-xs">
-                <label><span>Creation Date</span></label>
-              </div>
-              <div class="col-sm-3 header hidden-xs">
-                <label><span>Indexed Fields</span></label>
-              </div>
-              <div class="col-sm-2 header hidden-xs">
-                <label><span>Actions</span></label>
-              </div>
+        </div>
+
+        <div #table class="col-md-12 row justify-content-md-center" *ngIf="resourcePage">
+
+          <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
+
+
+          <div class="col-md-12 row headers">
+            <div class="col-sm-1 header select-users">
+              <input #masterCheckbox type="checkbox" name="select-all" (change)="checkAll(masterCheckbox.checked)">
             </div>
-            <div class="col-md-12 row" *ngFor="let resource of resourcePage.results ">
-              <div class="col-sm-1 avatar">
-                <!--<input #checkBoxes type="checkbox" [id]="resource.id" name="select-user" (change)="isAllChecked()" >-->
-                <input #checkBoxes type="checkbox" id={{resource.id}} name="select-user" (change)="isAllChecked()">
-              </div>
-              <div class="col-sm-3">
-                <div>{{resource.id}}</div>
-              </div>
-              <div class="col-sm-1">
-                <div>{{resource.resourceTypeName}}</div>
-              </div>
-              <div class="col-sm-2">
-                <div>{{resource.creationDate | date:'medium' }}</div>
-              </div>
-              <div class="col-sm-3">
-                <div>
+            <div class="col-sm-3 header hidden-xs">
+              <label><span>Id</span></label>
+            </div>
+            <div class="col-sm-1 header hidden-xs">
+              <label><span>Type</span></label>
+            </div>
+            <div class="col-sm-2 header hidden-xs">
+              <label><span>Creation Date</span></label>
+            </div>
+            <div class="col-sm-3 header hidden-xs">
+              <label><span>Indexed Fields</span></label>
+            </div>
+            <div class="col-sm-2 header hidden-xs">
+              <label><span>Actions</span></label>
+            </div>
+          </div>
+          <div class="col-md-12 row" *ngFor="let resource of resourcePage.results ">
+            <div class="col-sm-1 avatar">
+              <!--<input #checkBoxes type="checkbox" [id]="resource.id" name="select-user" (change)="isAllChecked()" >-->
+              <input #checkBoxes type="checkbox" id={{resource.id}} name="select-user" (change)="isAllChecked()">
+            </div>
+            <div class="col-sm-3">
+              <div>{{resource.id}}</div>
+            </div>
+            <div class="col-sm-1">
+              <div>{{resource.resourceTypeName}}</div>
+            </div>
+            <div class="col-sm-2">
+              <div>{{resource.creationDate | date:'medium' }}</div>
+            </div>
+            <div class="col-sm-3">
+              <div>
                 <span *ngFor="let indexedField of resource.indexedFields; let isLast=last">
                 <b>{{indexedField.name}}:</b> {{indexedField.values}}{{isLast ? '' : ', '}}
                 </span>
-                </div>
-              </div>
-              <!--<div class="col-sm-1" *ngIf="resource.resourceType">-->
-              <div class="col-sm-2">
-                <div class="row">
-                  <a routerLink="detail/{{resource.resourceTypeName}}/{{resource.id}}">
-                    <button class="btn btn-info">Details</button>
-                  </a>
-
-                  <a routerLink="updateResource/{{resource.resourceTypeName}}/{{resource.id}}">
-                    <button class="btn btn-warning">up</button>
-                  </a>
-                  <!--<button class="btn btn-danger" (click)="deleteResource(resource.id)">Delete</button>-->
-                  <button class="btn btn-danger" (click)="openModal(template)">Delete</button>
-                  <!--<span class="oi oi-trash"></span>-->
-                </div>
-
-                <ng-template #template>
-                  <div class="modal-body text-center">
-                    <p>Are you sure you want to DELETE the resource with id: {{resource.id}}?</p>
-                    <button type="button" class="btn btn-default" (click)="confirm(resource.id)">Yes</button>
-                    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
-                  </div>
-                </ng-template>
-
               </div>
             </div>
+            <!--<div class="col-sm-1" *ngIf="resource.resourceType">-->
+            <div class="col-sm-2">
+              <div class="row">
+                <a routerLink="detail/{{resource.resourceTypeName}}/{{resource.id}}">
+                  <button class="btn btn-info">Details</button>
+                </a>
 
-            <div class="py-4">
-              <pagination [totalItems]="resourcePage.total"
-                          [boundaryLinks]="showBoundaryLinks"
-                          [rotate]="rotate"
-                          [maxSize]="maxSize"
-                          [itemsPerPage]="itemsPerPage"
-                          [(ngModel)]="currentPage"
-                          (pageChanged)="pageChanged($event)">
-              </pagination>
+                <a routerLink="updateResource/{{resource.resourceTypeName}}/{{resource.id}}">
+                  <button class="btn btn-warning">up</button>
+                </a>
+                <!--<button class="btn btn-danger" (click)="deleteResource(resource.id)">Delete</button>-->
+                <button class="btn btn-danger" (click)="openModal(template)">Delete</button>
+                <!--<span class="oi oi-trash"></span>-->
+              </div>
+
+              <ng-template #template>
+                <div class="modal-body text-center">
+                  <p>Are you sure you want to DELETE the resource with id: {{resource.id}}?</p>
+                  <button type="button" class="btn btn-default" (click)="confirm(resource.id)">Yes</button>
+                  <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+                </div>
+              </ng-template>
+
             </div>
-
           </div>
+
+          <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
+
         </div>
       </div>
+    </div>
     <!--</div>-->
   </div>
 </div>
