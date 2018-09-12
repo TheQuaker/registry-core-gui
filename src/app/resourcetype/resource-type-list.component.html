@@ -15,18 +15,8 @@
         <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
 
         <div class="row">
-          <form class="col-md-9">
-            <div class="form-row">
-              <div class="form-group offset-md-5 col-md-5">
-                <input type="text" class="offset-md-2 col-md-10 form-control" placeholder="Search...">
-              </div>
-              <div class="col-md=2">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </div>
-          </form>
 
-          <div class="col-md-3">
+          <div class="offset-md-9 col-md-3">
 
             <a routerLink="addNewResource">
               <button class="btn btn-success">New resource</button>
@@ -62,7 +52,8 @@
                         [rotate]="rotate"
                         [maxSize]="maxSize"
                         [(ngModel)]="currentPage"
-                        (pageChanged)="pageChanged($event)">
+                        (pageChanged)="pageChanged($event)"
+                        previousText="&laquo;" nextText="&raquo;">
             </pagination>
           </div>
 
@@ -114,11 +105,7 @@
                   <button class="btn btn-info">Details</button>
                 </a>
 
-                <button class="btn btn-danger" (click)="openModal(template)">
-                  <i class="material-icons">
-                    delete_forever
-                  </i>
-                </button>
+                <button class="btn btn-danger" (click)="openModal(template)">delete</button>
 
                 <ng-template #template>
                   <div class="modal-body text-center">
@@ -138,7 +125,8 @@
                         [rotate]="rotate"
                         [maxSize]="maxSize"
                         [(ngModel)]="currentPage"
-                        (pageChanged)="pageChanged($event)">
+                        (pageChanged)="pageChanged($event)"
+                        previousText="&laquo;" nextText="&raquo;">
             </pagination>
           </div>
 
