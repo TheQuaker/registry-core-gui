@@ -1,15 +1,9 @@
 import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  QueryList,
-  TemplateRef,
-  ViewChild,
-  ViewChildren
+  ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren
 } from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormControl} from '@angular/forms';
 
-// import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {BsModalRef} from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
@@ -17,8 +11,6 @@ import {ResourcePage} from '../domain/resource-page';
 import {ResourceService} from '../services/resource.service';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {ResourceTypePage} from '../domain/resource-type-page';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormControl} from '@angular/forms';
 
 
 @Component({
@@ -103,14 +95,9 @@ export class ResourceListComponent implements OnInit {
           this.getResources(resourceType, query, `${startItem}`);
         }
       },
-      // error => this.errorMessage = <any>error,
-      // () => {
-      //   setTimeout(() => {this.currentPage = +this.route.snapshot.paramMap.get('page'); }, 500);
-      //   console.log(this.currentPage);
-      // }
+      error => this.errorMessage = <any>error,
+      () => {}
     );
-    // setTimeout(() => {this.currentPage = +this.route.queryParams.value.page; }, 200);
-    // console.log(this.route.queryParams.value.page);
   }
 
   /** GET **/
@@ -123,7 +110,7 @@ export class ResourceListComponent implements OnInit {
         this.resourcePage = resourcePage;
       },
       error => this.errorMessage = <any>error,
-      // () => console.log(this.resourcePage)
+      () => this.isAllChecked()
     );
   }
 
@@ -156,7 +143,7 @@ export class ResourceListComponent implements OnInit {
       );
     }
     this.router.navigate(['/resources'],
-      {queryParams: {resourceType: event.target.value, searchTerm: searchTerm}, queryParamsHandling: ''});
+      {queryParams: {resourceType: event.target.value, searchTerm: searchTerm, page: 1}, queryParamsHandling: ''});
   }
 
   onSearch() {
@@ -182,27 +169,38 @@ export class ResourceListComponent implements OnInit {
 
   /** DELETE **/
   deleteResource(id: string): void {
-    const params = this.route.queryParams;
-    console.log(params);
     let query: string;
     let resourceType: string;
     let startItem: number;
-    if (params['resourceType'] && params['resourceType'] !== 'all') {
-      resourceType = params['resourceType'];
-    } else {
-      resourceType = '*';
-    }
-    if (this.filterForm.controls['queryString'].value) {
-      query = this.filterForm.controls['queryString'].value;
-    } else {
-      query = '*';
-    }
-    startItem = (+params['page'] - 1) * this.itemsPerPage;
+    let page: number;
+    this.route.queryParams.subscribe(
+      params => {
+        console.log(params);
+        if (params['resourceType'] && params['resourceType'] !== 'all') {
+          resourceType = params['resourceType'];
+          console.log('this resourceype = ' + resourceType);
+        } else {
+          resourceType = '*';
+        }
+        if (this.filterForm.controls['queryString'].value) {
+          query = this.filterForm.controls['queryString'].value;
+        } else {
+          query = '*';
+        }
+        startItem = (+params['page'] - 1) * this.itemsPerPage;
+        page = +params['page'];
+      }
+    );
 
+    console.log('resourceType = ' + resourceType + '\nquery = ' + query + '\nstart item = ' + startItem + '\npage = ' + page);
     this.resourceService.deleteResource(id).subscribe(
-      res => console.log(res),
+      res => {},
       error => this.errorMessage = <any>error,
-      () => this.getResources(resourceType, query, `${startItem}`)
+      () => {
+        console.log('the correct page ' + page);
+        window.location.reload();
+        // this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'})
+      }
     );
   }
 

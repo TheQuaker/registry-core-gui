@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ResourceService} from '../services/resource.service';
 import {Resource} from '../domain/resource';
-import {FormBuilder, FormControl} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {ResourceType} from '../domain/resource-type';
 
@@ -15,15 +15,10 @@ import {ResourceType} from '../domain/resource-type';
 export class UpdateResourceComponent implements OnInit {
 
   resourceForm = this.fb.group({
-    creationDate: FormControl[''],
-    id: FormControl[''],
-    modificationDate: FormControl[''],
-    payload: FormControl[''],
-    payloadFormat: FormControl[''],
-    payloadUrl: FormControl[''],
-    resourceTypeName: FormControl[''],
-    // searchableArea: FormControl[''],
-    version: FormControl['']
+    payload: ['', Validators.required],
+    payloadFormat: ['', Validators.required],
+    payloadUrl: ['', Validators.required],
+    resourceTypeName: ['', Validators.required],
   });
 
   public errorMessage: string;
@@ -50,7 +45,12 @@ export class UpdateResourceComponent implements OnInit {
     this.resourceService.getResource(resourceType, id).subscribe(
       resource => this.resource = resource,
       error => this.errorMessage = <any>error,
-      () => this.resourceForm.patchValue(this.resource)// setValue() should be used
+      () => {
+        this.resourceForm.patchValue(this.resource);
+        if (this.resourceForm.get('payload').value) {
+          this.resourceForm.get('payloadUrl').disable();
+        } else { this.resourceForm.get('payload').disable(); }
+      }
     );
   }
 
@@ -67,8 +67,24 @@ export class UpdateResourceComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    this.resourceService.updateResource(this.resourceForm.value).subscribe();
+  putResource() {
+    this.resourceService.updateResource(this.resourceForm.value).subscribe(
+      _ => {},
+      error => this.errorMessage = <any>error,
+      () => this.goBack()
+    );
+  }
+
+  radioBtnUrl(select: string): void {
+    if (select === 'url') {
+      this.resourceForm.get('payload').disable();
+      this.resourceForm.get('payloadUrl').enable();
+      this.resourceForm.get('payload').setValue('');
+    } else {
+      this.resourceForm.get('payloadUrl').disable();
+      this.resourceForm.get('payload').enable();
+      this.resourceForm.get('payloadUrl').setValue('');
+    }
   }
 
   goBack() {

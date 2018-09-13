@@ -24,15 +24,10 @@ export class NewResourceComponent implements OnInit {
   ngOnInit() {
     this.getResourceTypes();
     this.resourceForm = this.fb.group({
-      // creationDate: [''],
-      // id: [''],
-      // modificationDate: [''],
       payload: ['', Validators.required],
-      payloadFormat: [''],
+      payloadFormat: ['', Validators.required],
       payloadUrl: ['', Validators.required],
       resourceTypeName: ['', Validators.required],
-      // searchableArea: FormControl[''],
-      // version: ['']
     });
     this.resourceForm.get('payloadUrl').disable();
   }
@@ -51,7 +46,11 @@ export class NewResourceComponent implements OnInit {
   }
 
   postResource() {
-    this.resourceService.addResource(this.resourceForm.value).subscribe();
+    this.resourceService.addResource(this.resourceForm.value).subscribe(
+      _ => {},
+      error => this.errorMessage = <any>error,
+      () => this.goBack()
+    );
   }
 
   onTypeSelect(event): void {

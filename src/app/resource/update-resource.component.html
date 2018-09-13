@@ -1,7 +1,7 @@
 <p>Update Form</p>
 
 <div class="col-md-12">
-  <form [formGroup]="resourceForm" (submit)="onSubmit()" class="form-horizontal" novalidate="novalidate">
+  <form [formGroup]="resourceForm" (submit)="putResource()" class="form-horizontal" novalidate="novalidate">
 
     <div class="col-md-6">
       <div class="form-group">
@@ -13,20 +13,25 @@
             </select>
           </div>
       </div>
+      <!--<div class="form-group">-->
+        <!--<label class="">Version</label>-->
+        <!--&lt;!&ndash;<div class="">&ndash;&gt;-->
+        <!--<input type="text" class="form-control" formControlName="version">-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--</div>-->
       <div class="form-group">
-        <label class="">Version</label>
-        <!--<div class="">-->
-        <input type="text" class="form-control" formControlName="version">
-        <!--</div>-->
-      </div>
-      <div class="form-group">
-        <label class="control-label">Payload</label>
+        <label class="control-label">
+          <input type="radio" name="payloadRadioBtn" id="payload" (change)="radioBtnUrl('payload')"
+                 checked="checked">Payload
+        </label>
         <div class="">
           <textarea rows="4" class="form-control" formControlName="payload"></textarea>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label">Payload URL</label>
+        <label class="control-label">
+          <input type="radio" name="payloadRadioBtn" id="payloadURL" (change)="radioBtnUrl('url')">
+          Payload URL</label>
         <div class="">
           <input type="text" class="form-control" formControlName="payloadUrl">
         </div>
