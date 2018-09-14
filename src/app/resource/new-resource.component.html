@@ -15,7 +15,7 @@
     </div>
 
     <div class="content-wrapper">
-      <form [formGroup]="resourceForm" (submit)="postResource()" class="form-horizontal" novalidate="novalidate">
+      <form [formGroup]="resourceForm" class="form-horizontal" novalidate="novalidate">
 
         <div class="offset-md-4 col-md-4">
           <div class="form-group">
@@ -64,7 +64,7 @@
           <div class="form-group form-actions">
             <div class="col-md-offset-2 col-md-6">
               <button class="btn btn-default" (click)="goBack()">Back</button>
-              <button class="btn btn-success" type="submit" [disabled]="!resourceForm.valid">Save resource</button>
+              <button class="btn btn-success" [disabled]="!resourceForm.valid" (click)="postResource()">Save resource</button>
             </div>
           </div>
         </div>

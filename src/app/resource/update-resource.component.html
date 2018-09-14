@@ -1,9 +1,9 @@
 <p>Update Form</p>
 
 <div class="col-md-12">
-  <form [formGroup]="resourceForm" (submit)="putResource()" class="form-horizontal" novalidate="novalidate">
+  <form [formGroup]="resourceForm" class="form-horizontal" novalidate="novalidate">
 
-    <div class="col-md-6">
+    <div class="offset-md-4 col-md-4">
       <div class="form-group">
         <label class="control-label">Resource Type</label>
         <div class="" *ngIf="resourceTypes">
@@ -48,15 +48,14 @@
       <div class="form-group form-actions">
         <div class="col-md-offset-2 col-md-6">
           <button class="btn btn-default" (click)="goBack()">Back</button>
-          <button class="btn btn-success" type="submit">Save changes</button>
+          <button class="btn btn-success" [disabled]="!resourceForm.valid || !resourceForm.dirty" (click)="putResource()">Save changes</button>
         </div>
       </div>
     </div>
   </form>
-  <!--<p *ngIf="resource">-->
-    <!--&lt;!&ndash;Resource Value: {{resource | json}}&ndash;&gt;-->
-    <!--Resource Value: {{resourceForm.value | json}}-->
-  <!--</p>-->
+  <p *ngIf="resource">
+    Resource Value: {{resourceForm.value | json}}
+  </p>
 </div>
 
 

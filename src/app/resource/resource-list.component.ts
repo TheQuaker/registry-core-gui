@@ -75,6 +75,11 @@ export class ResourceListComponent implements OnInit {
           }
         } else {
           resourceType = '*';
+          if (params['resourceType'] === 'all') {
+            this.filterForm.get('resourceType').setValue('all');
+          } else {
+            this.filterForm.get('resourceType').setValue('null');
+          }
         }
         if (params['searchTerm']) {
           query = params['searchTerm'];
@@ -83,6 +88,7 @@ export class ResourceListComponent implements OnInit {
           }
         } else {
           query = '*';
+          this.filterForm.get('queryString').setValue('');
         }
         if (!params['page']) {
           this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
@@ -129,19 +135,6 @@ export class ResourceListComponent implements OnInit {
     } else {
       searchTerm = this.filterForm.get('queryString').value;
     }
-    if (event.target.value === 'all') {
-      this.resourceService.getResourcesBySearch('*', searchTerm, '0').subscribe(
-        resourcePage => this.resourcePage = resourcePage,
-        error => this.errorMessage = <any>error,
-        // () => this.viewPage = this.resourcePage.results.slice(0, 10)
-      );
-    } else {
-      this.resourceService.getResourcesBySearch(event.target.value, searchTerm, '0').subscribe(
-        resourcePage => this.resourcePage = resourcePage,
-        error => this.errorMessage = <any>error,
-        // () => this.viewPage = this.resourcePage.results.slice(0, 10)
-      );
-    }
     this.router.navigate(['/resources'],
       {queryParams: {resourceType: event.target.value, searchTerm: searchTerm, page: 1}, queryParamsHandling: ''});
   }
@@ -150,7 +143,7 @@ export class ResourceListComponent implements OnInit {
     console.log(this.filterForm.value);
     let query: string;
     let resourceType: string;
-    if (this.filterForm.controls['resourceType'].value) {
+    if (this.filterForm.controls['resourceType'].value && this.filterForm.controls['resourceType'].value !== 'null' ) {
       resourceType = this.filterForm.controls['resourceType'].value;
     } else {
       resourceType = '*';
@@ -161,10 +154,6 @@ export class ResourceListComponent implements OnInit {
       query = '*';
     }
     this.router.navigate(['/resources'], {queryParams: {resourceType: resourceType, searchTerm: query}, queryParamsHandling: ''});
-    if (resourceType === 'all') {
-      resourceType = '*';
-    }
-    this.getResources(resourceType, query, '0');
   }
 
   /** DELETE **/
@@ -175,10 +164,10 @@ export class ResourceListComponent implements OnInit {
     let page: number;
     this.route.queryParams.subscribe(
       params => {
-        console.log(params);
+        // console.log(params);
         if (params['resourceType'] && params['resourceType'] !== 'all') {
           resourceType = params['resourceType'];
-          console.log('this resourceype = ' + resourceType);
+          // console.log('this resourceype = ' + resourceType);
         } else {
           resourceType = '*';
         }
@@ -192,14 +181,14 @@ export class ResourceListComponent implements OnInit {
       }
     );
 
-    console.log('resourceType = ' + resourceType + '\nquery = ' + query + '\nstart item = ' + startItem + '\npage = ' + page);
+    // console.log('resourceType = ' + resourceType + '\nquery = ' + query + '\nstart item = ' + startItem + '\npage = ' + page);
     this.resourceService.deleteResource(id).subscribe(
       res => {},
       error => this.errorMessage = <any>error,
       () => {
-        console.log('the correct page ' + page);
+        // this should be more elegant
+        this.router.navigate(['/resources'], { queryParams: {page : 1}, queryParamsHandling: 'merge'});
         window.location.reload();
-        // this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'})
       }
     );
   }

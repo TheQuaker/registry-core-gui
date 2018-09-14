@@ -15,6 +15,7 @@ import {ResourceType} from '../domain/resource-type';
 export class UpdateResourceComponent implements OnInit {
 
   resourceForm = this.fb.group({
+    id:['', Validators.required],
     payload: ['', Validators.required],
     payloadFormat: ['', Validators.required],
     payloadUrl: ['', Validators.required],

@@ -10,7 +10,6 @@ import {ResourceTypeService} from '../services/resource-type.service';
 
 export class NewResourceTypeComponent implements OnInit {
 
-
   resourceTypeForm: FormGroup;
 
   constructor(
@@ -21,16 +20,17 @@ export class NewResourceTypeComponent implements OnInit {
   ngOnInit() {
     this.resourceTypeForm = this.fb.group({
       name: ['', Validators.required],
-      schema: [''],
-      schemaUrl: [''],
+      schema: ['', Validators.required],
+      schemaUrl: ['', Validators.required],
       payloadType: ['', Validators.required],
-      creationDate: [''],
-      modificationDate: [''],
+      // creationDate: [''],
+      // modificationDate: [''],
       indexMapperClass: ['', Validators.required],
-      indexFields: this.fb.array([
-        this.fb.control('')
-      ]),
+      // indexFields: this.fb.array([
+      //   this.fb.control('')
+      // ]),
     });
+    this.resourceTypeForm.get('schemaUrl').disable();
     this.resourceTypeForm.get('indexMapperClass').disable();
     this.resourceTypeForm.get('payloadType').setValue('xml');
   }
@@ -38,7 +38,8 @@ export class NewResourceTypeComponent implements OnInit {
   postResourceType(): void {
     this.resourceTypeForm.get('indexMapperClass').enable();
     if (this.resourceTypeForm.get('indexMapperClass').value === '') {
-      this.resourceTypeForm.get('indexMapperClass').setValue('eu.openminted.registry.core.index.DefaultIndexMapper');
+      this.resourceTypeForm.get('indexMapperClass').setValue(
+        'eu.openminted.registry.core.index.DefaultIndexMapper');
     }
     console.log(this.resourceTypeForm.value);
     this.resourceTypeService.addResourceType(this.resourceTypeForm.value).subscribe();
@@ -51,7 +52,18 @@ export class NewResourceTypeComponent implements OnInit {
     } else {
       this.resourceTypeForm.get('indexMapperClass').enable();
     }
+  }
 
+  radioBtnUrl(select: string): void {
+    if (select === 'url') {
+      this.resourceTypeForm.get('schema').disable();
+      this.resourceTypeForm.get('schemaUrl').enable();
+      this.resourceTypeForm.get('schema').setValue('');
+    } else {
+      this.resourceTypeForm.get('schemaUrl').disable();
+      this.resourceTypeForm.get('schema').enable();
+      this.resourceTypeForm.get('schemaUrl').setValue('');
+    }
   }
 
   goBack() {

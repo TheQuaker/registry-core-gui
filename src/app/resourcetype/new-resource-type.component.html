@@ -14,7 +14,7 @@
     </div>
 
     <div class="content-wrapper" *ngIf="resourceTypeForm">
-      <form [formGroup]="resourceTypeForm" class="form-horizontal" (submit)="postResourceType()" novalidate="novalidate">
+      <form [formGroup]="resourceTypeForm" class="form-horizontal" novalidate="novalidate">
 
         <div class="form-group">
           <label class="control-label">Name</label>
@@ -23,13 +23,19 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label">Schema</label>
+          <label class="control-label">
+            <input type="radio" name="schemaRadioBtn" id="schema" (change)="radioBtnUrl('schema')"
+                   checked="checked">Schema
+          </label>
           <div class="">
-            <textarea class="form-control" formControlName="schema"></textarea>
+            <textarea rows="4" class="form-control" formControlName="schema"></textarea>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label">Schema URL</label>
+          <label class="control-label">
+            <input type="radio" name="schemaRadioBtn" id="schemaURL" (change)="radioBtnUrl('url')">
+            Schema URL
+          </label>
           <div class="">
             <input class="form-control" formControlName="schemaUrl" type="text">
           </div>
@@ -83,7 +89,7 @@
         <div class="form-group form-actions">
           <div class="">
             <button class="btn btn-default" (click)="goBack()">Back</button>
-            <button class="btn btn-primary" type="submit" [disabled]="!resourceTypeForm.valid">Submit</button>
+            <button class="btn btn-primary" [disabled]="!resourceTypeForm.valid" (click)="postResourceType()">Submit</button>
           </div>
         </div>
       </form>
