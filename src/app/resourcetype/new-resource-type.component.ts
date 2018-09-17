@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Location} from '@angular/common';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ResourceTypeService} from '../services/resource-type.service';
 
 
@@ -11,10 +12,12 @@ import {ResourceTypeService} from '../services/resource-type.service';
 export class NewResourceTypeComponent implements OnInit {
 
   resourceTypeForm: FormGroup;
+  public errorMessage: string;
 
   constructor(
     private resourceTypeService: ResourceTypeService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -26,9 +29,17 @@ export class NewResourceTypeComponent implements OnInit {
       // creationDate: [''],
       // modificationDate: [''],
       indexMapperClass: ['', Validators.required],
-      // indexFields: this.fb.array([
-      //   this.fb.control('')
-      // ]),
+      indexFields: this.fb.array([
+        this.fb.group({
+          name: [''],
+          path: [''],
+          type: [''],
+          // defaultValue: [''],
+          multivalued: [''],
+          // primaryKey:  [''],
+        })
+      ]),
+      // indexFields: ['']
     });
     this.resourceTypeForm.get('schemaUrl').disable();
     this.resourceTypeForm.get('indexMapperClass').disable();
@@ -41,8 +52,12 @@ export class NewResourceTypeComponent implements OnInit {
       this.resourceTypeForm.get('indexMapperClass').setValue(
         'eu.openminted.registry.core.index.DefaultIndexMapper');
     }
-    console.log(this.resourceTypeForm.value);
-    this.resourceTypeService.addResourceType(this.resourceTypeForm.value).subscribe();
+    // console.log(this.resourceTypeForm.value);
+    this.resourceTypeService.addResourceType(this.resourceTypeForm.value).subscribe(
+      _ => {},
+      error => this.errorMessage = <any>error,
+      () => this.goBack()
+    );
   }
 
   updateIndexMapperClass(select: string) {
@@ -66,8 +81,22 @@ export class NewResourceTypeComponent implements OnInit {
     }
   }
 
+  addIndexField(): void {
+    // this.resourceTypeForm['indexFields'].push();
+    const temp = <FormArray>this.resourceTypeForm.get('indexFields');
+      temp.push(
+      this.fb.group({
+      name: [''],
+      path: [''],
+      type: [''],
+      // defaultValue: [''],
+      multivalued: [''],
+      // primaryKey:  [''],
+    }));
+  }
+
   goBack() {
-    window.history.back();
+    this.location.back();
   }
 
 }

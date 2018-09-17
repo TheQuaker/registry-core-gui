@@ -42,9 +42,6 @@ export class ResourceListComponent implements OnInit {
   // pagination
   itemsPerPage = 10;
   currentPage = 1;
-  rotate = true;
-  showBoundaryLinks = true;
-  maxSize = 5;
 
   // modal
   modalRef: BsModalRef;
@@ -90,7 +87,7 @@ export class ResourceListComponent implements OnInit {
           query = '*';
           this.filterForm.get('queryString').setValue('');
         }
-        if (!params['page']) {
+        if (!params['page'] ) {
           this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
           // this.getResources(resourceType, query, '0');
         } else {
@@ -140,7 +137,7 @@ export class ResourceListComponent implements OnInit {
   }
 
   onSearch() {
-    console.log(this.filterForm.value);
+    // console.log(this.filterForm.value);
     let query: string;
     let resourceType: string;
     if (this.filterForm.controls['resourceType'].value && this.filterForm.controls['resourceType'].value !== 'null' ) {
@@ -160,8 +157,8 @@ export class ResourceListComponent implements OnInit {
   deleteResource(id: string): void {
     let query: string;
     let resourceType: string;
-    let startItem: number;
-    let page: number;
+    // let startItem: number;
+    // let page: number;
     this.route.queryParams.subscribe(
       params => {
         // console.log(params);
@@ -176,8 +173,8 @@ export class ResourceListComponent implements OnInit {
         } else {
           query = '*';
         }
-        startItem = (+params['page'] - 1) * this.itemsPerPage;
-        page = +params['page'];
+        // startItem = (+params['page'] - 1) * this.itemsPerPage;
+        // page = +params['page'];
       }
     );
 

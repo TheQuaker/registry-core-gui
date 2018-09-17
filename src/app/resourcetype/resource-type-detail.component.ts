@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 
 import {ResourceTypeService} from '../services/resource-type.service';
 import {ResourceType} from '../domain/resource-type';
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class ResourceTypeDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private resourceTypeService: ResourceTypeService
+    private resourceTypeService: ResourceTypeService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -34,7 +36,7 @@ export class ResourceTypeDetailComponent implements OnInit {
   }
 
   goBack() {
-    window.history.back();
+    this.location.back();
   }
 
 }

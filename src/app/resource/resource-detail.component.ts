@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-// import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {Location} from '@angular/common';
 
 import {ResourceService} from '../services/resource.service';
 import {Resource} from '../domain/resource';
@@ -19,6 +19,7 @@ export class ResourceDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private resourceService: ResourceService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -36,7 +37,8 @@ export class ResourceDetailComponent implements OnInit {
   }
 
   goBack() {
-    window.history.back();
+    // window.history.back();
+    this.location.back();
   }
 
 }

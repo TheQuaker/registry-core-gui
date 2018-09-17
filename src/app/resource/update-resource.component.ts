@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {ResourceService} from '../services/resource.service';
-import {Resource} from '../domain/resource';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, Validators} from '@angular/forms';
+import {Location} from '@angular/common';
+
+import {ResourceService} from '../services/resource.service';
 import {ResourceTypeService} from '../services/resource-type.service';
+import {Resource} from '../domain/resource';
 import {ResourceType} from '../domain/resource-type';
 
 
@@ -28,9 +30,11 @@ export class UpdateResourceComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private resourceService: ResourceService,
     private resourceTypeService: ResourceTypeService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private location: Location
   ) {
   }
 
@@ -72,7 +76,11 @@ export class UpdateResourceComponent implements OnInit {
     this.resourceService.updateResource(this.resourceForm.value).subscribe(
       _ => {},
       error => this.errorMessage = <any>error,
-      () => this.goBack()
+      () => {
+        // this.router.navigate(['/resources'], { queryParams: {page : 1}, queryParamsHandling: 'merge'});
+        this.goBack();
+        // window.location.reload();
+      }
     );
   }
 
@@ -89,7 +97,7 @@ export class UpdateResourceComponent implements OnInit {
   }
 
   goBack() {
-    window.history.back();
+    this.location.back();
   }
 
 }

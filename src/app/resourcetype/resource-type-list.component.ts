@@ -72,7 +72,16 @@ export class ResourceTypeListComponent implements OnInit {
 
   /** DELETE **/
   deleteResourceType(name: string) {
-    this.resourceTypeService.deleteResourceType(name).subscribe();
+    this.resourceTypeService.deleteResourceType(name).subscribe(
+      res => {},
+      error => this.errorMessage = <any>error,
+      () => {
+
+      }
+    );
+
+    this.router.navigate(['/resourceTypes'], {queryParams: {page : 1}});
+    window.location.reload();
   }
 
   /** Checkboxes **/
@@ -81,8 +90,6 @@ export class ResourceTypeListComponent implements OnInit {
   }
 
   isAllChecked() {
-    // return this.resourcePage.results.every(_ => _.state);
-
     let count = 0;
     this.checkBoxes.forEach(i => {
       if (i.nativeElement['checked'] === true) {
@@ -135,8 +142,8 @@ export class ResourceTypeListComponent implements OnInit {
 
   /** **/
   bulkAction() {
-    // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => this.deleteResourceType(x.nativeElement['id']));
-    this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
+    this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => this.deleteResourceType(x.nativeElement['id']));
+    // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
   }
 
   activateDropDown() {

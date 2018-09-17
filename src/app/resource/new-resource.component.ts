@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Location} from '@angular/common';
 // import { Validators } from '@angular/forms';
 // import { FormArray } from '@angular/forms';
 
@@ -35,7 +36,8 @@ export class NewResourceComponent implements OnInit {
   constructor(
     private resourceTypeService: ResourceTypeService,
     private resourceService: ResourceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private location: Location
   ) {}
 
   getResourceTypes() {
@@ -74,7 +76,8 @@ export class NewResourceComponent implements OnInit {
   }
 
   goBack() {
-    window.history.back();
+    // window.history.back();
+    this.location.back();
   }
 
 }
