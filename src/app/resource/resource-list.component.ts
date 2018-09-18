@@ -25,11 +25,11 @@ export class ResourceListComponent implements OnInit {
     queryString: FormControl['']
   });
 
-  @ViewChild('masterCheckbox')
-  public masterCheckbox: ElementRef;
-
   @ViewChild('table')
   public table: ElementRef;
+
+  @ViewChild('masterCheckbox')
+  public masterCheckbox: ElementRef;
 
   @ViewChildren('checkBoxes')
   public checkBoxes: QueryList<ElementRef>;
@@ -95,11 +95,15 @@ export class ResourceListComponent implements OnInit {
           this.currentPage = +params['page'];
           // console.log(this.currentPage);
           const startItem = (+params['page'] - 1) * this.itemsPerPage;
-          this.getResources(resourceType, query, `${startItem}`);
+          setTimeout(() => { this.getResources(resourceType, query, `${startItem}`); }, 500);
+          // this.getResources(resourceType, query, `${startItem}`);
+          // console.log('Ng onInit2 ' + this.resourcePage.total);
         }
       },
       error => this.errorMessage = <any>error,
-      () => {}
+      () => {
+        console.log('Ng onInit1 ' + this.resourcePage.total);
+      }
     );
   }
 
@@ -113,7 +117,10 @@ export class ResourceListComponent implements OnInit {
         this.resourcePage = resourcePage;
       },
       error => this.errorMessage = <any>error,
-      () => this.isAllChecked()
+      () => {
+        this.isAllChecked();
+        console.log('GetResources ' + this.resourcePage.total);
+      }
     );
   }
 
@@ -158,13 +165,13 @@ export class ResourceListComponent implements OnInit {
     let query: string;
     let resourceType: string;
     // let startItem: number;
-    // let page: number;
+    let page: number;
     this.route.queryParams.subscribe(
       params => {
         // console.log(params);
         if (params['resourceType'] && params['resourceType'] !== 'all') {
           resourceType = params['resourceType'];
-          // console.log('this resourceype = ' + resourceType);
+          // console.log('this resourceType = ' + resourceType);
         } else {
           resourceType = '*';
         }
@@ -173,10 +180,9 @@ export class ResourceListComponent implements OnInit {
         } else {
           query = '*';
         }
-        // startItem = (+params['page'] - 1) * this.itemsPerPage;
-        // page = +params['page'];
-      }
-    );
+         // startItem = (+params['page'] - 1) * this.itemsPerPage;
+        page = +params['page'];
+      });
 
     // console.log('resourceType = ' + resourceType + '\nquery = ' + query + '\nstart item = ' + startItem + '\npage = ' + page);
     this.resourceService.deleteResource(id).subscribe(
@@ -184,8 +190,13 @@ export class ResourceListComponent implements OnInit {
       error => this.errorMessage = <any>error,
       () => {
         // this should be more elegant
-        this.router.navigate(['/resources'], { queryParams: {page : 1}, queryParamsHandling: 'merge'});
-        window.location.reload();
+        if ((this.resourcePage.total % this.itemsPerPage) === 1) {
+          page = page - 1;
+          if (page === 0) { page = 1; }
+        }
+        this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
+        // window.location.reload();
+        // this.getResources(resourceType, query, `${startItem}`);
       }
     );
   }

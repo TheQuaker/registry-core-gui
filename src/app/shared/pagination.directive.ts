@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, DoCheck, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: '[paginate]',
@@ -57,7 +57,7 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
   ]
 })
 
-export class PaginationDirectiveComponent implements OnChanges {
+export class PaginationDirectiveComponent implements OnChanges, DoCheck {
 
   @Input('from')
   from: number = 0;
@@ -92,6 +92,8 @@ export class PaginationDirectiveComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // console.log(changes.total.currentValue);
+    // this.total = changes.total.currentValue;
     this.pages.length = 0;
     // console.log(this.lastPage);
     for (let i = this.from - this.offset; i <= this.from + this.offset; ++i) {
@@ -101,5 +103,17 @@ export class PaginationDirectiveComponent implements OnChanges {
         this.pages.push(i);
       }
     }
+  }
+
+  ngDoCheck() {
+    // this.pages.length = 0;
+    // // console.log(this.lastPage);
+    // for (let i = this.from - this.offset; i <= this.from + this.offset; ++i) {
+    //   // for (let i = this.from - this.offset; this.pages.length < (this.offset * 2 + 1) || i <= this.lastPage; ++i) {
+    //   //   console.log('i = ' + i + ' array length ' + this.pages.length);
+    //   if (i > 0 && i <= this.lastPage) {
+    //     this.pages.push(i);
+    //   }
+    // }
   }
 }

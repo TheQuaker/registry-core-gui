@@ -35,6 +35,7 @@ export class ResourceTypeListComponent implements OnInit {
   showBoundaryLinks = true;
   maxSize = 5;
   currentPage = 1;
+  itemsPerPage = 10;
   // modal
   modalRef: BsModalRef;
   // message: string;
@@ -48,40 +49,62 @@ export class ResourceTypeListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getResourceTypes();
+
     this.route.queryParams.subscribe(params => {
       // console.log(params);
       if (!params['page']) {
         this.router.navigate(['/resourceTypes'], { queryParams: {page : 1}});
       } else {
         this.currentPage = +params['page'];
+        const startItem = (this.currentPage - 1) * this.itemsPerPage;
+        const endItem = this.currentPage * this.itemsPerPage;
+        // console.log(this.viewPage);
+        this.getResourceTypes(startItem, endItem);
       }
     });
   }
 
   /** GET **/
-  getResourceTypes() {
+  getResourceTypes(start, end) {
+    // this.resourceTypePage = this.resourceTypePage || {results : [], total : 0, from: 0, to: 0};
+    // this.resourceTypePage.results = [];
+    this.viewPage = [];
     this.resourceTypeService.getResourceTypes().subscribe(
       resourceTypePage => {
         this.resourceTypePage = resourceTypePage;
       },
       error => this.errorMessage = <any>error,
-      () => this.viewPage = this.resourceTypePage.results.slice(0, 10)
+      () => this.viewPage = this.resourceTypePage.results.slice(start, end)
     );
   }
 
   /** DELETE **/
   deleteResourceType(name: string) {
+    let page: number;
+    this.route.queryParams.subscribe(params => {
+      // startItem = (+params['page'] - 1) * this.itemsPerPage;
+      page = +params['page'];
+    });
+
     this.resourceTypeService.deleteResourceType(name).subscribe(
       res => {},
       error => this.errorMessage = <any>error,
       () => {
-
+      //   if ((this.resourceTypePage.total % this.itemsPerPage) === 1) {
+      //     page = page - 1;
+      //     if (page === 0) { page = 1; }
+      //   }
+      //   this.getResourceTypes();
+      //   this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
+      //   // window.location.reload();
       }
     );
-
-    this.router.navigate(['/resourceTypes'], {queryParams: {page : 1}});
-    window.location.reload();
+    if ((this.resourceTypePage.total % this.itemsPerPage) === 1) {
+      page = page - 1;
+      if (page === 0) { page = 1; }
+    }
+    this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
+    // window.location.reload(); // this hides response code $410
   }
 
   /** Checkboxes **/
@@ -108,10 +131,10 @@ export class ResourceTypeListComponent implements OnInit {
 
   /** Pagination **/
   pageChanged(event: PageChangedEvent): void {
-    const startItem = (event.page - 1) * event.itemsPerPage;
-    const endItem = event.page * event.itemsPerPage;
-    // console.log(this.viewPage);
-    this.viewPage = this.resourceTypePage.results.slice(startItem, endItem);
+    // const startItem = (event.page - 1) * event.itemsPerPage;
+    // const endItem = event.page * event.itemsPerPage;
+    // // console.log(this.viewPage);
+    // this.viewPage = this.resourceTypePage.results.slice(startItem, endItem);
     this.router.navigate(['/resourceTypes'], { queryParams: {page : event.page}});
     // console.log(this.table.nativeElement.scrollHeight);
     this.activateDropDown();

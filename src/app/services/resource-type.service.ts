@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -17,6 +17,12 @@ export class ResourceTypeService {
 
    // private resourceTypeUrl = 'http://aleka.athenarc.gr:8080/arc-expenses-service/resourceType/';
    private resourceTypeUrl = environment.API_END_POINT + '/RegistryService/resourceType/';
+
+  private httpOption = {
+    headers: new HttpHeaders({
+      'Content-Type': 'text/plain'
+    })
+  };
 
   /** GET **/
   getResourceTypes() {
@@ -43,15 +49,13 @@ export class ResourceTypeService {
 
   /** DELETE **/
   deleteResourceType(name: string) {
-    return this.http.delete(this.resourceTypeUrl + name)
+    return this.http.delete(this.resourceTypeUrl + name, this.httpOption)
       .pipe(
-        catchError(this.handleError)
+        // catchError(this.handleError)
       );
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.status === 410) {
-    }
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
