@@ -101,8 +101,8 @@ export class ResourceListComponent implements OnInit {
         }
       },
       error => this.errorMessage = <any>error,
-      () => {
-        console.log('Ng onInit1 ' + this.resourcePage.total);
+      () => { // Never reaches this statement
+        // console.log('Ng onInit1 ' + this.resourcePage.total);
       }
     );
   }
@@ -119,7 +119,7 @@ export class ResourceListComponent implements OnInit {
       error => this.errorMessage = <any>error,
       () => {
         this.isAllChecked();
-        console.log('GetResources ' + this.resourcePage.total);
+        // console.log('GetResources ' + this.resourcePage.total);
       }
     );
   }
@@ -192,11 +192,12 @@ export class ResourceListComponent implements OnInit {
         // this should be more elegant
         if ((this.resourcePage.total % this.itemsPerPage) === 1) {
           page = page - 1;
-          if (page === 0) { page = 1; }
-        }
-        this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
-        // window.location.reload();
-        // this.getResources(resourceType, query, `${startItem}`);
+          if (page === 0) {
+            page = 1;
+            window.location.reload();
+          }
+          this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
+        } else { window.location.reload(); }
       }
     );
   }

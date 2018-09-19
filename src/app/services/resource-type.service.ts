@@ -51,7 +51,7 @@ export class ResourceTypeService {
   deleteResourceType(name: string) {
     return this.http.delete(this.resourceTypeUrl + name, this.httpOption)
       .pipe(
-        // catchError(this.handleError)
+        catchError(this.handleError)
       );
   }
 

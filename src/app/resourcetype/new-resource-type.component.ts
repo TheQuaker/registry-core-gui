@@ -52,6 +52,10 @@ export class NewResourceTypeComponent implements OnInit {
       this.resourceTypeForm.get('indexMapperClass').setValue(
         'eu.openminted.registry.core.index.DefaultIndexMapper');
     }
+    const temp = <FormArray>this.resourceTypeForm.get('indexFields').value;
+    if (temp[0].name === '') {
+      this.resourceTypeForm.get('indexFields').disable();
+    }
     // console.log(this.resourceTypeForm.value);
     this.resourceTypeService.addResourceType(this.resourceTypeForm.value).subscribe(
       _ => {},

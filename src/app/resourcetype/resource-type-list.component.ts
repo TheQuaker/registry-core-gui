@@ -54,12 +54,17 @@ export class ResourceTypeListComponent implements OnInit {
       // console.log(params);
       if (!params['page']) {
         this.router.navigate(['/resourceTypes'], { queryParams: {page : 1}});
+        this.getResourceTypes(0, this.itemsPerPage);
       } else {
         this.currentPage = +params['page'];
         const startItem = (this.currentPage - 1) * this.itemsPerPage;
         const endItem = this.currentPage * this.itemsPerPage;
         // console.log(this.viewPage);
-        this.getResourceTypes(startItem, endItem);
+        if (this.resourceTypePage) {
+          this.viewPage = this.resourceTypePage.results.slice(startItem, endItem);
+        } else {
+          this.getResourceTypes(startItem, endItem);
+        }
       }
     });
   }
@@ -90,21 +95,17 @@ export class ResourceTypeListComponent implements OnInit {
       res => {},
       error => this.errorMessage = <any>error,
       () => {
-      //   if ((this.resourceTypePage.total % this.itemsPerPage) === 1) {
-      //     page = page - 1;
-      //     if (page === 0) { page = 1; }
-      //   }
-      //   this.getResourceTypes();
-      //   this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
-      //   // window.location.reload();
+        if ((this.resourceTypePage.total % this.itemsPerPage) === 1) {
+          page = page - 1;
+          if (page === 0) { page = 1; }
+        }
+        const startItem = (page - 1) * this.itemsPerPage;
+        const endItem = page * this.itemsPerPage;
+        this.getResourceTypes(startItem, endItem);
+        // this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
+        // window.location.reload();
       }
     );
-    if ((this.resourceTypePage.total % this.itemsPerPage) === 1) {
-      page = page - 1;
-      if (page === 0) { page = 1; }
-    }
-    this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
-    // window.location.reload(); // this hides response code $410
   }
 
   /** Checkboxes **/

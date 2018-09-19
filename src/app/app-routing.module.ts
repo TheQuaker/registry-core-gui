@@ -17,7 +17,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'resources',
-    loadChildren: './resource/resource.module#ResourceModule'
+    loadChildren: './resource/resource.module#ResourceModule',
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'resource/detail/:resourceType/:id',
@@ -45,7 +46,7 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'})
   ],
   declarations: [],
   exports: [RouterModule]
