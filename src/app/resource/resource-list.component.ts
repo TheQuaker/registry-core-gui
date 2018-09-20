@@ -15,7 +15,8 @@ import {ResourceTypePage} from '../domain/resource-type-page';
 
 @Component({
   selector: 'app-resource-list',
-  templateUrl: './resource-list.component.html'
+  templateUrl: './resource-list.component.html',
+  styleUrls: ['resource-list.component.css']
 })
 
 export class ResourceListComponent implements OnInit {

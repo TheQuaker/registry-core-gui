@@ -42,94 +42,97 @@
             </ng-template>
 
           </div>
-        </div>
 
-        <div #table class="col-md-12 row users-list justify-content-md-center" *ngIf="resourceTypePage">
 
-          <div class="py-4">
-            <pagination [totalItems]="resourceTypePage.total"
-                        [boundaryLinks]="showBoundaryLinks"
-                        [rotate]="rotate"
-                        [maxSize]="maxSize"
-                        [(ngModel)]="currentPage"
-                        (pageChanged)="pageChanged($event)"
-                        previousText="&laquo;" nextText="&raquo;">
-            </pagination>
-          </div>
+        <div class="card">
+          <div #table class="col-md-12 row users-list justify-content-md-center" *ngIf="resourceTypePage">
 
-          <div class="col-md-12 row headers">
-            <div class="col-sm-1 header select-users">
-              <input #masterCheckbox type="checkbox" name="all" (change)="checkAll(masterCheckbox.checked)">
+            <div class="py-4">
+              <pagination [totalItems]="resourceTypePage.total"
+                          [boundaryLinks]="showBoundaryLinks"
+                          [rotate]="rotate"
+                          [maxSize]="maxSize"
+                          [(ngModel)]="currentPage"
+                          (pageChanged)="pageChanged($event)"
+                          previousText="&laquo;" nextText="&raquo;">
+              </pagination>
             </div>
-            <div class="col-sm-1 header hidden-xs">
-              <label><span>Name</span></label>
+
+            <div class="col-md-12 row headers">
+              <div class="col-sm-1 header select-users">
+                <input #masterCheckbox type="checkbox" name="all" (change)="checkAll(masterCheckbox.checked)">
+              </div>
+              <div class="col-sm-1 header hidden-xs">
+                <label><span>Name</span></label>
+              </div>
+              <div class="col-sm-2 header hidden-xs">
+                <label><span>Payload Type</span></label>
+              </div>
+              <div class="col-sm-2 header hidden-xs">
+                <label><span>Creation Date</span></label>
+              </div>
+              <div class="col-sm-3 header hidden-xs">
+                <label><span>Index Fields</span></label>
+              </div>
+              <div class="col-sm-3 header hidden-xs">
+                <label><span>Actions</span></label>
+              </div>
             </div>
-            <div class="col-sm-2 header hidden-xs">
-              <label><span>Payload Type</span></label>
-            </div>
-            <div class="col-sm-2 header hidden-xs">
-              <label><span>Creation Date</span></label>
-            </div>
-            <div class="col-sm-3 header hidden-xs">
-              <label><span>Index Fields</span></label>
-            </div>
-            <div class="col-sm-3 header hidden-xs">
-              <label><span>Actions</span></label>
-            </div>
-          </div>
-          <div class="col-md-12 row" *ngFor="let resourceType of viewPage">
-            <div class="col-sm-1 avatar">
-              <input #checkBoxes type="checkbox" id={{resourceType.name}} name="select-user"
-                     (change)="isAllChecked()">
-            </div>
-            <div class="col-sm-1">
-              <div>{{resourceType.name}}</div>
-            </div>
-            <div class="col-sm-2">
-              <div>{{resourceType.payloadType}}</div>
-            </div>
-            <div class="col-sm-2">
-              <div>{{resourceType.creationDate | date:'medium' }}</div>
-            </div>
-            <div class="col-sm-3">
-              <div>
+            <div class="col-md-12 row" *ngFor="let resourceType of viewPage">
+              <div class="col-sm-1 avatar">
+                <input #checkBoxes type="checkbox" id={{resourceType.name}} name="select-user"
+                       (change)="isAllChecked()">
+              </div>
+              <div class="col-sm-1">
+                <div>{{resourceType.name}}</div>
+              </div>
+              <div class="col-sm-2">
+                <div>{{resourceType.payloadType}}</div>
+              </div>
+              <div class="col-sm-2">
+                <div>{{resourceType.creationDate | date:'medium' }}</div>
+              </div>
+              <div class="col-sm-3">
+                <div>
               <span *ngFor="let indexField of resourceType.indexFields; let isLast=last">
                   {{indexField.name}}{{isLast ? '' : ', '}}
               </span>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <!--<div><a (click)="gotoDetail(resourceType)">Click to view full resource type details</a></div>-->
+                <div class="row">
+                  <a routerLink="detail/{{resourceType.name}}">
+                    <button class="btn btn-info">Details</button>
+                  </a>
+
+                  <button class="btn btn-danger" (click)="openModal(template)">delete</button>
+
+                  <ng-template #template>
+                    <div class="modal-body text-center">
+                      <p>Are you sure you want to DELETE the resource type with name: {{resourceType.name}}?</p>
+                      <button type="button" class="btn btn-default" (click)="confirm(resourceType.name)">Yes</button>
+                      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+                    </div>
+                  </ng-template>
+
+                </div>
               </div>
             </div>
-            <div class="col-sm-3">
-              <!--<div><a (click)="gotoDetail(resourceType)">Click to view full resource type details</a></div>-->
-              <div class="row">
-                <a routerLink="detail/{{resourceType.name}}">
-                  <button class="btn btn-info">Details</button>
-                </a>
 
-                <button class="btn btn-danger" (click)="openModal(template)">delete</button>
-
-                <ng-template #template>
-                  <div class="modal-body text-center">
-                    <p>Are you sure you want to DELETE the resource type with name: {{resourceType.name}}?</p>
-                    <button type="button" class="btn btn-default" (click)="confirm(resourceType.name)">Yes</button>
-                    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
-                  </div>
-                </ng-template>
-
-              </div>
+            <div class="py-4">
+              <pagination [totalItems]="resourceTypePage.total"
+                          [boundaryLinks]="showBoundaryLinks"
+                          [rotate]="rotate"
+                          [maxSize]="maxSize"
+                          [(ngModel)]="currentPage"
+                          (pageChanged)="pageChanged($event)"
+                          previousText="&laquo;" nextText="&raquo;">
+              </pagination>
             </div>
-          </div>
 
-          <div class="py-4">
-            <pagination [totalItems]="resourceTypePage.total"
-                        [boundaryLinks]="showBoundaryLinks"
-                        [rotate]="rotate"
-                        [maxSize]="maxSize"
-                        [(ngModel)]="currentPage"
-                        (pageChanged)="pageChanged($event)"
-                        previousText="&laquo;" nextText="&raquo;">
-            </pagination>
           </div>
-
+        </div>
         </div>
       </div>
     </div>

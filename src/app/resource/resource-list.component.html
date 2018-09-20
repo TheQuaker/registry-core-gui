@@ -16,7 +16,7 @@
 
         <form class="col-md-9" [formGroup]="filterForm" (submit)="onSearch()">
           <div class="form-row">
-            <div class="form-group col-md-5" *ngIf="resourceTypePage">
+            <div class="form-group offset-md-1 col-md-4" *ngIf="resourceTypePage">
               <select class="form-control" id="typeSelect" formControlName="resourceType"
                       (change)="onTypeSelect($event)">
                 <option value="null" disabled selected hidden>Select resource type</option>
@@ -64,6 +64,7 @@
 
         </div>
 
+        <div class="card">
         <div #table class="col-md-12 row justify-content-md-center" *ngIf="resourcePage">
 
           <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
@@ -138,6 +139,8 @@
           <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
 
         </div>
+        </div>
+
       </div>
     </div>
     <!--</div>-->

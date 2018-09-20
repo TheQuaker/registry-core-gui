@@ -12,7 +12,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-resource-type-list',
-  templateUrl: './resource-type-list.component.html'
+  templateUrl: './resource-type-list.component.html',
+  styleUrls: ['./resource-type-list.component.css']
 })
 
 export class ResourceTypeListComponent implements OnInit {
@@ -111,6 +112,7 @@ export class ResourceTypeListComponent implements OnInit {
   /** Checkboxes **/
   checkAll(state: boolean) {
     this.checkBoxes.forEach(i => i.nativeElement['checked'] = state);
+    this.activateDropDown();
   }
 
   isAllChecked() {
