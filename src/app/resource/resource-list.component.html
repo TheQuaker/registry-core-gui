@@ -7,7 +7,7 @@
 
     <div class="page-title">Resources</div>
 
-    <div class="content-wrapper">
+    <div class="content-wrapper ">
       <p>Here you will be able to browse resources, add new ones and edit/delete existing ones.</p>
 
       <div class="row">
@@ -42,7 +42,6 @@
           </a>
 
           <div class="btn-group " dropdown [isDisabled]=isDisabled>
-            <!--<div class="btn-group" dropdown [isDisabled]=activateDropDown()>-->
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary  dropdown-toggle"
                     aria-controls="dropdown-basic">Bulk actions<span class="caret"></span>
             </button>
@@ -65,84 +64,53 @@
         </div>
 
         <div class="card">
-        <div #table class="col-md-12 row justify-content-md-center" *ngIf="resourcePage">
+          <div #table class="col-md-12 row justify-content-md-center" *ngIf="resourcePage">
 
-          <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
+            <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
 
-          <div class="col-md-12 row headers">
-            <div class="col-sm-1 header select-users">
-              <input #masterCheckbox type="checkbox" name="select-all" (change)="checkAll(masterCheckbox.checked)">
-            </div>
-            <div class="col-sm-3 header hidden-xs">
-              <label><span>Id</span></label>
-            </div>
-            <div class="col-sm-1 header hidden-xs">
-              <label><span>Type</span></label>
-            </div>
-            <div class="col-sm-2 header hidden-xs">
-              <label><span>Creation Date</span></label>
-            </div>
-            <div class="col-sm-3 header hidden-xs">
-              <label><span>Indexed Fields</span></label>
-            </div>
-            <div class="col-sm-2 header hidden-xs">
-              <label><span>Actions</span></label>
-            </div>
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr class="row">
+                <th class="col-md-1"><input #masterCheckbox type="checkbox" name="select-all" (change)="checkAll(masterCheckbox.checked)"></th>
+                <th class="col-md-4">Id</th>
+                <th class="col-md-2">Type</th>
+                <th class="col-md-3">Date</th>
+                <th class="col-md-2">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="row" *ngFor="let resource of resourcePage.results">
+                <td class="col-md-1"><input #checkBoxes type="checkbox" name={{resource.id}} (change)="isAllChecked()"></td>
+                <td class="col-md-4">{{resource.id}}</td>
+                <td class="col-md-2">{{resource.resourceTypeName}}</td>
+                <td class="col-md-3">
+                  <div>{{resource.creationDate | date:'medium'}}</div>
+                </td>
+                <td class="col-md-2">
+                  <div class="row">
+                    <a routerLink="detail/{{resource.resourceTypeName}}/{{resource.id}}">
+                      <button class="btn btn-info">Details</button></a>
+                    <a routerLink="updateResource/{{resource.resourceTypeName}}/{{resource.id}}">
+                      <button class="btn btn-warning">up</button></a>
+                    <button class="btn btn-danger" (click)="openModal(template)">Delete</button>
+                  </div>
+                </td>
+                <ng-template #template>
+                  <div class="modal-body text-center" style="color: black">
+                    <p>Are you sure you want to DELETE the resource with id: {{resource.id}}?</p>
+                    <button type="button" class="btn btn-default" (click)="confirm(resource.id)">Yes</button>
+                    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+                  </div>
+                </ng-template>
+              </tr>
+              </tbody>
+            </table>
+
+            <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
+
           </div>
-          <div class="col-md-12 row" *ngFor="let resource of resourcePage.results ">
-            <div class="col-sm-1 avatar">
-              <!--<input #checkBoxes type="checkbox" [id]="resource.id" name="select-user" (change)="isAllChecked()" >-->
-              <input #checkBoxes type="checkbox" id={{resource.id}} name="select-user" (change)="isAllChecked()">
-            </div>
-            <div class="col-sm-3">
-              <div>{{resource.id}}</div>
-            </div>
-            <div class="col-sm-1">
-              <div>{{resource.resourceTypeName}}</div>
-            </div>
-            <div class="col-sm-2">
-              <div>{{resource.creationDate | date:'medium' }}</div>
-            </div>
-            <div class="col-sm-3">
-              <div>
-                <span *ngFor="let indexedField of resource.indexedFields; let isLast=last">
-                <b>{{indexedField.name}}:</b> {{indexedField.values}}{{isLast ? '' : ', '}}
-                </span>
-              </div>
-            </div>
-            <!--<div class="col-sm-1" *ngIf="resource.resourceType">-->
-            <div class="col-sm-2">
-              <div class="row">
-                <a routerLink="detail/{{resource.resourceTypeName}}/{{resource.id}}">
-                  <button class="btn btn-info">Details</button>
-                </a>
-
-                <a routerLink="updateResource/{{resource.resourceTypeName}}/{{resource.id}}">
-                  <button class="btn btn-warning">up</button>
-                </a>
-                <!--<button class="btn btn-danger" (click)="deleteResource(resource.id)">Delete</button>-->
-                <button class="btn btn-danger" (click)="openModal(template)">Delete</button>
-                <!--<span class="oi oi-trash"></span>-->
-              </div>
-
-              <ng-template #template>
-                <div class="modal-body text-center">
-                  <p>Are you sure you want to DELETE the resource with id: {{resource.id}}?</p>
-                  <button type="button" class="btn btn-default" (click)="confirm(resource.id)">Yes</button>
-                  <button type="button" class="btn btn-primary" (click)="decline()">No</button>
-                </div>
-              </ng-template>
-
-            </div>
-          </div>
-
-          <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
-
         </div>
-        </div>
-
       </div>
     </div>
-    <!--</div>-->
   </div>
 </div>

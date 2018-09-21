@@ -44,14 +44,78 @@ import {Component, DoCheck, Input, OnChanges, SimpleChanges} from '@angular/core
   `,
   styles: [
       `
-      .resultsPageLabel {
-        margin-top: -40px;
-        text-align: center;
-        font-family: Montserrat;
-        font-size: 12px;
-        font-weight: 300;
-        color: #9f9b9b;
-        text-transform: uppercase;
+      .pagination {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        border-radius: 2px;
+      }
+
+      /*.page-item:first-child .page-link {*/
+        /*margin-left: 0;*/
+        /*border-top-left-radius: 2px;*/
+        /*border-bottom-left-radius: 2px;*/
+      /*}*/
+      /*.page-item:last-child .page-link {*/
+        /*border-top-right-radius: 2px;*/
+        /*border-bottom-right-radius: 2px;*/
+      /*}*/
+      .page-item.active .page-link {
+        z-index: 2;
+        color: #000000;
+        background-color: #ffffff;
+        border-color: #007bff;
+      }
+      .page-item.disabled .page-link {
+        color: rgba(255, 255, 255, 0.85);
+        pointer-events: none;
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: #ddd;
+      }
+      .page-link {
+         position: relative;
+         display: block;
+         /*padding: 0 0;*/
+         margin-left: -1px;
+         line-height: 1.25;
+         color: rgba(255, 255, 255, 0.85);
+         background-color: rgba(255, 255, 255, 0.08);
+         border: 0 solid #ddd;
+       }
+      .page-link:focus, .page-link:hover {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: #ddd;
+      }
+      .pagination-lg .page-link {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+      }
+      .pagination-lg .page-item:first-child .page-link {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+      .pagination-lg .page-item:last-child .page-link {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+
+      .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+      }
+      .pagination-sm .page-item:first-child .page-link {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+      .pagination-sm .page-item:last-child .page-link {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
       }
     `
   ]

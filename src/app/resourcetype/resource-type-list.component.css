@@ -4,6 +4,7 @@
 
 .card {
   /*margin-bottom: 2.3rem;*/
+  align-items: center;
   margin-top: 1%;
   /*padding-top: 1%;*/
   /*padding-bottom: 1%;*/
@@ -11,4 +12,21 @@
   background-color: rgba(0,0,0,.2);
   background-clip: border-box;
   border-radius: 2px;
+}
+
+.modal-body {
+  color: black;
+}
+
+thead th, thead td {
+  /*vertical-align: middle;*/
+  text-align: center;
+  /*align-items: center;*/
+}
+tbody th, tbody td {
+  /*vertical-align: middle;*/
+  /*display: block;*/
+  /*margin: auto;*/
+  text-align: center;
+  /*align-items: center;*/
 }

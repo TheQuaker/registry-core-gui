@@ -7,12 +7,13 @@
 html {
   height: 100%;
   box-sizing: border-box;
-  background-color: #772036;
+  background-color: #234d6d;
 }
 
 body {
   min-height: 100%;
-  background: url(./app/img/1.jpg);
+  background: url(./app/img/7.jpg);
   background-attachment: fixed;
+  color:  #fff;
 }
 

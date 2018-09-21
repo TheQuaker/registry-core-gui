@@ -187,7 +187,9 @@ export class ResourceListComponent implements OnInit {
 
     // console.log('resourceType = ' + resourceType + '\nquery = ' + query + '\nstart item = ' + startItem + '\npage = ' + page);
     this.resourceService.deleteResource(id).subscribe(
-      res => {},
+      res => {
+        this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
+      },
       error => this.errorMessage = <any>error,
       () => {
         // this should be more elegant
@@ -197,7 +199,7 @@ export class ResourceListComponent implements OnInit {
             page = 1;
             window.location.reload();
           }
-          this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
+          // this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
         } else { window.location.reload(); }
       }
     );
