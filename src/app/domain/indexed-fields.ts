@@ -3,7 +3,7 @@
  */
 
 export interface IndexedFields {
+  id: string;
   name: string;
-  type: string;
   values: Object[];
 }

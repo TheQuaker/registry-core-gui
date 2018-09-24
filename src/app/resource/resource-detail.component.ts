@@ -4,6 +4,7 @@ import {Location} from '@angular/common';
 
 import {ResourceService} from '../services/resource.service';
 import {Resource} from '../domain/resource';
+import {IndexedFields} from '../domain/indexed-fields';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class ResourceDetailComponent implements OnInit {
 
   public errorMessage: string;
   public resource: Resource;
+  public indexedFields: IndexedFields[];
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +26,7 @@ export class ResourceDetailComponent implements OnInit {
 
   ngOnInit() {
     this.getResource();
+    this.getIndexedFields();
   }
 
   getResource(): void {
@@ -33,6 +36,16 @@ export class ResourceDetailComponent implements OnInit {
     this.resourceService.getResource(resourceType, id).subscribe(
       resource => this.resource = resource,
       error => this.errorMessage = <any>error
+    );
+  }
+
+  getIndexedFields(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    this.resourceService.getIndexedFields(id).subscribe(
+      indexedField => this.indexedFields = indexedField,
+      error => this.errorMessage = <any>error,
+      // () => console.log(this.indexedFields)
     );
   }
 

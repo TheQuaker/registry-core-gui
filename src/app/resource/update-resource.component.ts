@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, Validators} from '@angular/forms';
-import {Location} from '@angular/common';
 
 import {ResourceService} from '../services/resource.service';
 import {ResourceTypeService} from '../services/resource-type.service';
@@ -11,7 +10,7 @@ import {ResourceType} from '../domain/resource-type';
 
 @Component({
   selector: 'app-update-resource',
-  templateUrl: './update-resource.component.html'
+  templateUrl: './update-resource.component.html',
 })
 
 export class UpdateResourceComponent implements OnInit {
@@ -33,8 +32,7 @@ export class UpdateResourceComponent implements OnInit {
     private router: Router,
     private resourceService: ResourceService,
     private resourceTypeService: ResourceTypeService,
-    private fb: FormBuilder,
-    private location: Location
+    private fb: FormBuilder
   ) {
   }
 
@@ -54,7 +52,11 @@ export class UpdateResourceComponent implements OnInit {
         this.resourceForm.patchValue(this.resource);
         if (this.resourceForm.get('payload').value) {
           this.resourceForm.get('payloadUrl').disable();
-        } else { this.resourceForm.get('payload').disable(); }
+        } else {
+          this.resourceForm.get('payload').disable();
+        }
+        this.resourceForm.get('resourceTypeName').disable();
+        this.resourceForm.get('payloadFormat').disable();
       }
     );
   }
@@ -66,6 +68,7 @@ export class UpdateResourceComponent implements OnInit {
     );
   }
 
+  // deprecated
   onTypeSelect(event): void {
     this.resourceForm.patchValue({
       payloadFormat: this.resourceTypes.filter(i => i.name === event.target.value)[0].payloadType,
@@ -73,13 +76,14 @@ export class UpdateResourceComponent implements OnInit {
   }
 
   putResource() {
+    this.resourceForm.get('resourceTypeName').enable();
+    this.resourceForm.get('payloadFormat').enable();
     this.resourceService.updateResource(this.resourceForm.value).subscribe(
-      _ => {},
+      _ => {
+      },
       error => this.errorMessage = <any>error,
       () => {
-        // this.router.navigate(['/resources'], { queryParams: {page : 1}, queryParamsHandling: 'merge'});
         this.goBack();
-        // window.location.reload();
       }
     );
   }
@@ -97,7 +101,7 @@ export class UpdateResourceComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
   }
 
 }

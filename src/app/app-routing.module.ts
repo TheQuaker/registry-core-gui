@@ -39,6 +39,10 @@ const appRoutes: Routes = [
   {
     path: 'resource/updateResource/:resourceType/:id',
     loadChildren: './resource/resource.module#ResourceModule'
+  },
+  {
+    path: 'dump',
+    loadChildren: './dump/dump.module#DumpModule'
   }
 ];
 

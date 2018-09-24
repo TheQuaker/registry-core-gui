@@ -7,6 +7,7 @@ import {catchError, map, tap} from 'rxjs/operators';
 import {ResourcePage} from '../domain/resource-page';
 import {Resource} from '../domain/resource';
 import {environment} from '../../environments/environment';
+import {IndexedFields} from '../domain/indexed-fields';
 
 
 @Injectable({
@@ -50,6 +51,14 @@ export class ResourceService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  getIndexedFields(id: string) {
+    return this.http.get<IndexedFields[]>(this.resourceUrl + 'indexed/' + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+
   }
 
   getResourcesBySearch (resourceType: string, searchTerm: string, from: string) {

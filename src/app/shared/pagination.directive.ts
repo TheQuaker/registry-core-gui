@@ -6,13 +6,13 @@ import {Component, DoCheck, Input, OnChanges, SimpleChanges} from '@angular/core
     <nav aria-label="Result pages">
       <ul class="pagination">
 
-        <li class="page-item" [ngClass]="{disabled : isPreviousPageDisabled}">
+        <li class="page-item paginate_button" [ngClass]="{disabled : isPreviousPageDisabled}">
           <a class="page-link" queryParamsHandling="merge" [routerLink]="['.']" [queryParams]="{page : 1}">
             First
           </a>
         </li>
 
-        <li class="page-item" [ngClass]="{disabled : isPreviousPageDisabled}">
+        <li class="page-item paginate_button" [ngClass]="{disabled : isPreviousPageDisabled}">
           <a class="page-link" queryParamsHandling="merge" [routerLink]="['.']" [queryParams]="{page : from - size}"
              aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
@@ -20,13 +20,13 @@ import {Component, DoCheck, Input, OnChanges, SimpleChanges} from '@angular/core
           </a>
         </li>
 
-        <li *ngFor="let p of pages" class="page-item" [ngClass]="{'active' : p == from}">
+        <li *ngFor="let p of pages" class="page-item paginate_button" [ngClass]="{'active' : p == from}">
           <a class="page-link" queryParamsHandling="merge" [routerLink]="['.']" [queryParams]="{page : p}">
             {{p}}
           </a>
         </li>
 
-        <li class="page-item" [ngClass]="{disabled : isNextPageDisabled}">
+        <li class="page-item paginate_button" [ngClass]="{disabled : isNextPageDisabled}">
           <a class="page-link" queryParamsHandling="merge" [routerLink]="['.']" [queryParams]="{page : from + size}"
              aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
@@ -34,7 +34,7 @@ import {Component, DoCheck, Input, OnChanges, SimpleChanges} from '@angular/core
           </a>
         </li>
 
-        <li class="page-item" [ngClass]="{disabled : isNextPageDisabled}">
+        <li class="page-item paginate_button" [ngClass]="{disabled : isNextPageDisabled}">
           <a class="page-link" queryParamsHandling="merge" [routerLink]="['.']" [queryParams]="{page : this.lastPage}">
             Last</a>
         </li>
@@ -52,7 +52,6 @@ import {Component, DoCheck, Input, OnChanges, SimpleChanges} from '@angular/core
         list-style: none;
         border-radius: 2px;
       }
-
       /*.page-item:first-child .page-link {*/
         /*margin-left: 0;*/
         /*border-top-left-radius: 2px;*/

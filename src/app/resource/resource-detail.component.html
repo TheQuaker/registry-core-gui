@@ -64,13 +64,23 @@
               <span>{{resource.modificationDate | date:'medium' }}</span>
             </div>
           </div>
-          <div class="form-group" *ngIf="resource.indexedFields">
+          <div class="form-group" *ngIf="indexedFields">
             <label class="col-sm-2 col-md-2 control-label">Indexed Fields</label>
-            <div class="col-sm-10 col-md-8 detail" *ngFor="let indexedField of resource.indexedFields;
-                  let index=index" [class.col-sm-offset-2]="index != 0">
-              <span>{{indexedField.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-              <!--<span>{{indexedField.value}}</span>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;-->
-              <span>{{indexedField.type}}</span>
+            <div class="col-md-6 detail">
+            <table class="table table-boarded table-striped">
+              <thead>
+              <tr>
+                <th>Indexed Field</th>
+                <th>Value</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let indexedField of indexedFields;">
+                <td>{{indexedField.name}}</td>
+                <td>{{indexedField.values}}</td>
+              </tr>
+              </tbody>
+            </table>
             </div>
           </div>
           <div class="form-group form-actions">

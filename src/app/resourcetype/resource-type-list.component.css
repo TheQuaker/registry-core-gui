@@ -3,10 +3,9 @@
  */
 
 .card {
-  /*margin-bottom: 2.3rem;*/
   align-items: center;
   margin-top: 1%;
-  /*padding-top: 1%;*/
+  padding-top: 1%;
   /*padding-bottom: 1%;*/
   /*box-shadow: 0 1px 5px rgba(0,0,0,.1);*/
   background-color: rgba(0,0,0,.2);
@@ -29,4 +28,9 @@ tbody th, tbody td {
   /*margin: auto;*/
   text-align: center;
   /*align-items: center;*/
+}
+
+.action-buttons {
+  float:none!important;
+  display:inline;
 }

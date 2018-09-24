@@ -25,3 +25,8 @@ thead th, thead td {
 tbody th, tbody td {
   text-align: center;
 }
+
+.action-buttons {
+  float:none!important;
+  display:inline;
+}

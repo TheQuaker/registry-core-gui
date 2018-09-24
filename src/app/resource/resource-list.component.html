@@ -35,7 +35,7 @@
           </div>
         </form>
 
-        <div class="col-md-3 ">
+        <div class="col-md-3">
 
           <a routerLink="addNewResource/">
             <button class="btn btn-success">New resource</button>
@@ -63,7 +63,7 @@
 
         </div>
 
-        <div class="card">
+        <div class="card col-md-12">
           <div #table class="col-md-12 row justify-content-md-center" *ngIf="resourcePage">
 
             <div paginate [total]="resourcePage.total" [from]="currentPage"></div>
@@ -87,12 +87,13 @@
                   <div>{{resource.creationDate | date:'medium'}}</div>
                 </td>
                 <td class="col-md-2">
-                  <div class="row">
+                  <div class="row action-buttons">
                     <a routerLink="detail/{{resource.resourceTypeName}}/{{resource.id}}">
-                      <button class="btn btn-info">Details</button></a>
+                      <button class="btn btn-info"><i class="fa fa-lg fa-info-circle"></i></button></a>
                     <a routerLink="updateResource/{{resource.resourceTypeName}}/{{resource.id}}">
-                      <button class="btn btn-warning">up</button></a>
-                    <button class="btn btn-danger" (click)="openModal(template)">Delete</button>
+                      <button class="btn btn-warning"><i class="fa fa-lg fa-edit"></i></button></a>
+                    <button class="btn btn-danger" (click)="openModal(template)">
+                      <i class="fa fa-lg fa-trash-o"></i></button>
                   </div>
                 </td>
                 <ng-template #template>

@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResourceModule } from './resource/resource.module';
 import { ResourceTypeModule } from './resourcetype/resource-type.module';
+import {DumpModule} from './dump/dump.module';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { ResourceTypeModule } from './resourcetype/resource-type.module';
     BrowserModule,
     ResourceModule,
     ResourceTypeModule,
+    DumpModule,
     HttpClientModule,
     AppRoutingModule
   ],
