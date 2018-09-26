@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {PaginationModule} from 'ngx-bootstrap/pagination';
+// import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
@@ -21,7 +21,7 @@ import {SharedModule} from '../shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    PaginationModule.forRoot(),
+    // PaginationModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot()
   ],

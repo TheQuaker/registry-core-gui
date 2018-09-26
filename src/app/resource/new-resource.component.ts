@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Location} from '@angular/common';
-// import { Validators } from '@angular/forms';
-// import { FormArray } from '@angular/forms';
 
 import {ResourceType} from '../domain/resource-type';
 import {ResourceTypeService} from '../services/resource-type.service';

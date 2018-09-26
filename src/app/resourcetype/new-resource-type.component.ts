@@ -39,7 +39,6 @@ export class NewResourceTypeComponent implements OnInit {
           // primaryKey:  [''],
         })
       ]),
-      // indexFields: ['']
     });
     this.resourceTypeForm.get('schemaUrl').disable();
     this.resourceTypeForm.get('indexMapperClass').disable();
@@ -86,7 +85,6 @@ export class NewResourceTypeComponent implements OnInit {
   }
 
   addIndexField(): void {
-    // this.resourceTypeForm['indexFields'].push();
     const temp = <FormArray>this.resourceTypeForm.get('indexFields');
       temp.push(
       this.fb.group({
