@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {DumpComponent} from './dump.component';
 import {DumpRouting} from './dump-routing';
+import {DumpService} from '../services/dump.service';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import {DumpRouting} from './dump-routing';
     DumpComponent
   ],
   providers: [
+    DumpService
   ]
 })
 

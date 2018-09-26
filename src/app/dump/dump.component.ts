@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormArray} from '@angular/forms';
+import {Router} from '@angular/router';
+
 import {ResourceType} from '../domain/resource-type';
 import {ResourceTypeService} from '../services/resource-type.service';
-import index from '@angular/cli/lib/cli';
+import {DumpService} from '../services/dump.service';
 
 
 @Component({
@@ -16,9 +18,12 @@ export class DumpComponent implements OnInit {
   public resourceTypeSelector: ResourceType[];
   public resourceTypeNameArray: string[];
   public errorMessage: string;
+  file;
 
   constructor(
     private resourceTypeService: ResourceTypeService,
+    private dumpService: DumpService,
+    private router: Router,
     private fb: FormBuilder
   ) {}
 
@@ -71,7 +76,9 @@ export class DumpComponent implements OnInit {
   }
 
   onTypeSelect(event): void {
-    this.resourceTypes.push(this.fb.control(event.target.value));
+    this.resourceTypes.push(this.fb.control({value: event.target.value, disabled: true}));
+    // this.resourceTypes.push(this.fb.control(event.target.value));
+
     const i = this.resourceTypeNameArray.indexOf(event.target.value, 0);
     // console.log(this.resourceTypeNameArray);
     // console.log(i);
@@ -81,5 +88,22 @@ export class DumpComponent implements OnInit {
     event.target.value = 'null';
   }
 
+  submit() {
+    this.dumpService.getDumpFile(
+      this.dumpForm.get('raw').value,
+      this.dumpForm.get('schema').value,
+      this.dumpForm.get('version').value,
+      this.dumpForm.get('resourceTypes').value)
+      .subscribe(
+        res => this.file = res,
+        error => this.errorMessage = <any>error,
+        () => console.log(this.file)
+      );
+  }
+
+  goBack() {
+    this.router.navigate(['']);
+
+  }
 
 }

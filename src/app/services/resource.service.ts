@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 
-import {Observable, of, throwError} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
 
 import {ResourcePage} from '../domain/resource-page';
 import {Resource} from '../domain/resource';
@@ -24,8 +24,7 @@ export class ResourceService {
     })
   };
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   /** GET **/
   getResources(from: string, to: string) {
@@ -58,7 +57,6 @@ export class ResourceService {
       .pipe(
         catchError(this.handleError)
       );
-
   }
 
   getResourcesBySearch (resourceType: string, searchTerm: string, from: string) {
@@ -70,7 +68,11 @@ export class ResourceService {
     } else {
       query = `searchableArea=*${searchTerm}*`;
     }
-    const params: any = {from: from, quantity: quantity, sortByType: sortByType};
+    // const rams: any = {from: from, quantity: quantity, sortByType: sortByType};
+    let params = new HttpParams();
+    params = params.append('from', from);
+    params = params.append('quantity', quantity);
+    params = params.append('sortByType', sortByType);
     // return this.http.get<ResourcePage>(this.searchUrl + `${resourceType}/${query}/?from=0&quantity=10&sortByType=ASC`)
     return this.http.get<ResourcePage>(this.searchUrl + `${resourceType}/${query}/`, {params})
       .pipe(

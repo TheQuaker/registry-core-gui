@@ -1,6 +1,7 @@
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {ResourceTypeService} from '../services/resource-type.service';
 
 
@@ -17,6 +18,7 @@ export class NewResourceTypeComponent implements OnInit {
   constructor(
     private resourceTypeService: ResourceTypeService,
     private fb: FormBuilder,
+    private router: Router,
     private location: Location
   ) {}
 
@@ -98,7 +100,8 @@ export class NewResourceTypeComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['/resourceTypes'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
   }
 
 }

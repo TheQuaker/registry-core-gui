@@ -5,6 +5,7 @@ import {Location} from '@angular/common';
 import {ResourceType} from '../domain/resource-type';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {ResourceService} from '../services/resource.service';
+import {Router} from '@angular/router';
 
 
 
@@ -35,6 +36,7 @@ export class NewResourceComponent implements OnInit {
     private resourceTypeService: ResourceTypeService,
     private resourceService: ResourceService,
     private fb: FormBuilder,
+    private router: Router,
     private location: Location
   ) {}
 
@@ -74,8 +76,8 @@ export class NewResourceComponent implements OnInit {
   }
 
   goBack() {
-    // window.history.back();
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
   }
 
 }
