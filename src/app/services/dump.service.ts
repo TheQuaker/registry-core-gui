@@ -5,6 +5,7 @@ import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 
 import {environment} from '../../environments/environment';
+import {RequestOptions, ResponseContentType} from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +30,7 @@ export class DumpService {
     for (let i = 0; i < resourceTypes.length; i++) {
       params = params.append('resourceTypes', resourceTypes[i]);
     }
-
-    return this.http.get(this.dumpUrl, {params})
+    return this.http.get(this.dumpUrl + '?' + params, { responseType: 'blob' })
       .pipe(
         catchError(this.handleError)
       );

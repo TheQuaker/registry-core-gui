@@ -37,7 +37,7 @@ export class NewResourceTypeComponent implements OnInit {
           path: [''],
           type: [''],
           // defaultValue: [''],
-          multivalued: [''],
+          multivalued: ['false'],
           // primaryKey:  [''],
         })
       ]),
@@ -94,7 +94,7 @@ export class NewResourceTypeComponent implements OnInit {
       path: [''],
       type: [''],
       // defaultValue: [''],
-      multivalued: [''],
+      multivalued: ['false'],
       // primaryKey:  [''],
     }));
   }

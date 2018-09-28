@@ -4,11 +4,11 @@
 .sidebar {
   position: fixed;
   width: 50%;
-  top: 0;
+  top: 48px;
   bottom: 0;
   left: 0;
   z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
+  /*padding: 48px 0 0; !* Height of navbar *!*/
   background-color: rgba(0,0,0,.125);
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
@@ -70,8 +70,6 @@
   margin-right: 0;
 }
 
-
-
 /*
  * Content
  */
@@ -84,19 +82,6 @@
  * Navbar
  */
 
-/*.navbar {*/
-  /*background-color: rgba(0,0,0,.5);*/
-  /*align-items: center;*/
-  /*padding: 0 1.5rem 0 0;*/
-  /*box-shadow: 0 0 13px rgba(0, 0, 0, 0.22);*/
-  /*transition: background-color 1000ms, box-shadow 1000ms;*/
-  /*display: flex;*/
-  /*position: fixed;*/
-  /*width: 100%;*/
-  /*z-index: 100;*/
-  /*top: 0;*/
-  /*left: 0;*/
-/*}*/
 .navbar {
   position: fixed;
   width: 100%;
@@ -109,21 +94,22 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   top: 0;
   left: 0;
   padding-right: 1.5rem;
+  padding-left: 0rem;
   box-shadow: 0 0 13px rgba(0, 0, 0, 0.22);
   transition: background-color 1000ms, box-shadow 1000ms;
 }
 
-/*.navbar--scrolled {*/
-  /*background-color: rgba(0, 0, 0, 0.96);*/
-  /*box-shadow: 0 0 13px rgba(0, 0, 0, 0.22);*/
-/*}*/
+.scrolled {
+  background-color: rgba(0, 0, 0, 0.96);
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.22);
+}
 
 .navbar-brand {
-  color: white;
+  color: #ffffff;
   padding-top: .75rem;
   padding-left: 2.2rem;
   padding-bottom: .75rem;
@@ -140,8 +126,8 @@
   -webkit-box-flex: 1;
   flex: 1;
   margin-right: 2.5rem;
+  margin-left: 0.25rem;
   position: relative;
-  /*margin-left: 0.25rem;*/
 }
 
 .form-control-dark {

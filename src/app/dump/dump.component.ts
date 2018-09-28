@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormArray} from '@angular/forms';
 import {Router} from '@angular/router';
 
+// import { saveAs as importedSaveAs} from 'file-saver';
+
 import {ResourceType} from '../domain/resource-type';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {DumpService} from '../services/dump.service';
@@ -100,6 +102,17 @@ export class DumpComponent implements OnInit {
         () => console.log(this.file)
       );
   }
+  // submit() {
+  //   this.dumpService.getDumpFile(
+  //     this.dumpForm.get('raw').value,
+  //     this.dumpForm.get('schema').value,
+  //     this.dumpForm.get('version').value,
+  //     this.dumpForm.get('resourceTypes').value);
+  //     .subscribe(
+  //       blob => {importedSaveAs(blob, this.file);
+  //       }
+  //     );
+  // }
 
   goBack() {
     this.router.navigate(['']);

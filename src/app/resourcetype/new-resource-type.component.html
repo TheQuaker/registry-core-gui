@@ -61,7 +61,11 @@
               <!--defaultValue: <input class="form-control" type="text" formControlName="defaultValue">-->
               <!--</label>-->
               <label>
-                multivalued: <input class="form-control" type="text" formControlName="multivalued">
+                multivalued:
+                <select class="form-control" formControlName="multivalued">
+                  <option value="false" selected>false</option>
+                  <option value="true">true</option>
+                </select>
               </label>
               <!--<label>-->
               <!--primaryKey: <input class="form-control" type="text" formControlName="primaryKey">-->

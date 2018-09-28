@@ -43,6 +43,10 @@ const appRoutes: Routes = [
   {
     path: 'dump',
     loadChildren: './dump/dump.module#DumpModule'
+  },
+  {
+    path: 'restore',
+    loadChildren: './restore/restore.module#RestoreModule'
   }
 ];
 
