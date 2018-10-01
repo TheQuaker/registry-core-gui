@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ResourceModule } from './resource/resource.module';
 import { ResourceTypeModule } from './resourcetype/resource-type.module';
 import {DumpModule} from './dump/dump.module';
+import {RestoreModule} from './restore/restore.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {DumpModule} from './dump/dump.module';
     ResourceModule,
     ResourceTypeModule,
     DumpModule,
+    RestoreModule,
     HttpClientModule,
     AppRoutingModule
   ],

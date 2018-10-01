@@ -96,7 +96,8 @@ export class ResourceListComponent implements OnInit {
           this.currentPage = +params['page'];
           // console.log(this.currentPage);
           const startItem = (+params['page'] - 1) * this.itemsPerPage;
-          setTimeout(() => { this.getResources(resourceType, query, `${startItem}`); }, 500);
+          // setTimeout(() => { this.getResources(resourceType, query, `${startItem}`); }, 500);
+          this.getResources(resourceType, query, `${startItem}`);
           // this.getResources(resourceType, query, `${startItem}`);
           // console.log('Ng onInit2 ' + this.resourcePage.total);
         }
@@ -188,19 +189,18 @@ export class ResourceListComponent implements OnInit {
     // console.log('resourceType = ' + resourceType + '\nquery = ' + query + '\nstart item = ' + startItem + '\npage = ' + page);
     this.resourceService.deleteResource(id).subscribe(
       res => {
-        this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
-      },
-      error => this.errorMessage = <any>error,
-      () => {
-        // this should be more elegant
+        // this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
         if ((this.resourcePage.total % this.itemsPerPage) === 1) {
           page = page - 1;
           if (page === 0) {
             page = 1;
             window.location.reload();
           }
-          // this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
+          this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
         } else { window.location.reload(); }
+      },
+      error => this.errorMessage = <any>error,
+      () => {
       }
     );
   }

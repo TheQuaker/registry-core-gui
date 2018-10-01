@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
 import {FormBuilder, FormGroup, FormArray} from '@angular/forms';
 import {Router} from '@angular/router';
 
-// import { saveAs as importedSaveAs} from 'file-saver';
 
 import {ResourceType} from '../domain/resource-type';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {DumpService} from '../services/dump.service';
+import {saveAs} from 'file-saver';
 
 
 @Component({
@@ -22,11 +23,19 @@ export class DumpComponent implements OnInit {
   public errorMessage: string;
   file;
 
+  @Output()
+  loading: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  total: number = 0;
+  loaded: number = 0;
+  loading_: boolean = false;
+
   constructor(
     private resourceTypeService: ResourceTypeService,
     private dumpService: DumpService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -90,29 +99,32 @@ export class DumpComponent implements OnInit {
     event.target.value = 'null';
   }
 
-  submit() {
-    this.dumpService.getDumpFile(
+  download() {
+    //   const url_: URL = new URL(dumpUrl + '?' + params);
+    //   const path = url_.pathname.split(/\//);
+    //   const filename = url_.searchParams.get('archiveId') || path[path.length - 1] || 'download';
+    this.total = 0; this.loaded = 0;
+    const filename = 'download';
+    this.loading_ = true;
+    this.loading.next(true);
+    this.dumpService.downloadDump(
       this.dumpForm.get('raw').value,
       this.dumpForm.get('schema').value,
       this.dumpForm.get('version').value,
       this.dumpForm.get('resourceTypes').value)
-      .subscribe(
-        res => this.file = res,
-        error => this.errorMessage = <any>error,
-        () => console.log(this.file)
-      );
+      .subscribe(event => {
+        if (event.type === HttpEventType.DownloadProgress) {
+          this.total = event.total; this.loaded = event.loaded;
+          // console.log(event.total, event.loaded);
+        } else if (event instanceof HttpResponse) {
+          this.loading_ = false;
+          // this.total = 0; this.loaded = 0;
+          this.loading.next(false);
+          const blob = (event as HttpResponse<any>).body;
+          saveAs(blob, filename + '.zip');
+        }
+      });
   }
-  // submit() {
-  //   this.dumpService.getDumpFile(
-  //     this.dumpForm.get('raw').value,
-  //     this.dumpForm.get('schema').value,
-  //     this.dumpForm.get('version').value,
-  //     this.dumpForm.get('resourceTypes').value);
-  //     .subscribe(
-  //       blob => {importedSaveAs(blob, this.file);
-  //       }
-  //     );
-  // }
 
   goBack() {
     this.router.navigate(['']);

@@ -5,7 +5,7 @@ import {RestoreComponent} from './restore.component';
 
 const restoreRoutes: Routes = [
   {
-    path: 'dump',
+    path: 'restore',
     component: RestoreComponent
   }
 ];

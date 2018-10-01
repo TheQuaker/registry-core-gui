@@ -137,13 +137,13 @@ export class PaginationDirectiveComponent implements OnChanges {
 
 
   get isNextPageDisabled(): boolean {
-    if (this.currentPage === this.lastPage || this.lastPage === 0) {
+    if (this.currentPage >= this.lastPage || this.lastPage === 0) {
       return true;
     } else { return false; }
   }
 
   get isPreviousPageDisabled(): boolean {
-    return this.currentPage === 1;
+    return this.currentPage <= 1;
   }
 
   get currentPage(): number {

@@ -59,10 +59,12 @@
       <div class="form-group form-actions">
         <div class="">
           <button class="btn btn-default" (click)="goBack()">Back</button>
-          <button class="btn btn-primary" (click)="submit()">Submit</button>
+          <button class="btn btn-primary" (click)="download()">Download File
+            <i aria-hidden="true" class="fa fa-download"></i></button>
         </div>
       </div>
     </form>
+    <progress class="uk-progress" value={{loaded}} max={{total}}></progress>
     <p>
       Form Value: {{dumpForm.value | json}}
     </p>

@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {RestoreComponent} from './restore.component';
 import {RestoreRouting} from './restore-routing';
+import {RestoreService} from '../services/restore.service';
 
 @NgModule({
   imports: [
@@ -11,6 +12,9 @@ import {RestoreRouting} from './restore-routing';
   ],
   declarations: [
     RestoreComponent
+  ],
+  providers: [
+    RestoreService
   ]
 })
 

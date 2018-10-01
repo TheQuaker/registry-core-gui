@@ -1,1 +1,11 @@
 <p>Upload restore</p>
+
+
+<input type="file" (change)="selectFile($event)"
+       placeholder="Upload file"
+       accept="application/zip">
+<button class="btn btn-success" (click)="uploadFile()">
+  Upload <i class="fa fa-upload"></i>
+</button>
+
+<progress class="uk-progress" value={{loaded}} max=100></progress>

@@ -1,4 +1,4 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {catchError} from 'rxjs/operators';
@@ -13,6 +13,8 @@ import {RequestOptions, ResponseContentType} from '@angular/http';
 
 export class DumpService {
   private dumpUrl = environment.API_END_POINT + '/RegistryService/dump/';
+  // private dumpUrl = 'http://83.212.98.76:8080/omtd-registry/dump/';
+
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -22,7 +24,7 @@ export class DumpService {
 
   constructor(private http: HttpClient) {}
 
-  getDumpFile(raw: string, schema: string, version: string, resourceTypes: string[]) {
+  downloadDump(raw: string, schema: string, version: string, resourceTypes: string[]) {
     let params = new HttpParams();
     params = params.append('raw', raw);
     params = params.append('schema', schema);
@@ -30,10 +32,14 @@ export class DumpService {
     for (let i = 0; i < resourceTypes.length; i++) {
       params = params.append('resourceTypes', resourceTypes[i]);
     }
-    return this.http.get(this.dumpUrl + '?' + params, { responseType: 'blob' })
-      .pipe(
-        catchError(this.handleError)
-      );
+    const req = new HttpRequest('GET', this.dumpUrl + '?' + params, {
+      reportProgress: true,
+      responseType: 'blob',
+      // withCredentials: true
+    });
+    return this.http.request(req).pipe(
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: HttpErrorResponse) {
