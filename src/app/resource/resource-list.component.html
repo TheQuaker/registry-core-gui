@@ -80,7 +80,7 @@
               </thead>
               <tbody>
               <tr class="row" *ngFor="let resource of resourcePage.results">
-                <td class="col-md-1"><input #checkBoxes type="checkbox" name={{resource.id}} (change)="isAllChecked()"></td>
+                <td class="col-md-1"><input #checkBoxes type="checkbox" id={{resource.id}} (change)="isAllChecked()"></td>
                 <td class="col-md-4">{{resource.id}}</td>
                 <td class="col-md-2">{{resource.resourceTypeName}}</td>
                 <td class="col-md-3">

@@ -20,20 +20,20 @@ export class RestoreService {
 
   restore(file: File): Observable<HttpEvent<any>> {
     const formData = new FormData();
-    formData.append('upload', file);
+    formData.append('datafile', file);
 
     // const params = new HttpParams();
 
     const options = {
       // params: params,
-      // headers: new HttpHeaders({
-      //   'Content-Type': 'multipart/form-data',
-      //   'Accept': 'application/xml'
-      // }),
+      headers: new HttpHeaders({
+        // 'Content-Type': 'multipart/form-data',
+        // 'Accept': 'application/xml',
+      }),
       reportProgress: true,
     };
 
-    const req = new HttpRequest('POST', this.restoreUrl, file, options);
+    const req = new HttpRequest('POST', this.restoreUrl, formData, options);
     return this.http.request(req).pipe(
       catchError(this.handleError)
     );

@@ -93,9 +93,7 @@ export class ResourceTypeListComponent implements OnInit {
     });
 
     this.resourceTypeService.deleteResourceType(name).subscribe(
-      res => {},
-      error => this.errorMessage = <any>error,
-      () => {
+      res => {
         if ((this.resourceTypePage.total % this.itemsPerPage) === 1) {
           page = page - 1;
           if (page === 0) { page = 1; }
@@ -103,7 +101,11 @@ export class ResourceTypeListComponent implements OnInit {
         const startItem = (page - 1) * this.itemsPerPage;
         const endItem = page * this.itemsPerPage;
         this.getResourceTypes(startItem, endItem);
-        // this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
+        this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
+      },
+      error => this.errorMessage = <any>error,
+      () => {
+
         // window.location.reload();
       }
     );
