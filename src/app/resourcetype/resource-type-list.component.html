@@ -63,7 +63,7 @@
                 </thead>
                 <tbody>
                 <tr class="row" *ngFor="let resourceType of viewPage">
-                  <td class="col-md-1" align="center"><input #checkBoxes type="checkbox" name="all" (change)="isAllChecked()"></td>
+                  <td class="col-md-1" align="center"><input #checkBoxes type="checkbox" id={{resourceType.name}} (change)="isAllChecked()"></td>
                   <td class="col-md-2">{{resourceType.name}}</td>
                   <td class="col-md-2">{{resourceType.payloadType}}</td>
                   <td class="col-md-2">

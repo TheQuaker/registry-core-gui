@@ -1,4 +1,5 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren} from '@angular/core';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 
 import {PageChangedEvent} from 'ngx-bootstrap';
 import {BsModalService} from 'ngx-bootstrap/modal';
@@ -7,7 +8,6 @@ import {BsModalRef} from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {ResourceTypePage} from '../domain/resource-type-page';
 import {ResourceType} from '../domain/resource-type';
-import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -94,8 +94,8 @@ export class ResourceTypeListComponent implements OnInit {
 
     this.resourceTypeService.deleteResourceType(name).subscribe(
       res => {
-        if ((this.resourceTypePage.total % this.itemsPerPage) === 1) {
-          page = page - 1;
+        if ((this.resourceTypePage.total % this.itemsPerPage ) === 1) {
+          page--;
           if (page === 0) { page = 1; }
         }
         const startItem = (page - 1) * this.itemsPerPage;
@@ -104,11 +104,23 @@ export class ResourceTypeListComponent implements OnInit {
         this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
       },
       error => this.errorMessage = <any>error,
-      () => {
-
-        // window.location.reload();
-      }
+      () => {}
     );
+  }
+
+  deleteAllView() {
+    this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(
+      x => this.resourceTypeService.deleteResourceType(x.nativeElement['id']).subscribe()
+    );
+    let page: number;
+    page = --this.currentPage;
+    console.log('sonic boom');
+    if (page === 0) { page = 1; }
+    const startItem = (page - 1) * this.itemsPerPage;
+    const endItem = page * this.itemsPerPage;
+    this.getResourceTypes(startItem, endItem);
+    this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
+    console.log(page);
   }
 
   /** Checkboxes **/
@@ -124,8 +136,8 @@ export class ResourceTypeListComponent implements OnInit {
         count++;
       }
     });
-    // console.log('count = ' + count);
-    // console.log('length = ' + this.checkBoxes.length);
+    console.log('count = ' + count);
+    console.log('length = ' + this.checkBoxes.length);
     if (this.checkBoxes.length !== 0 && count === this.checkBoxes.length) {
       this.masterCheckbox.nativeElement['checked'] = true;
     } else {
@@ -170,7 +182,13 @@ export class ResourceTypeListComponent implements OnInit {
 
   /** **/
   bulkAction() {
-    this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => this.deleteResourceType(x.nativeElement['id']));
+    if (this.masterCheckbox.nativeElement['checked'] === true) {
+      console.log('Boom');
+      this.deleteAllView();
+    } else {
+      this.checkBoxes.filter(i => i.nativeElement['checked'])
+        .forEach(x => this.deleteResourceType(x.nativeElement['id']));
+    }
     // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
   }
 
