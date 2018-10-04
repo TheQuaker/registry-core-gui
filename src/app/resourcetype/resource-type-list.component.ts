@@ -108,19 +108,31 @@ export class ResourceTypeListComponent implements OnInit {
     );
   }
 
-  deleteAllView() {
+  deleteBatch() {
+    const nameArray: string[] = [];
     this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(
-      x => this.resourceTypeService.deleteResourceType(x.nativeElement['id']).subscribe()
+      x => nameArray.push(x.nativeElement['id'])
     );
-    let page: number;
-    page = --this.currentPage;
-    console.log('sonic boom');
-    if (page === 0) { page = 1; }
-    const startItem = (page - 1) * this.itemsPerPage;
-    const endItem = page * this.itemsPerPage;
-    this.getResourceTypes(startItem, endItem);
-    this.router.navigate(['/resourceTypes'], {queryParams: {page : page}});
-    console.log(page);
+
+    let page = this.currentPage - 1;
+    let reload = false;
+    if (page === 0) {
+      page = 1;
+      reload = true;
+    }
+    for (let i = 0; i < nameArray.length; i++) {
+      this.resourceTypeService.deleteResourceType(nameArray[i]).subscribe(
+        _ => {
+          if (i === nameArray.length - 1) {
+            const startItem = (page - 1) * this.itemsPerPage;
+            const endItem = page * this.itemsPerPage;
+            this.getResourceTypes(startItem, endItem);
+            this.router.navigate(['/resourceTypes'], {queryParams: {page: page}});
+            if (reload === true) { window.location.reload(); }
+          }
+        }
+      );
+    }
   }
 
   /** Checkboxes **/
@@ -183,8 +195,7 @@ export class ResourceTypeListComponent implements OnInit {
   /** **/
   bulkAction() {
     if (this.masterCheckbox.nativeElement['checked'] === true) {
-      console.log('Boom');
-      this.deleteAllView();
+      this.deleteBatch();
     } else {
       this.checkBoxes.filter(i => i.nativeElement['checked'])
         .forEach(x => this.deleteResourceType(x.nativeElement['id']));

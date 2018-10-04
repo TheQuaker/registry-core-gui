@@ -26,7 +26,7 @@ export class ResourceListComponent implements OnInit {
     queryString: FormControl['']
   });
 
-  @ViewChild('table')
+  @ViewChild('table') // predicated
   public table: ElementRef;
 
   @ViewChild('masterCheckbox')
@@ -92,20 +92,14 @@ export class ResourceListComponent implements OnInit {
           this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
           // this.getResources(resourceType, query, '0');
         } else {
-          // setTimeout(() => {this.currentPage = +params['page']; }, 300);
           this.currentPage = +params['page'];
           // console.log(this.currentPage);
           const startItem = (+params['page'] - 1) * this.itemsPerPage;
           // setTimeout(() => { this.getResources(resourceType, query, `${startItem}`); }, 500);
           this.getResources(resourceType, query, `${startItem}`);
-          // this.getResources(resourceType, query, `${startItem}`);
-          // console.log('Ng onInit2 ' + this.resourcePage.total);
         }
       },
       error => this.errorMessage = <any>error,
-      () => { // Never reaches this statement
-        // console.log('Ng onInit1 ' + this.resourcePage.total);
-      }
     );
   }
 
@@ -205,6 +199,35 @@ export class ResourceListComponent implements OnInit {
     );
   }
 
+  deleteBatch(): void {
+    const idArray: string[] = [];
+    this.checkBoxes.filter(i => i.nativeElement['checked'])
+      .forEach(x => idArray.push(x.nativeElement['id']));
+
+    console.log(idArray);
+
+    let page = this.currentPage - 1;
+    let reload = false;
+    if (page === 0) {
+      page = 1;
+      reload = true;
+    }
+    console.log(page);
+    for (let i = 0; i < idArray.length; i++) {
+      this.resourceService.deleteResource(idArray[i]).subscribe(
+        _ => {
+          if (i === idArray.length - 1) {
+            this.router.navigate(['/resources'], {queryParams: {page: page}, queryParamsHandling: 'merge'});
+            if (reload === true) {
+              window.location.reload();
+            }
+          }
+        }
+      );
+    }
+
+  }
+
 
   /** Checkboxes **/
   checkAll(state: boolean) {
@@ -247,8 +270,7 @@ export class ResourceListComponent implements OnInit {
 
   /** **/
   bulkAction() {
-    this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => this.deleteResource(x.nativeElement['id']));
-    // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
+    this.deleteBatch();
   }
 
   activateDropDown() {

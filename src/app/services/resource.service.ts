@@ -100,7 +100,6 @@ export class ResourceService {
   deleteResource(id: string) {
     return this.http.delete(this.resourceUrl + id, this.httpOption)
       .pipe(
-        tap(_ => console.log(_)),
         catchError(this.handleError)
       );
   }
