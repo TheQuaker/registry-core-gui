@@ -32,9 +32,9 @@ export class ResourceTypeListComponent implements OnInit {
   public isDisabled = true;
   // pagination
   public viewPage: ResourceType[];
-  rotate = true;
-  showBoundaryLinks = true;
-  maxSize = 5;
+  // rotate = true;
+  // showBoundaryLinks = true;
+  // maxSize = 5;
   currentPage = 1;
   itemsPerPage = 10;
   // modal
@@ -63,6 +63,7 @@ export class ResourceTypeListComponent implements OnInit {
         // console.log(this.viewPage);
         if (this.resourceTypePage) {
           this.viewPage = this.resourceTypePage.results.slice(startItem, endItem);
+          this.isAllChecked();
         } else {
           this.getResourceTypes(startItem, endItem);
         }
@@ -113,12 +114,15 @@ export class ResourceTypeListComponent implements OnInit {
     this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(
       x => nameArray.push(x.nativeElement['id'])
     );
-
-    let page = this.currentPage - 1;
-    let reload = false;
-    if (page === 0) {
-      page = 1;
-      reload = true;
+    let page = this.currentPage;
+    // let reload = true;
+    if (this.masterCheckbox.nativeElement['checked']) {
+      page--;
+      // reload = false;
+      if (page === 0) {
+        page = 1;
+        // reload = true;
+      }
     }
     for (let i = 0; i < nameArray.length; i++) {
       this.resourceTypeService.deleteResourceType(nameArray[i]).subscribe(
@@ -128,7 +132,7 @@ export class ResourceTypeListComponent implements OnInit {
             const endItem = page * this.itemsPerPage;
             this.getResourceTypes(startItem, endItem);
             this.router.navigate(['/resourceTypes'], {queryParams: {page: page}});
-            if (reload === true) { window.location.reload(); }
+            // if (reload === true) { window.location.reload(); }
           }
         }
       );
@@ -148,8 +152,8 @@ export class ResourceTypeListComponent implements OnInit {
         count++;
       }
     });
-    console.log('count = ' + count);
-    console.log('length = ' + this.checkBoxes.length);
+    // console.log('count = ' + count);
+    // console.log('length = ' + this.checkBoxes.length);
     if (this.checkBoxes.length !== 0 && count === this.checkBoxes.length) {
       this.masterCheckbox.nativeElement['checked'] = true;
     } else {
@@ -194,12 +198,12 @@ export class ResourceTypeListComponent implements OnInit {
 
   /** **/
   bulkAction() {
-    if (this.masterCheckbox.nativeElement['checked'] === true) {
-      this.deleteBatch();
-    } else {
-      this.checkBoxes.filter(i => i.nativeElement['checked'])
-        .forEach(x => this.deleteResourceType(x.nativeElement['id']));
-    }
+    // if (this.masterCheckbox.nativeElement['checked'] === true) {
+    this.deleteBatch();
+    // } else {
+    //   this.checkBoxes.filter(i => i.nativeElement['checked'])
+    //     .forEach(x => this.deleteResourceType(x.nativeElement['id']));
+    // }
     // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
   }
 

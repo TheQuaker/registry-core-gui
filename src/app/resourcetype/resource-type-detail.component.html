@@ -8,9 +8,9 @@
       <div class="page-title">
         View existing resource type details
       </div>
-      <a class="new-user btn btn-default pull-right" (click)="goBack()">
-        <span>Back</span>
-      </a>
+      <!--<a class="new-user btn btn-default pull-right" (click)="goBack()">-->
+        <!--<span>Back</span>-->
+      <!--</a>-->
     </div>
 
     <div class="content-wrapper">
@@ -25,9 +25,7 @@
           <div class="form-group" *ngIf="resourceType.schema">
             <label class="col-sm-2 col-md-2 control-label">Schema</label>
             <div class="col-sm-10 col-md-8 detail">
-                            <span>
-                                {{resourceType.schema}}
-                            </span>
+              <span>{{resourceType.schema}}</span>
             </div>
           </div>
           <div class="form-group" *ngIf="resourceType.schemaUrl">

@@ -206,11 +206,16 @@ export class ResourceListComponent implements OnInit {
 
     console.log(idArray);
 
-    let page = this.currentPage - 1;
-    let reload = false;
-    if (page === 0) {
-      page = 1;
-      reload = true;
+    let page = this.currentPage;
+    let reload = true;
+
+    if (this.masterCheckbox.nativeElement['checked']) {
+      page--;
+      reload = false;
+      if (page === 0) {
+        page = 1;
+        reload = true;
+      }
     }
     console.log(page);
     for (let i = 0; i < idArray.length; i++) {
@@ -225,7 +230,6 @@ export class ResourceListComponent implements OnInit {
         }
       );
     }
-
   }
 
 
