@@ -1,7 +1,9 @@
 <!--<div >-->
 <nav [ngClass]="['navbar fixed-top flex-md-nowrap shadow',  dynamicClass]" (scroll)="navBarScroll($event)">
   <a href="#" class="navbar-brand col-md-2 mr-0">Registry Core</a>
-  <input class="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search">
+  <form [formGroup]="searchForm" (submit)="updateSearchTerm()">
+    <input class="form-control form-control-dark" type="text" formControlName="searchTerm" placeholder="Search" aria-label="Search">
+  </form>
   <ul class="top-nav ">
     <li class="dropdown hidden-xs-down">
       <a href="#" data-toggle="dropdown"><i class="fa fa-check-circle"></i></a>

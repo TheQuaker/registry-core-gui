@@ -1,17 +1,37 @@
-import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {FormBuilder, FormControl} from '@angular/forms';
+import {SearchService} from './services/search.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Metadata Registry Service';
 
   public dynamicClass = 'notScrolled';
 
-  @ViewChild('navbar')
-  public navbar: ElementRef;
+  searchForm = this.fb.group({
+    searchTerm: FormControl['']
+  });
+
+  constructor(
+    private search: SearchService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.search.setSearchTerm('');
+  }
+
+  updateSearchTerm() {
+    this.search.setSearchTerm(this.searchForm.get('searchTerm').value);
+    console.log(this.search.getSearchTerm());
+    this.router.navigate(['/resources'], {queryParams: {searchTerm: this.search.getSearchTerm()}, queryParamsHandling: ''});
+  }
 
   @HostListener('window:scroll', ['$event'])
   navBarScroll(event) {
@@ -20,15 +40,5 @@ export class AppComponent {
     } else {
       this.dynamicClass = 'notScrolled';
     }
-    // console.log('this works');
-    // console.log(event);
   }
-
-  // navBarScroll(event) {
-  //   if (this.navbar.nativeElement.scrollHeight > 20) {
-  //     console.log('Scroll > 20!!');
-  //   }
-  //   console.log('this works');
-  //   console.log(event);
-  // }
 }

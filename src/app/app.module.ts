@@ -10,6 +10,7 @@ import { ResourceModule } from './resource/resource.module';
 import { ResourceTypeModule } from './resourcetype/resource-type.module';
 import {DumpModule} from './dump/dump.module';
 import {RestoreModule} from './restore/restore.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {RestoreModule} from './restore/restore.module';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     ResourceModule,
     ResourceTypeModule,
     DumpModule,

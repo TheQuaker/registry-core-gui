@@ -8,9 +8,10 @@ import {BsModalService} from 'ngx-bootstrap/modal';
 import {BsModalRef} from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import {ResourcePage} from '../domain/resource-page';
+import {ResourceTypePage} from '../domain/resource-type-page';
 import {ResourceService} from '../services/resource.service';
 import {ResourceTypeService} from '../services/resource-type.service';
-import {ResourceTypePage} from '../domain/resource-type-page';
+import {SearchService} from '../services/search.service';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class ResourceListComponent implements OnInit {
   constructor(
     private resourceService: ResourceService,
     private resourceTypeService: ResourceTypeService,
+    private search: SearchService,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: BsModalService,
     private fb: FormBuilder,
@@ -148,11 +150,17 @@ export class ResourceListComponent implements OnInit {
     } else {
       resourceType = '*';
     }
-    if (this.filterForm.controls['queryString'].value) {
-      query = this.filterForm.controls['queryString'].value;
-    } else {
+    // if (this.filterForm.controls['queryString'].value) {
+    //   query = this.filterForm.controls['queryString'].value;
+    // } else {
+    //   query = '*';
+    // }
+    if (this.search.getSearchTerm() === '') {
       query = '*';
+    } else {
+      query = this.search.getSearchTerm();
     }
+    console.log('Query = ' + query);
     this.router.navigate(['/resources'], {queryParams: {resourceType: resourceType, searchTerm: query}, queryParamsHandling: ''});
   }
 
