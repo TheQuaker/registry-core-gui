@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -6,13 +7,29 @@ import {Injectable} from '@angular/core';
 
 export class SearchService {
 
-  private searchTerm: string;
+  private searchTerm_: Subject<string> = new Subject();
 
-  getSearchTerm() {
-    return this.searchTerm;
+  private pageTitle_: Subject<string> = new Subject();
+
+  constructor() {
+    this.searchTerm_.subscribe((query: string) => {
+      console.log(query);
+    });
   }
 
-  setSearchTerm(searchTerm: string) {
-    this.searchTerm = searchTerm;
+  get searchTerm(): Subject<string> {
+    return this.searchTerm_;
   }
+
+  get pageTitle(): Subject<string> {
+    return this.pageTitle_;
+  }
+
+  set nextTitle(s: string) {
+    this.pageTitle_.next(s);
+  }
+
+  // set searchTerm(searchTerm: Subject<string>) {
+  //   this.searchTerm_ = searchTerm;
+  // }
 }

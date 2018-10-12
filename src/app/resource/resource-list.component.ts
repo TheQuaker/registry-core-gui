@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren
+  ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren
 } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl} from '@angular/forms';
@@ -27,8 +27,7 @@ export class ResourceListComponent implements OnInit {
     queryString: FormControl['']
   });
 
-  @ViewChild('table') // predicated
-  public table: ElementRef;
+  // @HostListener('window:scroll', ['$event'])
 
   @ViewChild('masterCheckbox')
   public masterCheckbox: ElementRef;
@@ -36,10 +35,12 @@ export class ResourceListComponent implements OnInit {
   @ViewChildren('checkBoxes')
   public checkBoxes: QueryList<ElementRef>;
 
+  public dynamicClass = 'notScrolled';
   public isDisabled = true;
   public errorMessage: string;
   public resourcePage: ResourcePage;
   public resourceTypePage: ResourceTypePage;
+  public pageTitle;
 
   // pagination
   itemsPerPage = 10;
@@ -61,6 +62,7 @@ export class ResourceListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.search.pageTitle.next('Resources');
     this.getResourceTypes();
     this.route.queryParams.subscribe(
       params => {
@@ -70,6 +72,7 @@ export class ResourceListComponent implements OnInit {
 
         if (params['resourceType'] && params['resourceType'] !== 'all') {
           resourceType = params['resourceType'];
+          this.search.nextTitle = resourceType;
           if (resourceType !== '*') {
             this.filterForm.get('resourceType').setValue(resourceType);
           }
@@ -103,6 +106,11 @@ export class ResourceListComponent implements OnInit {
       },
       error => this.errorMessage = <any>error,
     );
+
+    this.search.searchTerm.subscribe(
+      s => this.onSearch(s)
+    );
+    // this.search.pageTitle.subscribe(title => this.pageTitle = title);
   }
 
   /** GET **/
@@ -132,6 +140,7 @@ export class ResourceListComponent implements OnInit {
   onTypeSelect(event) {
     // console.log(event.target.value);
     let searchTerm: string;
+    this.search.nextTitle = event.target.value;
     if (this.filterForm.get('queryString').value === '') {
       searchTerm = '*';
     } else {
@@ -141,7 +150,7 @@ export class ResourceListComponent implements OnInit {
       {queryParams: {resourceType: event.target.value, searchTerm: searchTerm, page: 1}, queryParamsHandling: ''});
   }
 
-  onSearch() {
+  onSearch(searchTerm) {
     // console.log(this.filterForm.value);
     let query: string;
     let resourceType: string;
@@ -155,10 +164,10 @@ export class ResourceListComponent implements OnInit {
     // } else {
     //   query = '*';
     // }
-    if (this.search.getSearchTerm() === '') {
+    if (searchTerm === '') {
       query = '*';
     } else {
-      query = this.search.getSearchTerm();
+      query = searchTerm;
     }
     console.log('Query = ' + query);
     this.router.navigate(['/resources'], {queryParams: {resourceType: resourceType, searchTerm: query}, queryParamsHandling: ''});
@@ -287,6 +296,15 @@ export class ResourceListComponent implements OnInit {
 
   activateDropDown() {
     this.isDisabled = this.checkBoxes.filter(i => i.nativeElement['checked']).length === 0;
+  }
+
+  navBarScroll(event) {
+    if (window.scrollY > 50) {
+      this.dynamicClass = 'scrolled';
+    } else {
+      this.dynamicClass = 'notScrolled';
+    }
+    console.log('scrolled');
   }
 
 }

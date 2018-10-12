@@ -2,6 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {SearchService} from './services/search.service';
 import {Router} from '@angular/router';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -21,16 +22,23 @@ export class AppComponent implements OnInit {
     private search: SearchService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
-    this.search.setSearchTerm('');
+    // this.search.pageTitle.next('Resources');
+    // this.search.searchTerm.next('');
+    // this.search.setSearchTerm('');
+  }
+
+  get pageTitle(): Subject<string> {
+    return this.search.pageTitle;
   }
 
   updateSearchTerm() {
-    this.search.setSearchTerm(this.searchForm.get('searchTerm').value);
-    console.log(this.search.getSearchTerm());
-    this.router.navigate(['/resources'], {queryParams: {searchTerm: this.search.getSearchTerm()}, queryParamsHandling: ''});
+    this.search.searchTerm.next(this.searchForm.get('searchTerm').value);
+    // console.log(this.searchForm.get('searchTerm').value);
+    // this.router.navigate(['/resources'], {queryParams: {searchTerm: this.search.getSearchTerm()}, queryParamsHandling: ''});
   }
 
   @HostListener('window:scroll', ['$event'])

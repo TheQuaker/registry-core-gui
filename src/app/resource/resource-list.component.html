@@ -4,9 +4,7 @@
     <!--<div class="sidebar-toggler visible-xs">-->
     <!--<i class="ion-navicon"></i>-->
     <!--</div>-->
-
-    <div class="page-title">Resources</div>
-
+    <div class="page-title">{{pageTitle}}</div>
     <div class="content-wrapper ">
       <p>Here you will be able to browse resources, add new ones and edit/delete existing ones.</p>
 
@@ -25,13 +23,14 @@
               </select>
             </div>
 
-            <div class="form-group col-md-5">
-              <input type="text" class="offset-md-2 col-md-10 form-control" formControlName="queryString"
-                     placeholder="Search...">
-            </div>
-            <div class="col-md=2">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
+            <!--<div [ngClass]="['form-group top-navbar offset-md-2', dynamicClass]" (scroll)="navBarScroll($event)">-->
+            <!--<div class="form-group coll-md-5">-->
+              <!--<input type="text" class="offset-md-2 col-md-10 form-control" formControlName="queryString"-->
+                     <!--placeholder="Search...">-->
+            <!--</div>-->
+            <!--<div class="col-md=2">-->
+              <!--<button type="submit" class="btn">Submit</button>-->
+            <!--</div>-->
           </div>
         </form>
 
