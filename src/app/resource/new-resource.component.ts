@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Location} from '@angular/common';
-
-import {ResourceType} from '../domain/resource-type';
-import {ResourceTypeService} from '../services/resource-type.service';
-import {ResourceService} from '../services/resource.service';
 import {Router} from '@angular/router';
 
+import {ResourceTypeService} from '../services/resource-type.service';
+import {ResourceService} from '../services/resource.service';
+import {SearchService} from '../services/search.service';
+import {ResourceType} from '../domain/resource-type';
 
 
 @Component({
@@ -21,7 +20,17 @@ export class NewResourceComponent implements OnInit {
 
   resourceForm: FormGroup;
 
+  constructor(
+    private resourceTypeService: ResourceTypeService,
+    private resourceService: ResourceService,
+    private search: SearchService,
+    private fb: FormBuilder,
+    private router: Router,
+  ) {}
+
   ngOnInit() {
+    this.search.nextTitle = 'Add new Resource';
+    this.search.showField = true; // true means don't show ;)
     this.getResourceTypes();
     this.resourceForm = this.fb.group({
       payload: ['', Validators.required],
@@ -31,14 +40,6 @@ export class NewResourceComponent implements OnInit {
     });
     this.resourceForm.get('payloadUrl').disable();
   }
-
-  constructor(
-    private resourceTypeService: ResourceTypeService,
-    private resourceService: ResourceService,
-    private fb: FormBuilder,
-    private router: Router,
-    private location: Location
-  ) {}
 
   getResourceTypes() {
     this.resourceTypeService.getResourceTypes().subscribe(

@@ -1,12 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {FormBuilder, FormGroup, FormArray} from '@angular/forms';
 import {Router} from '@angular/router';
 
 
-import {ResourceType} from '../domain/resource-type';
 import {ResourceTypeService} from '../services/resource-type.service';
+import {SearchService} from '../services/search.service';
 import {DumpService} from '../services/dump.service';
+import {ResourceType} from '../domain/resource-type';
 import {saveAs} from 'file-saver';
 
 
@@ -26,19 +27,21 @@ export class DumpComponent implements OnInit {
   @Output()
   loading: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  total: number = 0;
-  loaded: number = 0;
-  loading_: boolean = false;
+  total = 0;
+  loaded = 0;
+  loading_ = false;
 
   constructor(
     private resourceTypeService: ResourceTypeService,
     private dumpService: DumpService,
+    private search: SearchService,
     private router: Router,
     private fb: FormBuilder,
-    private http: HttpClient
   ) {}
 
   ngOnInit() {
+    this.search.nextTitle = 'Dump Control';
+    this.search.showField = true; // true means don't show ;)
     this.getResourceTypes();
     this.dumpForm = this.fb.group({
       raw: ['false'],
@@ -65,10 +68,6 @@ export class DumpComponent implements OnInit {
 
   get resourceTypes() { // return form resource types as array
     return this.dumpForm.get('resourceTypes') as FormArray;
-  }
-
-  addField() {
-    this.resourceTypes.push(this.fb.control(''));
   }
 
   removeField(i) {

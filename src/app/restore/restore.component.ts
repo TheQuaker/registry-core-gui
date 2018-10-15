@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 
 import {RestoreService} from '../services/restore.service';
+import {SearchService} from '../services/search.service';
 
 
 @Component({
@@ -22,10 +23,14 @@ export class RestoreComponent implements OnInit {
   file: FileList = null;
 
   constructor(
-    private restoreService: RestoreService
+    private restoreService: RestoreService,
+    private search: SearchService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.search.nextTitle = 'Restore Control';
+    this.search.showField = true; // true means don't show ;)
+  }
 
   selectFile(event) {
     // this.uploadFile(event.target.files);

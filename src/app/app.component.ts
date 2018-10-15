@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
+
 import {SearchService} from './services/search.service';
-import {Router} from '@angular/router';
 import {Subject} from 'rxjs';
 
 @Component({
@@ -20,19 +20,17 @@ export class AppComponent implements OnInit {
 
   constructor(
     private search: SearchService,
-    private fb: FormBuilder,
-    private router: Router
-  ) {
-  }
+    private fb: FormBuilder
+  ) {}
 
-  ngOnInit() {
-    // this.search.pageTitle.next('Resources');
-    // this.search.searchTerm.next('');
-    // this.search.setSearchTerm('');
-  }
+  ngOnInit() {}
 
   get pageTitle(): Subject<string> {
     return this.search.pageTitle;
+  }
+
+  get searchField(): Subject<boolean> {
+    return this.search.searchField;
   }
 
   updateSearchTerm() {

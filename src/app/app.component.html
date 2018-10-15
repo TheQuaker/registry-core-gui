@@ -1,10 +1,12 @@
 <div >
 <nav [ngClass]="['navbar fixed-top flex-md-nowrap shadow',  dynamicClass]" (scroll)="navBarScroll($event)">
-  <a href="#" class="navbar-brand col-md-2 mr-0">Registry Core</a>
-  <form class="form-group" [formGroup]="searchForm" (submit)="updateSearchTerm()">
-    <h1 style="padding-top: 100px;">{{ (pageTitle | async).substring(0,5)}}...</h1>
-    <input id="search" class="form-control form-control-dark" type="text" formControlName="searchTerm" placeholder="Search"
-           aria-label="Search">
+  <a href="#" class="navbar-brand col-md-2">Registry Core</a>
+  <form class="col-md-12 row" [formGroup]="searchForm" (submit)="updateSearchTerm()">
+    <div class="search-input col-md-12">
+      <label for="search" class="col-md-2 local-title">{{ (pageTitle | async)}}</label>
+      <input [hidden]="searchField | async" id="search" class="col-md-4 form-control-dark" type="text"
+             formControlName="searchTerm" placeholder="Search" aria-label="Search">
+    </div>
   </form>
   <ul class="top-nav ">
     <!--<li class="dropdown hidden-xs-down">-->

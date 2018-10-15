@@ -1,19 +1,5 @@
 <div id="form">
-
   <div id="content">
-    <div class="menubar fixed">
-      <div class="sidebar-toggler visible-xs">
-        <i class="ion-navicon"></i>
-      </div>
-
-      <div class="page-title">
-        <p>Form group</p>
-        <!--<small class="hidden-xs">
-            <strong>This form has validation</strong>
-        </small>-->
-      </div>
-    </div>
-
     <div class="content-wrapper">
       <form [formGroup]="resourceForm" class="form-horizontal" novalidate="novalidate">
 
@@ -29,10 +15,10 @@
             </div>
           </div>
           <!--<div class="form-group">-->
-            <!--<label class="">Version</label>-->
-            <!--<div class="">-->
-              <!--<input type="text" class="form-control" formControlName="version">-->
-            <!--</div>-->
+          <!--<label class="">Version</label>-->
+          <!--<div class="">-->
+          <!--<input type="text" class="form-control" formControlName="version">-->
+          <!--</div>-->
           <!--</div>-->
           <div class="form-group">
             <label class="control-label">
@@ -64,7 +50,8 @@
           <div class="form-group form-actions">
             <div class="col-md-offset-2 col-md-6">
               <button class="btn btn-default" (click)="goBack()">Back</button>
-              <button class="btn btn-success" [disabled]="!resourceForm.valid" (click)="postResource()">Save resource</button>
+              <button class="btn btn-success" [disabled]="!resourceForm.valid" (click)="postResource()">Save resource
+              </button>
             </div>
           </div>
         </div>

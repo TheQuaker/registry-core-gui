@@ -1,8 +1,9 @@
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
 import {Router} from '@angular/router';
+
 import {ResourceTypeService} from '../services/resource-type.service';
+import {SearchService} from '../services/search.service';
 
 
 @Component({
@@ -17,12 +18,14 @@ export class NewResourceTypeComponent implements OnInit {
 
   constructor(
     private resourceTypeService: ResourceTypeService,
+    private search: SearchService,
     private fb: FormBuilder,
-    private router: Router,
-    private location: Location
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.search.nextTitle = 'Add new Resource Type';
+    this.search.showField = true; // true means don't show ;)
     this.resourceTypeForm = this.fb.group({
       name: ['', Validators.required],
       schema: ['', Validators.required],

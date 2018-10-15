@@ -1,13 +1,14 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren} from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import {PageChangedEvent} from 'ngx-bootstrap';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {BsModalRef} from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import {ResourceTypeService} from '../services/resource-type.service';
+import {SearchService} from '../services/search.service';
 import {ResourceTypePage} from '../domain/resource-type-page';
 import {ResourceType} from '../domain/resource-type';
+import {filter} from 'rxjs/operators';
 
 
 @Component({
@@ -32,17 +33,15 @@ export class ResourceTypeListComponent implements OnInit {
   public isDisabled = true;
   // pagination
   public viewPage: ResourceType[];
-  // rotate = true;
-  // showBoundaryLinks = true;
-  // maxSize = 5;
+  public searchResults: ResourceType[];
   currentPage = 1;
   itemsPerPage = 10;
   // modal
   modalRef: BsModalRef;
-  // message: string;
 
   constructor(
     private resourceTypeService: ResourceTypeService,
+    private search: SearchService,
     private modalService: BsModalService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
@@ -50,7 +49,9 @@ export class ResourceTypeListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
+    this.search.nextTitle = 'Resource Types';
+    this.search.showField = false;
+    this.search.initSearchTerm();
     this.route.queryParams.subscribe(params => {
       // console.log(params);
       if (!params['page']) {
@@ -69,6 +70,16 @@ export class ResourceTypeListComponent implements OnInit {
         }
       }
     });
+
+    this.search.searchTerm.subscribe(
+      s => {
+        if (s !== null) {
+          s = s.trim();
+        }
+        // this.onSearch(s); search method
+        console.log('Resource Search');
+      }
+    );
   }
 
   /** GET **/
@@ -139,6 +150,14 @@ export class ResourceTypeListComponent implements OnInit {
     }
   }
 
+  /** Search **/
+  onSearch(s: string) {
+    let resourceType;
+    for (resourceType in this.resourceTypePage.results) {
+
+    }
+  }
+
   /** Checkboxes **/
   checkAll(state: boolean) {
     this.checkBoxes.forEach(i => i.nativeElement['checked'] = state);
@@ -160,20 +179,6 @@ export class ResourceTypeListComponent implements OnInit {
       this.masterCheckbox.nativeElement['checked'] = false;
     }
     this.activateDropDown();
-  }
-
-  /** Pagination **/
-  pageChanged(event: PageChangedEvent): void {
-    // const startItem = (event.page - 1) * event.itemsPerPage;
-    // const endItem = event.page * event.itemsPerPage;
-    // // console.log(this.viewPage);
-    // this.viewPage = this.resourceTypePage.results.slice(startItem, endItem);
-    this.router.navigate(['/resourceTypes'], { queryParams: {page : event.page}});
-    // console.log(this.table.nativeElement.scrollHeight);
-    this.activateDropDown();
-    // window.scrollTo(0, this.table.nativeElement.scrollHeight);  // possibly not needed later on...
-    // this.cdr.detectChanges();
-    this.isAllChecked();
   }
 
   /** Modal **/
@@ -198,13 +203,7 @@ export class ResourceTypeListComponent implements OnInit {
 
   /** **/
   bulkAction() {
-    // if (this.masterCheckbox.nativeElement['checked'] === true) {
     this.deleteBatch();
-    // } else {
-    //   this.checkBoxes.filter(i => i.nativeElement['checked'])
-    //     .forEach(x => this.deleteResourceType(x.nativeElement['id']));
-    // }
-    // this.checkBoxes.filter(i => i.nativeElement['checked']).forEach(x => console.log(x.nativeElement['id']));
   }
 
   activateDropDown() {

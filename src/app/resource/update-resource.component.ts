@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, Validators} from '@angular/forms';
 
-import {ResourceService} from '../services/resource.service';
 import {ResourceTypeService} from '../services/resource-type.service';
-import {Resource} from '../domain/resource';
+import {ResourceService} from '../services/resource.service';
+import {SearchService} from '../services/search.service';
 import {ResourceType} from '../domain/resource-type';
+import {Resource} from '../domain/resource';
 
 
 @Component({
@@ -28,15 +29,18 @@ export class UpdateResourceComponent implements OnInit {
   public resourceTypes: ResourceType[];
 
   constructor(
+    private resourceTypeService: ResourceTypeService,
+    private resourceService: ResourceService,
+    private search: SearchService,
     private route: ActivatedRoute,
     private router: Router,
-    private resourceService: ResourceService,
-    private resourceTypeService: ResourceTypeService,
     private fb: FormBuilder
   ) {
   }
 
   ngOnInit() {
+    this.search.nextTitle = 'Update Resource';
+    this.search.showField = true; // true means don't show ;)
     this.getResourceTypes();
     this.getResource();
   }

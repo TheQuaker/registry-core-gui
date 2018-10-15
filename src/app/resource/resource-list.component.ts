@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren
+  ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren
 } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl} from '@angular/forms';
@@ -7,11 +7,11 @@ import {FormBuilder, FormControl} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {BsModalRef} from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
-import {ResourcePage} from '../domain/resource-page';
-import {ResourceTypePage} from '../domain/resource-type-page';
-import {ResourceService} from '../services/resource.service';
 import {ResourceTypeService} from '../services/resource-type.service';
+import {ResourceService} from '../services/resource.service';
 import {SearchService} from '../services/search.service';
+import {ResourceTypePage} from '../domain/resource-type-page';
+import {ResourcePage} from '../domain/resource-page';
 
 
 @Component({
@@ -27,20 +27,16 @@ export class ResourceListComponent implements OnInit {
     queryString: FormControl['']
   });
 
-  // @HostListener('window:scroll', ['$event'])
-
   @ViewChild('masterCheckbox')
   public masterCheckbox: ElementRef;
 
   @ViewChildren('checkBoxes')
   public checkBoxes: QueryList<ElementRef>;
 
-  public dynamicClass = 'notScrolled';
   public isDisabled = true;
   public errorMessage: string;
   public resourcePage: ResourcePage;
   public resourceTypePage: ResourceTypePage;
-  public pageTitle;
 
   // pagination
   itemsPerPage = 10;
@@ -58,27 +54,30 @@ export class ResourceListComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.search.pageTitle.next('Resources');
+    this.search.initSearchTerm();
     this.getResourceTypes();
     this.route.queryParams.subscribe(
       params => {
         // console.log(params);
+        this.search.nextTitle = 'Resources';
+        this.search.showField = false;
         let query: string;
         let resourceType: string;
-
         if (params['resourceType'] && params['resourceType'] !== 'all') {
           resourceType = params['resourceType'];
-          this.search.nextTitle = resourceType;
+          if (resourceType !== '*') {
+            this.search.nextTitle = resourceType;
+          }
           if (resourceType !== '*') {
             this.filterForm.get('resourceType').setValue(resourceType);
           }
         } else {
           resourceType = '*';
           if (params['resourceType'] === 'all') {
+            this.search.nextTitle = 'All types';
             this.filterForm.get('resourceType').setValue('all');
           } else {
             this.filterForm.get('resourceType').setValue('null');
@@ -88,17 +87,17 @@ export class ResourceListComponent implements OnInit {
           query = params['searchTerm'];
           if (query !== '*') {
             this.filterForm.get('queryString').setValue(query);
+            this.search.nextTitle = 'Search results';
           }
         } else {
           query = '*';
           this.filterForm.get('queryString').setValue('');
         }
-        if (!params['page'] ) {
+        if (!params['page']) {
           this.router.navigate(['/resources'], {queryParams: {page: 1}, queryParamsHandling: 'merge'});
           // this.getResources(resourceType, query, '0');
         } else {
           this.currentPage = +params['page'];
-          // console.log(this.currentPage);
           const startItem = (+params['page'] - 1) * this.itemsPerPage;
           // setTimeout(() => { this.getResources(resourceType, query, `${startItem}`); }, 500);
           this.getResources(resourceType, query, `${startItem}`);
@@ -108,14 +107,19 @@ export class ResourceListComponent implements OnInit {
     );
 
     this.search.searchTerm.subscribe(
-      s => this.onSearch(s)
+      s => {
+        if (s !== null) {
+          s = s.trim();
+        }
+        this.onSearch(s);
+        console.log('Resource Search');
+      }
     );
-    // this.search.pageTitle.subscribe(title => this.pageTitle = title);
   }
 
   /** GET **/
   getResources(resourceType: string, query: string, from: string): void {
-    this.resourcePage = this.resourcePage || {results : [], total : 0, from: 0, to: 0};
+    this.resourcePage = this.resourcePage || {results: [], total: 0, from: 0, to: 0};
     this.resourcePage.results = [];
     this.resourceService.getResourcesBySearch(resourceType, query, from).subscribe(
       // this.resourceService.getResources(from, to).subscribe(
@@ -125,7 +129,6 @@ export class ResourceListComponent implements OnInit {
       error => this.errorMessage = <any>error,
       () => {
         this.isAllChecked();
-        // console.log('GetResources ' + this.resourcePage.total);
       }
     );
   }
@@ -154,22 +157,17 @@ export class ResourceListComponent implements OnInit {
     // console.log(this.filterForm.value);
     let query: string;
     let resourceType: string;
-    if (this.filterForm.controls['resourceType'].value && this.filterForm.controls['resourceType'].value !== 'null' ) {
+    if (this.filterForm.controls['resourceType'].value && this.filterForm.controls['resourceType'].value !== 'null') {
       resourceType = this.filterForm.controls['resourceType'].value;
     } else {
       resourceType = '*';
     }
-    // if (this.filterForm.controls['queryString'].value) {
-    //   query = this.filterForm.controls['queryString'].value;
-    // } else {
-    //   query = '*';
-    // }
     if (searchTerm === '') {
       query = '*';
     } else {
       query = searchTerm;
     }
-    console.log('Query = ' + query);
+    // console.log('Query = ' + query);
     this.router.navigate(['/resources'], {queryParams: {resourceType: resourceType, searchTerm: query}, queryParamsHandling: ''});
   }
 
@@ -184,7 +182,6 @@ export class ResourceListComponent implements OnInit {
         // console.log(params);
         if (params['resourceType'] && params['resourceType'] !== 'all') {
           resourceType = params['resourceType'];
-          // console.log('this resourceType = ' + resourceType);
         } else {
           resourceType = '*';
         }
@@ -193,7 +190,7 @@ export class ResourceListComponent implements OnInit {
         } else {
           query = '*';
         }
-         // startItem = (+params['page'] - 1) * this.itemsPerPage;
+        // startItem = (+params['page'] - 1) * this.itemsPerPage;
         page = +params['page'];
       });
 
@@ -207,12 +204,12 @@ export class ResourceListComponent implements OnInit {
             page = 1;
             window.location.reload();
           }
-          this.router.navigate(['/resources'], { queryParams: {page : page}, queryParamsHandling: 'merge'});
-        } else { window.location.reload(); }
+          this.router.navigate(['/resources'], {queryParams: {page: page}, queryParamsHandling: 'merge'});
+        } else {
+          window.location.reload();
+        }
       },
-      error => this.errorMessage = <any>error,
-      () => {
-      }
+      error => this.errorMessage = <any>error
     );
   }
 
@@ -220,9 +217,7 @@ export class ResourceListComponent implements OnInit {
     const idArray: string[] = [];
     this.checkBoxes.filter(i => i.nativeElement['checked'])
       .forEach(x => idArray.push(x.nativeElement['id']));
-
-    console.log(idArray);
-
+    // console.log(idArray);
     let page = this.currentPage;
     let reload = true;
 
@@ -234,7 +229,6 @@ export class ResourceListComponent implements OnInit {
         reload = true;
       }
     }
-    console.log(page);
     for (let i = 0; i < idArray.length; i++) {
       this.resourceService.deleteResource(idArray[i]).subscribe(
         _ => {
@@ -264,8 +258,6 @@ export class ResourceListComponent implements OnInit {
         count++;
       }
     });
-    // console.log('count = ' + count);
-    // console.log('length = ' + this.checkBoxes.length);
     this.masterCheckbox.nativeElement['checked'] = (this.checkBoxes.length !== 0 && count === this.checkBoxes.length);
     this.activateDropDown();
   }
@@ -297,14 +289,4 @@ export class ResourceListComponent implements OnInit {
   activateDropDown() {
     this.isDisabled = this.checkBoxes.filter(i => i.nativeElement['checked']).length === 0;
   }
-
-  navBarScroll(event) {
-    if (window.scrollY > 50) {
-      this.dynamicClass = 'scrolled';
-    } else {
-      this.dynamicClass = 'notScrolled';
-    }
-    console.log('scrolled');
-  }
-
 }

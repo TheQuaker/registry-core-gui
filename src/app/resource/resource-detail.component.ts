@@ -3,8 +3,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 
 import {ResourceService} from '../services/resource.service';
-import {Resource} from '../domain/resource';
+import {SearchService} from '../services/search.service';
 import {IndexedFields} from '../domain/indexed-fields';
+import {Resource} from '../domain/resource';
 
 
 @Component({
@@ -21,10 +22,13 @@ export class ResourceDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private resourceService: ResourceService,
+    private search: SearchService,
     private location: Location
   ) {}
 
   ngOnInit() {
+    this.search.nextTitle = 'Resource Details';
+    this.search.showField = true; // true means don't show ;)
     this.getResource();
     this.getIndexedFields();
   }
