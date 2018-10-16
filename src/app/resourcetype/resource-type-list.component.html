@@ -10,7 +10,7 @@
     <div class="content-wrapper">
       <p>Here you will be able to browse resource types, add new ones and edit/delete existing ones.</p>
 
-      <div class="col-md-12" *ngIf="resourceTypePage">
+      <div class="col-md-12" *ngIf="resourceTypeTempPage">
 
         <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
 
@@ -44,9 +44,9 @@
 
 
           <div class="card col-md-12">
-            <div #table class="col-md-12 row justify-content-md-center" *ngIf="resourceTypePage">
+            <div #table class="col-md-12 row justify-content-md-center" *ngIf="resourceTypeTempPage">
 
-              <div paginate [total]="resourceTypePage.total" [from]="currentPage"></div>
+              <div paginate [total]="resourceTypeTempPage.total" [from]="currentPage"></div>
 
               <table class="table table-striped table-responsive-md">
                 <thead>
@@ -95,7 +95,7 @@
                 </tbody>
               </table>
 
-              <div paginate [total]="resourceTypePage.total" [from]="currentPage"></div>
+              <div paginate [total]="resourceTypeTempPage.total" [from]="currentPage"></div>
 
             </div>
           </div>

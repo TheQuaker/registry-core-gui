@@ -13,6 +13,8 @@ export class SearchService {
 
   private searchField_: Subject<boolean> = new Subject();
 
+  private clearSearchField_: Subject<boolean> = new Subject();
+
   constructor() {}
 
   get searchTerm(): Subject<string> {
@@ -20,7 +22,8 @@ export class SearchService {
   }
 
   initSearchTerm() {
-    this.searchTerm_ = new Subject<string>();
+    this.searchTerm_ = new Subject<string>(); // forget old terms
+    this.clearSearchField_.next(true);  // empty search field
   }
 
   get pageTitle(): Subject<string> {
@@ -38,4 +41,12 @@ export class SearchService {
   set showField(bool: boolean) {
     this.searchField_.next(bool);
   }
+
+  get clearSearchField() {
+    return this.clearSearchField_;
+  }
+
+  // clearField() {
+  //   this.clearSearchField_.next(true);
+  // }
 }

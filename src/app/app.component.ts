@@ -23,7 +23,15 @@ export class AppComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.search.clearSearchField.subscribe(
+      res => {
+        if (res === true) {
+          this.searchForm.get('searchTerm').setValue('');
+        }
+      }
+    );
+  }
 
   get pageTitle(): Subject<string> {
     return this.search.pageTitle;
@@ -36,7 +44,6 @@ export class AppComponent implements OnInit {
   updateSearchTerm() {
     this.search.searchTerm.next(this.searchForm.get('searchTerm').value);
     // console.log(this.searchForm.get('searchTerm').value);
-    // this.router.navigate(['/resources'], {queryParams: {searchTerm: this.search.getSearchTerm()}, queryParamsHandling: ''});
   }
 
   @HostListener('window:scroll', ['$event'])

@@ -8,7 +8,6 @@ import {ResourceTypeService} from '../services/resource-type.service';
 import {SearchService} from '../services/search.service';
 import {ResourceTypePage} from '../domain/resource-type-page';
 import {ResourceType} from '../domain/resource-type';
-import {filter} from 'rxjs/operators';
 
 
 @Component({
@@ -29,11 +28,12 @@ export class ResourceTypeListComponent implements OnInit {
   public checkBoxes: QueryList<ElementRef>;
 
   public resourceTypePage: ResourceTypePage;
+  public resourceTypeTempPage: ResourceTypePage;
+  public searchResultsPage: ResourceTypePage;
   public errorMessage: string;
   public isDisabled = true;
   // pagination
   public viewPage: ResourceType[];
-  public searchResults: ResourceType[];
   currentPage = 1;
   itemsPerPage = 10;
   // modal
@@ -55,7 +55,7 @@ export class ResourceTypeListComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       // console.log(params);
       if (!params['page']) {
-        this.router.navigate(['/resourceTypes'], { queryParams: {page : 1}});
+        this.router.navigate(['/resourceTypes'], { queryParams: {page : 1}, queryParamsHandling: 'merge'});
         this.getResourceTypes(0, this.itemsPerPage);
       } else {
         this.currentPage = +params['page'];
@@ -63,7 +63,15 @@ export class ResourceTypeListComponent implements OnInit {
         const endItem = this.currentPage * this.itemsPerPage;
         // console.log(this.viewPage);
         if (this.resourceTypePage) {
-          this.viewPage = this.resourceTypePage.results.slice(startItem, endItem);
+          if (params['searchTerm']) {
+            this.resourceTypeTempPage = this.searchResultsPage;
+            console.log('NOT This');
+          } else {
+            this.resourceTypeTempPage = this.resourceTypePage;
+            console.log('This should happen');
+          }
+          console.log('This should always happen');
+          this.viewPage = this.resourceTypeTempPage.results.slice(startItem, endItem);
           this.isAllChecked();
         } else {
           this.getResourceTypes(startItem, endItem);
@@ -76,8 +84,8 @@ export class ResourceTypeListComponent implements OnInit {
         if (s !== null) {
           s = s.trim();
         }
-        // this.onSearch(s); search method
-        console.log('Resource Search');
+        this.onSearch(s); // search method
+        // console.log('Resource Type Search');
       }
     );
   }
@@ -92,7 +100,10 @@ export class ResourceTypeListComponent implements OnInit {
         this.resourceTypePage = resourceTypePage;
       },
       error => this.errorMessage = <any>error,
-      () => this.viewPage = this.resourceTypePage.results.slice(start, end)
+      () => {
+        this.resourceTypeTempPage = this.resourceTypePage;
+        this.viewPage = this.resourceTypeTempPage.results.slice(start, end);
+      }
     );
   }
 
@@ -152,10 +163,17 @@ export class ResourceTypeListComponent implements OnInit {
 
   /** Search **/
   onSearch(s: string) {
-    let resourceType;
-    for (resourceType in this.resourceTypePage.results) {
-
+    this.searchResultsPage = {results : [], total : 0, from: 0, to: 0};
+    for (let i = 0; i < this.resourceTypePage.results.length; i++) {
+      // console.log(this.resourceTypePage.results[i]);
+      if (this.resourceTypePage.results[i].name.search(s) !== -1) {
+        this.searchResultsPage.results.push(this.resourceTypePage.results[i]);
+        // console.log(this.resourceTypePage.results[i]);
+        this.searchResultsPage.total++;
+      }
     }
+    this.router.navigate(['/resourceTypes'], {queryParams: {searchTerm: s, page: 1}});
+    console.log(this.searchResultsPage);
   }
 
   /** Checkboxes **/

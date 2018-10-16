@@ -13,7 +13,8 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.search.pageTitle.next('Dashboard');
+    this.search.nextTitle = 'Dashboard';
+    this.search.showField = true; // true means don't show ;)
   }
 
 }
