@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
   }
 
   @HostListener('window:scroll', ['$event'])
-  navBarScroll(event) {
+  navBarScroll() {
     if (window.scrollY > 50) {
       this.dynamicClass = 'scrolled';
     } else {

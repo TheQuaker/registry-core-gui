@@ -112,7 +112,6 @@ export class ResourceListComponent implements OnInit {
           s = s.trim();
         }
         this.onSearch(s);
-        console.log('Resource Search');
       }
     );
   }

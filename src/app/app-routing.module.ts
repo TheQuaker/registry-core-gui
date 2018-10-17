@@ -47,6 +47,10 @@ const appRoutes: Routes = [
   {
     path: 'restore',
     loadChildren: './restore/restore.module#RestoreModule'
+  },
+  {
+    path: 'badRequest',
+    loadChildren: './errorcodes/error-codes.module#ErrorCodesModule'
   }
 ];
 

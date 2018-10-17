@@ -2,14 +2,13 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-// import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
-import {ResourceTypeComponent} from './resource-type.component';
+import {ResourceTypeDetailComponent} from './resource-type-detail.component';
 import {ResourceTypeListComponent} from './resource-type-list.component';
 import {NewResourceTypeComponent} from './new-resource-type.component';
-import {ResourceTypeDetailComponent} from './resource-type-detail.component';
+import {ResourceTypeComponent} from './resource-type.component';
 import {ResourceTypeRouting} from './resource-type-routing';
 import {ResourceTypeService} from '../services/resource-type.service';
 import {SharedModule} from '../shared/shared.module';
@@ -21,7 +20,6 @@ import {SharedModule} from '../shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    // PaginationModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot()
   ],

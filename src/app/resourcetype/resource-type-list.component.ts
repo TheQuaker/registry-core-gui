@@ -65,12 +65,9 @@ export class ResourceTypeListComponent implements OnInit {
         if (this.resourceTypePage) {
           if (params['searchTerm']) {
             this.resourceTypeTempPage = this.searchResultsPage;
-            console.log('NOT This');
           } else {
             this.resourceTypeTempPage = this.resourceTypePage;
-            console.log('This should happen');
           }
-          console.log('This should always happen');
           this.viewPage = this.resourceTypeTempPage.results.slice(startItem, endItem);
           this.isAllChecked();
         } else {
@@ -173,7 +170,7 @@ export class ResourceTypeListComponent implements OnInit {
       }
     }
     this.router.navigate(['/resourceTypes'], {queryParams: {searchTerm: s, page: 1}});
-    console.log(this.searchResultsPage);
+    // console.log(this.searchResultsPage);
   }
 
   /** Checkboxes **/

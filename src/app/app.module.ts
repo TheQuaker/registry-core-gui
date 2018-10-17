@@ -1,16 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
-import { CommonModule} from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
+
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ResourceModule } from './resource/resource.module';
-import { ResourceTypeModule } from './resourcetype/resource-type.module';
 import {DumpModule} from './dump/dump.module';
 import {RestoreModule} from './restore/restore.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import {ResourceModule} from './resource/resource.module';
+import {AppRoutingModule} from './app-routing.module';
+import {ErrorCodesModule} from './errorcodes/error-codes.module';
+import {ResourceTypeModule} from './resourcetype/resource-type.module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     ResourceTypeModule,
     DumpModule,
     RestoreModule,
+    ErrorCodesModule,
     HttpClientModule,
     AppRoutingModule
   ],
