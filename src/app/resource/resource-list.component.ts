@@ -41,6 +41,7 @@ export class ResourceListComponent implements OnInit {
   // pagination
   itemsPerPage = 10;
   currentPage = 1;
+  totalItems = 0;
 
   // modal
   modalRef: BsModalRef;
@@ -98,9 +99,14 @@ export class ResourceListComponent implements OnInit {
           // this.getResources(resourceType, query, '0');
         } else {
           this.currentPage = +params['page'];
-          const startItem = (+params['page'] - 1) * this.itemsPerPage;
-          // setTimeout(() => { this.getResources(resourceType, query, `${startItem}`); }, 500);
-          this.getResources(resourceType, query, `${startItem}`);
+          // if (this.currentPage < 0 || this.currentPage > Math.ceil(this.totalItems / this.itemsPerPage)) {
+          //   console.log(Math.ceil(this.totalItems / this.itemsPerPage));
+          //   // this.router.navigate(['/404']);
+          // } else {
+            const startItem = (+params['page'] - 1) * this.itemsPerPage;
+            // setTimeout(() => { this.getResources(resourceType, query, `${startItem}`); }, 500);
+            this.getResources(resourceType, query, `${startItem}`);
+          // }
         }
       },
       error => this.errorMessage = <any>error,
@@ -127,6 +133,7 @@ export class ResourceListComponent implements OnInit {
       },
       error => this.errorMessage = <any>error,
       () => {
+        this.totalItems = this.resourcePage.total
         this.isAllChecked();
       }
     );

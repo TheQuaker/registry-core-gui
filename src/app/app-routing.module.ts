@@ -15,31 +15,31 @@ const appRoutes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
   },
-  {
-    path: 'resources',
-    loadChildren: './resource/resource.module#ResourceModule',
-    runGuardsAndResolvers: 'always'
-  },
-  {
-    path: 'resource/detail/:resourceType/:id',
-    loadChildren: './resource/resource.module#ResourceModule'
-  },
-  {
-    path: 'resourceTypes',
-    loadChildren: './resourcetype/resource-type.module#ResourceTypeModule'
-  },
-  {
-    path: 'resourceTypes/detail/:name',
-    loadChildren: './resourcetype/resource-type.module#ResourceTypeModule'
-  },
-  {
-    path: 'resources/addNewResource',
-    loadChildren: './resource/resource.module#ResourceModule'
-  },
-  {
-    path: 'resource/updateResource/:resourceType/:id',
-    loadChildren: './resource/resource.module#ResourceModule'
-  },
+  // {
+  //   path: 'resources',
+  //   loadChildren: './resource/resource.module#ResourceModule',
+  //   runGuardsAndResolvers: 'always'
+  // },
+  // {
+  //   path: 'resource/detail/:resourceType/:id',
+  //   loadChildren: './resource/resource.module#ResourceModule'
+  // },
+  // {
+  //   path: 'resources/addNewResource',
+  //   loadChildren: './resource/resource.module#ResourceModule'
+  // },
+  // {
+  //   path: 'resource/updateResource/:resourceType/:id',
+  //   loadChildren: './resource/resource.module#ResourceModule'
+  // },
+  // {
+  //   path: 'resourceTypes',
+  //   loadChildren: './resourcetype/resource-type.module#ResourceTypeModule'
+  // },
+  // {
+  //   path: 'resourceTypes/detail/:name',
+  //   loadChildren: './resourcetype/resource-type.module#ResourceTypeModule'
+  // },
   {
     path: 'dump',
     loadChildren: './dump/dump.module#DumpModule'
@@ -49,8 +49,16 @@ const appRoutes: Routes = [
     loadChildren: './restore/restore.module#RestoreModule'
   },
   {
-    path: 'badRequest',
+    path: '400',
     loadChildren: './errorcodes/error-codes.module#ErrorCodesModule'
+  },
+  // {
+  //   path: '404',
+  //   loadChildren: './errorcodes/error-codes.module#ErrorCodesModule'
+  // },
+  {
+    path: '**',
+    redirectTo: '/404'
   }
 ];
 

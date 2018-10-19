@@ -1,5 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
+
+import {BsModalService} from 'ngx-bootstrap/modal';
+import {BsModalRef} from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import {RestoreService} from '../services/restore.service';
 import {SearchService} from '../services/search.service';
@@ -15,14 +18,20 @@ export class RestoreComponent implements OnInit {
   @Output()
   loading: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  // public loaded: number = 0;
-  total: number = 0;
-  loaded: number = 0;
+  @ViewChild('statusModal')
+  public statusModal: TemplateRef<any>;
+  @ViewChild('errorModal')
+  public errorModal: TemplateRef<any>;
 
+  // modal
+  modalRef: BsModalRef;
 
+  total = 0;
+  loaded = 0;
   file: FileList = null;
 
   constructor(
+    private modalService: BsModalService,
     private restoreService: RestoreService,
     private search: SearchService
   ) {}
@@ -38,6 +47,7 @@ export class RestoreComponent implements OnInit {
   }
 
   uploadFile() {
+    this.openModal(this.statusModal);
     if (this.file === null) {
       console.log('No file selected!');
       return;
@@ -58,10 +68,18 @@ export class RestoreComponent implements OnInit {
           }
         },
         (err) => {
+          this.modalRef.hide();
+          this.openModal(this.errorModal);
           console.log('Upload Error:', err);
         }, () => {
+          this.modalRef.hide();
           console.log('Upload done');
         }
       );
+  }
+
+  /** Modal  */
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 }

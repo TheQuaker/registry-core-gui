@@ -1,8 +1,9 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {FormBuilder, FormGroup, FormArray} from '@angular/forms';
 import {Router} from '@angular/router';
 
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 import {ResourceTypeService} from '../services/resource-type.service';
 import {SearchService} from '../services/search.service';
@@ -24,12 +25,19 @@ export class DumpComponent implements OnInit {
   public errorMessage: string;
   file;
 
+  @ViewChild('statusModal')
+  public statusModal: TemplateRef<any>;
+  @ViewChild('errorModal')
+  public errorModal: TemplateRef<any>;
+
   @Output()
   loading: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   total = 0;
   loaded = 0;
   loading_ = false;
+  // modal
+  modalRef: BsModalRef;
 
   constructor(
     private resourceTypeService: ResourceTypeService,
@@ -37,6 +45,7 @@ export class DumpComponent implements OnInit {
     private search: SearchService,
     private router: Router,
     private fb: FormBuilder,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
@@ -47,8 +56,7 @@ export class DumpComponent implements OnInit {
       raw: ['false'],
       schema: ['false'],
       version: ['false'],
-      resourceTypes: this.fb.array([
-      ])
+      resourceTypes: this.fb.array([])
     });
   }
 
@@ -58,7 +66,7 @@ export class DumpComponent implements OnInit {
       error => this.errorMessage = <any>error,
       () => {
         this.resourceTypeNameArray = [];
-        for (let i = 0 ; i < this.resourceTypeSelector.length ; i++) {
+        for (let i = 0; i < this.resourceTypeSelector.length; i++) {
           this.resourceTypeNameArray.push(this.resourceTypeSelector[i].name);
         }
         this.resourceTypeNameArray.sort((a, b) => 0 - (a > b ? -1 : 1));
@@ -102,32 +110,49 @@ export class DumpComponent implements OnInit {
     //   const url_: URL = new URL(dumpUrl + '?' + params);
     //   const path = url_.pathname.split(/\//);
     //   const filename = url_.searchParams.get('archiveId') || path[path.length - 1] || 'download';
-    this.total = 0; this.loaded = 0;
+    this.total = 0;
+    this.loaded = 0;
     const filename = 'download';
     this.loading_ = true;
     this.loading.next(true);
+    this.openModal(this.statusModal);
     this.dumpService.downloadDump(
       this.dumpForm.get('raw').value,
       this.dumpForm.get('schema').value,
       this.dumpForm.get('version').value,
       this.dumpForm.get('resourceTypes').value)
       .subscribe(event => {
-        if (event.type === HttpEventType.DownloadProgress) {
-          this.total = event.total; this.loaded = event.loaded;
-          // console.log(event.total, event.loaded);
-        } else if (event instanceof HttpResponse) {
-          this.loading_ = false;
-          // this.total = 0; this.loaded = 0;
-          this.loading.next(false);
-          const blob = (event as HttpResponse<any>).body;
-          saveAs(blob, filename + '.zip');
+          if (event.type === HttpEventType.DownloadProgress) {
+            this.total = event.total;
+            this.loaded = event.loaded;
+            // console.log(event.total, event.loaded);
+          } else if (event instanceof HttpResponse) {
+            this.loading_ = false;
+            // this.total = 0; this.loaded = 0;
+            this.loading.next(false);
+            const blob = (event as HttpResponse<any>).body;
+            saveAs(blob, filename + '.zip');
+          }
+        },
+        (err) => {
+        this.modalRef.hide();
+        this.openModal(this.errorModal);
+          console.log('Download Error: ', err);
+        },
+        () => {
+        this.modalRef.hide();
+          console.log('Download complete');
         }
-      });
+      );
   }
 
-  goBack() {
-    this.router.navigate(['']);
+  // goBack() {
+  //   this.router.navigate(['']);
+  // }
 
+  /** Modal  */
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
 }
