@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {SearchService} from '../services/search.service';
 
 
 @Component({
@@ -8,8 +9,13 @@ import {Component, OnInit} from '@angular/core';
 
 export class NotFound404Component implements OnInit {
 
-  constructor() {}
+  constructor(
+    private search: SearchService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.search.nextTitle = '404';
+    this.search.showField = true;
+  }
 
 }

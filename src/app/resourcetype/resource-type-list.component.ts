@@ -59,14 +59,19 @@ export class ResourceTypeListComponent implements OnInit {
         this.getResourceTypes(0, this.itemsPerPage);
       } else {
         this.currentPage = +params['page'];
+        if (this.currentPage <= 0 ) {
+          this.router.navigate(['/404'], { skipLocationChange: true });
+        }
         const startItem = (this.currentPage - 1) * this.itemsPerPage;
         const endItem = this.currentPage * this.itemsPerPage;
-        // console.log(this.viewPage);
         if (this.resourceTypePage) {
           if (params['searchTerm']) {
             this.resourceTypeTempPage = this.searchResultsPage;
           } else {
             this.resourceTypeTempPage = this.resourceTypePage;
+          }
+          if (this.currentPage > Math.ceil(this.resourceTypeTempPage.total / this.itemsPerPage) && this.currentPage !== 1) {
+            this.router.navigate(['/404'], { skipLocationChange: true });
           }
           this.viewPage = this.resourceTypeTempPage.results.slice(startItem, endItem);
           this.isAllChecked();
@@ -99,6 +104,9 @@ export class ResourceTypeListComponent implements OnInit {
       error => this.errorMessage = <any>error,
       () => {
         this.resourceTypeTempPage = this.resourceTypePage;
+        if (this.currentPage > Math.ceil(this.resourceTypeTempPage.total / this.itemsPerPage)) {
+          this.router.navigate(['/404'], { skipLocationChange: true });
+        }
         this.viewPage = this.resourceTypeTempPage.results.slice(start, end);
       }
     );

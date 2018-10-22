@@ -4,9 +4,9 @@
     <div class="content-wrapper">
       <p>Here you will be able to browse resource types, add new ones and edit/delete existing ones.</p>
 
-      <div class="col-md-12" *ngIf="resourceTypeTempPage">
+      <div class="error col-nd-12" *ngIf="errorMessage">{{errorMessage}}</div>
 
-        <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+      <div class="col-md-12" *ngIf="resourceTypeTempPage">
 
         <div class="row">
 

@@ -73,7 +73,6 @@ export class ResourceService {
     params = params.append('from', from);
     params = params.append('quantity', quantity);
     params = params.append('sortByType', sortByType);
-    // return this.http.get<ResourcePage>(this.searchUrl + `${resourceType}/${query}/?from=0&quantity=10&sortByType=ASC`)
     return this.http.get<ResourcePage>(this.searchUrl + `${resourceType}/${query}/`, {params})
       .pipe(
         catchError(this.handleError)
