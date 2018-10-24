@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 
 import {ResourceService} from '../services/resource.service';
@@ -21,6 +21,7 @@ export class ResourceDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private resourceService: ResourceService,
     private search: SearchService,
     private location: Location
@@ -39,7 +40,10 @@ export class ResourceDetailComponent implements OnInit {
 
     this.resourceService.getResource(resourceType, id).subscribe(
       resource => this.resource = resource,
-      error => this.errorMessage = <any>error
+      error => {
+        this.errorMessage = <any>error;
+        this.router.navigate(['404'], {skipLocationChange: true});
+      }
     );
   }
 
