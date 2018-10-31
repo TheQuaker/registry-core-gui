@@ -7,7 +7,7 @@
 
         <div class="error col-md-12" *ngIf="errorMessage">{{errorMessage}}</div>
 
-        <form class="col-md-9" [formGroup]="filterForm" (submit)="onSearch()">
+        <form class="col-md-9" [formGroup]="filterForm" (submit)="onSearch('')">
           <div class="form-row">
             <div class="form-group offset-md-1 col-md-4" *ngIf="resourceTypePage">
               <select class="form-control" id="typeSelect" formControlName="resourceType"

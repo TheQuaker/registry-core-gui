@@ -21,3 +21,9 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Docker
+
+Run `docker build . -t <docker-name>` by default it will import the production environment. You can customize the build environment with  `--build-arg configuration="<cycle>"`.
+
+For more info about the docker build, check this [github project.](https://github.com/tiangolo/medium-posts/tree/master/angular-in-docker)
