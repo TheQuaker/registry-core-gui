@@ -15,8 +15,8 @@ import {IndexedFields} from '../domain/indexed-fields';
 })
 
 export class ResourceService {
-  private resourceUrl = environment.API_END_POINT + '/RegistryService/resources/';
-  private searchUrl = environment.API_END_POINT + '/RegistryService/search/cql/';
+  private resourceUrl = environment.API_END_POINT + '/resources/';
+  private searchUrl = environment.API_END_POINT + '/search/cql/';
 
   private httpOption = {
     headers: new HttpHeaders({

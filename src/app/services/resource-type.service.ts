@@ -16,7 +16,7 @@ export class ResourceTypeService {
   constructor(private http: HttpClient) {}
 
    // private resourceTypeUrl = 'http://aleka.athenarc.gr:8080/arc-expenses-service/resourceType/';
-   private resourceTypeUrl = environment.API_END_POINT + '/RegistryService/resourceType/';
+   private resourceTypeUrl = environment.API_END_POINT + '/resourceType/';
 
   private httpOption = {
     headers: new HttpHeaders({

@@ -12,7 +12,7 @@ import {RequestOptions, ResponseContentType} from '@angular/http';
 })
 
 export class DumpService {
-  private dumpUrl = environment.API_END_POINT + '/RegistryService/dump/';
+  private dumpUrl = environment.API_END_POINT + '/dump/';
   // private dumpUrl = 'http://83.212.98.76:8080/omtd-registry/dump/';
 
 

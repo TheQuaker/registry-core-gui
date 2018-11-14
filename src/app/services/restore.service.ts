@@ -12,7 +12,7 @@ import {environment} from '../../environments/environment';
 })
 
 export class RestoreService {
-  private restoreUrl = environment.API_END_POINT + '/RegistryService/restore/';
+  private restoreUrl = environment.API_END_POINT + '/restore/';
 
   constructor(
     private http: HttpClient
