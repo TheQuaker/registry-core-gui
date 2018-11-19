@@ -1,6 +1,7 @@
 {
-  "http://83.212.98.76:8085/*": {
-    "target": "http://83.212.98.76:8085",
+  "https://beta.n4485.athenarc.gr/": {
+    "target": "https://n4485.athenarc.gr/",
+//    "target": "https://beta.n4485.athenarc.gr/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

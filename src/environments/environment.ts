@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  API_END_POINT: 'http://83.212.111.205:8085/RegistryService'
+  // API_END_POINT: 'https://n4485.athenarc.gr/arc-expenses-service'
+  // API_END_POINT: 'https://beta.n4485.athenarc.gr/arc-expenses-service'
+  API_END_POINT: '/arc-expenses-service'
 };
 
 /*
