@@ -66,7 +66,8 @@ export class ResourceService {
     if (searchTerm === '*') {
       query = '*';
     } else {
-      query = `searchableArea=*${searchTerm}*`;
+      // query = `searchableArea=${searchTerm}*`;
+      query = `searchableArea=${JSON.stringify(searchTerm )}`; // adds quotes to search term
     }
     // const rams: any = {from: from, quantity: quantity, sortByType: sortByType};
     let params = new HttpParams();

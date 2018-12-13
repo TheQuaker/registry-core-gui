@@ -1,7 +1,6 @@
 {
   "https://beta.n4485.athenarc.gr/": {
-    "target": "https://n4485.athenarc.gr/",
-//    "target": "https://beta.n4485.athenarc.gr/",
+    "target": "https://beta.n4485.athenarc.gr/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
